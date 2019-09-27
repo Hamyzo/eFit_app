@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/antd_interface.iml" filepath="$PROJECT_DIR$/.idea/antd_interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/eFit_app.iml" filepath="$PROJECT_DIR$/.idea/eFit_app.iml" />
     </modules>
   </component>
 </project>
