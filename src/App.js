@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { Layout } from "antd";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Sider from "./components/Global/Sider";
+import Header from "./components/Global/Header";
+import Footer from "./components/Global/Footer";
+
+// pages imports
+
+import Home from "./pages/Home/Home";
+
+const { Content } = Layout;
+
+// eslint-disable-next-line react/prefer-stateless-function
+class App extends React.Component {
+  render() {
+    return (
+      // eslint-disable-next-line react/jsx-filename-extension
+      <Layout style={{ minHeight: "100vh" }}>
+        <Sider />
+        <Layout>
+          <Header />
+          <Content style={{ margin: "0 16px" }}>
+            <Router>
+              <div>
+                <Route exact path="/" component={Home} />
+              </div>
+            </Router>
+          </Content>
+          <Footer />
+        </Layout>
+      </Layout>
+    );
+  }
 }
 
 export default App;

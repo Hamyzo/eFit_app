@@ -1,10 +1,13 @@
 {
-  "name": "efit_app",
+  "name": "eFit_app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.10.1",
-    "react-dom": "^16.10.1",
+    "antd": "^3.23.4",
+    "babel-eslint": "^10.0.3",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.2"
   },
   "scripts": {
@@ -27,5 +30,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "prettier": "^1.18.2"
   }
 }
