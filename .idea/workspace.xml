@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee2868c4-7ff2-4c4f-a307-c603d29253c8" name="Default Changelist" comment="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/eFit_app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
+      <change beforePath="$PROJECT_DIR$/src/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home/Home.jsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
