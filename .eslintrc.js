@@ -21,6 +21,7 @@ module.exports = {
     quotes: "off",
     "comma-dangle": "off",
     "arrow-parens": "off",
-    "react/jsx-wrap-multilines": "off"
+    "react/jsx-wrap-multilines": "off",
+    "linebreak-style": "off"
   }
 };
