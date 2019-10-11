@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee2868c4-7ff2-4c4f-a307-c603d29253c8" name="Default Changelist" comment="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+    <list default="true" id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/ClientProgram.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home/Home.jsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +34,7 @@
     <property name="NewWatcherDialog.advanced.open" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="E:/WorkSpace/Internet of things/Tutorials/lab02-example-express-ejs-mysql" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -80,7 +80,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ee2868c4-7ff2-4c4f-a307-c603d29253c8" name="Default Changelist" comment="" />
+      <changelist id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="" />
       <created>1569187053638</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -97,14 +97,16 @@
       <workItem from="1569664996325" duration="1245000" />
       <workItem from="1569775008802" duration="1165000" />
       <workItem from="1569777042873" duration="2260000" />
-      <workItem from="1569780024723" duration="970000" />
-      <workItem from="1569831581209" duration="654000" />
-      <workItem from="1570266016294" duration="270000" />
-      <workItem from="1570624825350" duration="1214000" />
-      <workItem from="1570739509673" duration="2887000" />
-      <workItem from="1570786811786" duration="1360000" />
-      <workItem from="1570795260267" duration="3118000" />
+      <workItem from="1570799044718" duration="2805000" />
     </task>
+    <task id="LOCAL-00001" summary="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
+      <created>1570722090771</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570722090771</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
