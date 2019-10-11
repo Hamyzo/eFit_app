@@ -11,6 +11,7 @@ import Footer from "./components/Global/Footer";
 
 import Home from "./pages/Home/Home";
 import ClientProgram from "./pages/ClientProgram";
+import customerList from "./pages/Customer/customerList";
 
 const { Content } = Layout;
 
@@ -28,6 +29,7 @@ class App extends React.Component {
               <div>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/ClientProgram" component={ClientProgram} />
+                <Route path="/customers" component={customerList} />
               </div>
             </Router>
           </Content>
