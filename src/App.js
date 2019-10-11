@@ -29,7 +29,7 @@ class App extends React.Component {
               <div>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/ClientProgram" component={ClientProgram} />
-                <Route path="/customers" component={customerList} />
+                <Route exact path="/customers" component={customerList} />
               </div>
             </Router>
           </Content>

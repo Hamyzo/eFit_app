@@ -7,12 +7,15 @@ const count = 3;
 const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
 
 class customerList extends React.Component {
-  state = {
-    initLoading: true,
-    loading: false,
-    data: [],
-    list: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      initLoading: true,
+      loading: false,
+      data: [],
+      list: []
+    };
+  }
 
   componentDidMount() {
     this.getData(res => {
