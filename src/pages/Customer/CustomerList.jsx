@@ -1,12 +1,11 @@
 import reqwest from "reqwest";
 import React from "react";
-
-const { List, Avatar, Button, Skeleton } = "antd";
+import { List, Avatar, Button, Skeleton } from "antd";
 
 const count = 3;
 const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat&noinfo`;
 
-class customerList extends React.Component {
+class CustomerList extends React.Component {
   state = {
     initLoading: true,
     loading: false,
@@ -108,4 +107,4 @@ class customerList extends React.Component {
   }
 }
 
-export default customerList;
+export default CustomerList;
