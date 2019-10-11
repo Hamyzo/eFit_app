@@ -10,7 +10,7 @@ import Footer from "./components/Global/Footer";
 // pages imports
 
 import Home from "./pages/Home/Home";
-import CustomerProgram from "./pages/ClientProgram";
+import CustomerProgram from "./pages/CustomerProgram";
 import CustomerList from "./pages/Customer/CustomerList";
 
 const { Content } = Layout;
