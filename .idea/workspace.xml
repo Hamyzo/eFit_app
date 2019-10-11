@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
+    <list default="true" id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/ClientProgram.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home/Home.jsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -77,7 +80,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ee2868c4-7ff2-4c4f-a307-c603d29253c8" name="Default Changelist" comment="" />
+      <changelist id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="" />
       <created>1569187053638</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -94,7 +97,16 @@
       <workItem from="1569664996325" duration="1245000" />
       <workItem from="1569775008802" duration="1165000" />
       <workItem from="1569777042873" duration="2260000" />
+      <workItem from="1570799044718" duration="2805000" />
     </task>
+    <task id="LOCAL-00001" summary="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
+      <created>1570722090771</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1570722090771</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
