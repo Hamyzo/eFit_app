@@ -1,6 +1,45 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
 import "./CustomerProgram.css";
+const { Panel } = Collapse;
+const date = new Date();
+const startDay = date.getDate();
+const startMonth = date.getMonth() + 1;
+
+const columns = [
+  {
+    title: "Exercise",
+    dataIndex: "exercise"
+  },
+  {
+    title: "Weight (kg)",
+    dataIndex: "weight"
+  },
+  {
+    title: "Sets X Repetitions",
+    dataIndex: "setsXrepetitions"
+  }
+];
+const data = [
+  {
+    key: "1",
+    exercise: "Push ups",
+    weight: "N/A",
+    setsXrepetitions: "3 x 12"
+  },
+  {
+    key: "2",
+    exercise: "Squats",
+    weight: 42,
+    setsXrepetitions: "3 x 12"
+  },
+  {
+    key: "3",
+    exercise: "Deadlift",
+    weight: 30,
+    setsXrepetitions: "4x6"
+  }
+];
 
 class CustomerProgram extends React.Component {
   constructor(props) {
@@ -16,7 +55,7 @@ class CustomerProgram extends React.Component {
 
   getProgram = _ => {
     fetch(
-      "http://localhost:3015/customerPrograms?_id=5da1f67ccf53670572677651&populate=program"
+      "http://localhost:3009/customerPrograms?_id=5da1f67ccf53670572677651&populate=program"
     )
       .then(async response => await response.json())
       .then(response => {
@@ -26,125 +65,101 @@ class CustomerProgram extends React.Component {
       .catch(err => console.error(err));
   };
 
+  renderPeriod = (period, index) => (
+    <Panel
+      header={
+        <div className="margin0">
+          <Row>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>Period {index + 1}</strong>
+              </p>
+            </Col>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>Completed:</strong> 0 out of {period.nb_repetitions}
+              </p>
+            </Col>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>Start Date:</strong>
+                {startDay}/{startMonth}
+              </p>
+            </Col>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>End Date:</strong>
+              </p>
+            </Col>
+          </Row>
+        </div>
+      }
+      key={index}
+    >
+      <Table
+        pagination={false}
+        columns={columns}
+        dataSource={data}
+        size="middle"
+      />
+    </Panel>
+  );
+
+  renderSession = (session, index) => (
+    <Panel
+      header={
+        <div className="margin0">
+          <Row>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>{session.name}</strong>
+              </p>
+            </Col>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>Status:</strong> In Progress
+              </p>
+            </Col>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>Start Date:</strong>{" "}
+              </p>
+            </Col>
+            <Col span={6}>
+              <p className="margin0">
+                <strong>End Date:</strong>{" "}
+              </p>
+            </Col>
+          </Row>
+        </div>
+      }
+      key={index}
+    >
+      <Collapse>
+        {session.periods.map((period, index) =>
+          this.renderPeriod(period, index)
+        )}
+      </Collapse>
+    </Panel>
+  );
+
   renderProgram = ({ program }) => (
-    <div key="1">
+    <div>
+      <br />
       <h1>{program.name}</h1>
-      <Collapse onChange={this.callback}>
-        <Collapse
-          header={
-            <div className="periodDiv">
-              <Row>
-                <Col span={6}>
-                  <p className="period2">
-                    <strong>Session 1</strong>
-                  </p>
-                </Col>
-                <Col span={6}>
-                  <p className="period2">Status: In Progress</p>
-                </Col>
-                <Col span={6}>
-                  <p className="period2">Start Date: </p>
-                </Col>
-                <Col span={6}>
-                  <p className="period2">End Date: </p>
-                </Col>
-              </Row>
-            </div>
-          }
-          key="1"
-        >
-          <Collapse defaultActiveKey="1">
-            <Collapse
-              header={
-                <div className="periodDiv">
-                  <Row>
-                    <Col span={6}>
-                      <p className="period2">
-                        <strong>Period 1</strong>
-                      </p>
-                    </Col>
-                    <Col span={6}>
-                      <p className="period2">Completed: 2 out of 6 </p>
-                    </Col>
-                    <Col span={6}>
-                      <p className="period2">Start Date: </p>
-                    </Col>
-                    <Col span={6}>
-                      <p className="period2">End Date: </p>
-                    </Col>
-                  </Row>
-                </div>
-              }
-              key="1"
-            ></Collapse>
-          </Collapse>
-        </Collapse>
+      <br />
+      <Collapse>
+        {program.sessions.map((session, index) =>
+          this.renderSession(session, index)
+        )}
       </Collapse>
     </div>
   );
 
-  callback = key => {
-    console.log(key);
-  };
-
   render() {
     const { program } = this.state;
-    const text = `
-    A dog is a type of domesticated animal.
-    Known for its loyalty and faithfulness,
-    it can be found as a welcome guest in many households across the world.
-   `;
 
-    const { Panel } = Collapse;
-
-    const columns = [
-      {
-        title: "Exercise",
-        dataIndex: "exercise"
-      },
-      {
-        title: "Weight (kg)",
-        dataIndex: "weight"
-      },
-      {
-        title: "Sets X Repetitions",
-        dataIndex: "setsXrepetitions"
-      }
-    ];
-    const data = [
-      {
-        key: "1",
-        exercise: "Push ups",
-        weight: "N/A",
-        setsXrepetitions: "3 x 12"
-      },
-      {
-        key: "2",
-        exercise: "Squats",
-        weight: 42,
-        setsXrepetitions: "3 x 12"
-      },
-      {
-        key: "3",
-        exercise: "Deadlift",
-        weight: 30,
-        setsXrepetitions: "4x6"
-      }
-    ];
-
-    return (
-      <div>
-        <h1 className="title">Program Title</h1>
-        <p>
-          The secret to doing anything is believing that you can do it. Anything
-          that you believe you can do strong enough, you can do. Anything. As
-          long as you believe. We can fix anything. You are only limited by your
-          imagination. That's the way I look when I get home late; black and
-          blue. Every highlight needs it's own personal shadow.
-        </p>
-        <div>{program ? this.renderProgram(program) : "Loading"}</div>
-      </div>
-    );
+    return <div>{program ? this.renderProgram(program) : "Loading"}</div>;
   }
 }
 

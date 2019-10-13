@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="24467b46-6758-42e9-bbf7-12ed7d7bf737" name="Default Changelist" comment="">
+    <list default="true" id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CustomerProgram/CustomerProgram.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CustomerProgram/CustomerProgram.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/CustomerProgram/CustomerProgram.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CustomerProgram/CustomerProgram.jsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
