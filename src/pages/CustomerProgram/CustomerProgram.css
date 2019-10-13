@@ -1,0 +1,30 @@
+
+.ant-table-thead > tr > th {
+    background: white
+}
+
+.title {
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
+.session{
+    margin: 0px;
+}
+
+.period{
+    margin: 0px;
+}
+
+.period2{
+    margin: 0px;
+}
+.periodDiv{
+    margin: 0px;
+}
+
+.description{
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-bottom: 2%;
+}

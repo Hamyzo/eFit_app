@@ -10,7 +10,7 @@ import Footer from "./components/Global/Footer";
 // pages imports
 
 import Home from "./pages/Home/Home";
-import ClientProgram from "./pages/ClientProgram";
+import CustomerProgram from "./pages/CustomerProgram/CustomerProgram";
 import Customers from "./pages/Customer/Customers";
 
 const { Content } = Layout;
@@ -28,7 +28,11 @@ class App extends React.Component {
             <Router>
               <div>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/ClientProgram" component={ClientProgram} />
+                <Route
+                  exact
+                  path="/customerProgram"
+                  component={CustomerProgram}
+                />
                 <Route path="/customers" component={Customers} />
               </div>
             </Router>

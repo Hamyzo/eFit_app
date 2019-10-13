@@ -64,6 +64,10 @@ class SiderComponent extends React.Component {
             <Menu.Item key="6">Team 1</Menu.Item>
             <Menu.Item key="8">Team 2</Menu.Item>
           </SubMenu>
+          <Menu.Item key="8">
+            <Icon type="team" />
+            <span>My Customers</span>
+          </Menu.Item>
           <Menu.Item key="9">
             <Icon type="file" />
             <span>File</span>
