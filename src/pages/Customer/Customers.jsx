@@ -1,28 +1,31 @@
 import React from "react";
 import { Table, Avatar } from "antd";
+import * as apiServices from "../../apiServices";
 
 class Customers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      customersData: []
+      customersData: null
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     this.getCustomers();
-  }
+  };
 
-  getCustomers() {
-    fetch("http://localhost:3017/customers")
-      .then(async response => await response.json())
-      .then(response => {
-        this.setState({ customersData: response });
-      })
-      .catch(err => console.error(err));
-  }
+  getCustomers = async () => {
+    try {
+      const customers = await apiServices.get("customers", "");
+      console.log("Customers", customers);
+      this.setState({ customersData: customers });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   render() {
+    const { customersData } = this.state;
     const profileSize = 65;
     const columns = [
       {
@@ -67,7 +70,11 @@ class Customers extends React.Component {
     ];
     return (
       <div>
-        <Table columns={columns} dataSource={this.state.customersData}></Table>
+        <Table
+          loading={!customersData}
+          columns={columns}
+          dataSource={customersData}
+        />
       </div>
     );
   }
