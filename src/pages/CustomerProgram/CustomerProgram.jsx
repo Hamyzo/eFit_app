@@ -1,6 +1,7 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
 import "./CustomerProgram.css";
+import * as apiServices from "../../apiServices";
 
 class CustomerProgram extends React.Component {
   constructor(props) {
@@ -10,20 +11,22 @@ class CustomerProgram extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     this.getProgram();
-  }
+  };
 
-  getProgram = _ => {
-    fetch(
-      "http://localhost:3015/customerPrograms?_id=5da1f67ccf53670572677651&populate=program"
-    )
-      .then(async response => await response.json())
-      .then(response => {
-        console.log(response);
-        this.setState({ program: response[0] });
-      })
-      .catch(err => console.error(err));
+  getProgram = async _ => {
+    try {
+      const program = await apiServices.getOne(
+        "customerPrograms",
+        "5da1f67ccf53670572677651",
+        "populate=program"
+      );
+      console.log("Program", program);
+      this.setState({ program });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   renderProgram = ({ program }) => (
