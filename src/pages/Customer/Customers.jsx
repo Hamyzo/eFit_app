@@ -2,14 +2,35 @@ import React from "react";
 import { Table, Avatar } from "antd";
 
 class Customers extends React.Component {
-  state = {
-    columns: [
+  constructor(props) {
+    super(props);
+    this.state = {
+      customersData: []
+    };
+  }
+
+  componentDidMount() {
+    this.getCustomers();
+  }
+
+  getCustomers() {
+    fetch("http://localhost:3017/customers")
+      .then(async response => await response.json())
+      .then(response => {
+        this.setState({ customersData: response });
+      })
+      .catch(err => console.error(err));
+  }
+
+  render() {
+    const profileSize = 65;
+    const columns = [
       {
         title: "Profile",
         width: 100,
-        dataIndex: "img_url",
+        dataIndex: "img",
         render: (text, row, index) => {
-          return <Avatar src={row.img_url} size={65} />;
+          return <Avatar src={row.img} size={profileSize} />;
         }
         //fixed: "left"
       },
@@ -43,42 +64,10 @@ class Customers extends React.Component {
         width: 100,
         render: () => <a>program</a>
       }
-    ],
-    customersData: [
-      {
-        first_name: "Kikou",
-        last_name: "Légende",
-        password: 1234,
-        email: "kikou@gmail.com",
-        phone: "+33 6 12 34 56 78",
-        title: "None",
-        registration_date: "2017-07-21T17:32:28.000Z",
-        last_login_date: "2017-07-21T17:32:28.000Z",
-        img_url: "localhost/users_img/154sd121ds575sd7.jpg",
-        status: "PENDING",
-        address: {
-          number: 123,
-          street: "Chemin de Ribaute",
-          additional: "2ème étage",
-          postcode: 31500,
-          city: "Toulouse",
-          state: "Occitanie",
-          country: "France"
-        }
-      }
-    ],
-    listTitle: "Customer List",
-    profileSize: 65
-  };
-  render() {
-    //return <SimpleList data={this.state.customersData}></SimpleList>;
-
+    ];
     return (
       <div>
-        <Table
-          columns={this.state.columns}
-          dataSource={this.state.customersData}
-        ></Table>
+        <Table columns={columns} dataSource={this.state.customersData}></Table>
       </div>
     );
   }
