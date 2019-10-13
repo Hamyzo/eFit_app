@@ -6,7 +6,7 @@ class CustomerProgram extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      program: {}
+      program: null
     };
   }
 
@@ -16,16 +16,19 @@ class CustomerProgram extends React.Component {
 
   getProgram = _ => {
     fetch(
-      "http://localhost:3009//customerPrograms?_id=5da1f67ccf53670572677651&populate=program"
+      "http://localhost:3015/customerPrograms?_id=5da1f67ccf53670572677651&populate=program"
     )
       .then(async response => await response.json())
-      .then(response => this.setState({ program: response }))
+      .then(response => {
+        console.log(response);
+        this.setState({ program: response[0] });
+      })
       .catch(err => console.error(err));
   };
 
   renderProgram = ({ program }) => (
     <div key="1">
-      <h1>{program}</h1>
+      <h1>{program.name}</h1>
       <Collapse onChange={this.callback}>
         <Collapse
           header={
@@ -139,7 +142,7 @@ class CustomerProgram extends React.Component {
           imagination. That's the way I look when I get home late; black and
           blue. Every highlight needs it's own personal shadow.
         </p>
-        <div>{this.renderProgram(program)}</div>
+        <div>{program ? this.renderProgram(program) : "Loading"}</div>
       </div>
     );
   }
