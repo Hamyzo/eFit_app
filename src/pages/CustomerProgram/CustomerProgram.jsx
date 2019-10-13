@@ -2,9 +2,7 @@ import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
 import "./CustomerProgram.css";
 const { Panel } = Collapse;
-const date = new Date();
-const startDay = date.getDate();
-const startMonth = date.getMonth() + 1;
+const exercises = [];
 
 const columns = [
   {
@@ -16,8 +14,12 @@ const columns = [
     dataIndex: "weight"
   },
   {
-    title: "Sets X Repetitions",
-    dataIndex: "setsXrepetitions"
+    title: "Sets ",
+    dataIndex: "sets"
+  },
+  {
+    title: "Repetitions",
+    dataIndex: "repetitions"
   }
 ];
 const data = [
@@ -83,7 +85,6 @@ class CustomerProgram extends React.Component {
             <Col span={6}>
               <p className="margin0">
                 <strong>Start Date:</strong>
-                {startDay}/{startMonth}
               </p>
             </Col>
             <Col span={6}>
@@ -99,11 +100,29 @@ class CustomerProgram extends React.Component {
       <Table
         pagination={false}
         columns={columns}
-        dataSource={data}
+        dataSource={exercises}
         size="middle"
       />
     </Panel>
   );
+
+  loadExercise = (exercise, index) => {
+    const i = index + 1;
+    const data = {
+      key: "{ i }",
+      exercise: "{ exercise.exercise }",
+      sets: "{ exercise.sets }",
+      repetitions: "{ exercise.repetitions }"
+    };
+    exercises.push(data);
+  };
+
+  dayAndMonth = date => {
+    const dateFormatted = Date(date);
+    const day = dateFormatted.getDate();
+    const month = dateFormatted.getMonth();
+    return day.toString() + "/" + month.toString();
+  };
 
   renderSession = (session, index) => (
     <Panel
@@ -122,7 +141,7 @@ class CustomerProgram extends React.Component {
             </Col>
             <Col span={6}>
               <p className="margin0">
-                <strong>Start Date:</strong>{" "}
+                <strong>Start Date:</strong>
               </p>
             </Col>
             <Col span={6}>
@@ -135,6 +154,7 @@ class CustomerProgram extends React.Component {
       }
       key={index}
     >
+      <p>{session.description}</p>
       <Collapse>
         {session.periods.map((period, index) =>
           this.renderPeriod(period, index)
