@@ -11,7 +11,7 @@ import Footer from "./components/Global/Footer";
 
 import Home from "./pages/Home/Home";
 import CustomerProgram from "./pages/CustomerProgram/CustomerProgram";
-import CustomerList from "./pages/Customer/CustomerList";
+import Customers from "./pages/Customer/Customers";
 
 const { Content } = Layout;
 
@@ -33,7 +33,7 @@ class App extends React.Component {
                   path="/customerProgram"
                   component={CustomerProgram}
                 />
-                <Route path="/customers" component={CustomerList} />
+                <Route path="/customers" component={Customers} />
               </div>
             </Router>
           </Content>
