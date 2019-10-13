@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="24467b46-6758-42e9-bbf7-12ed7d7bf737" name="Default Changelist" comment="">
+    <list default="true" id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Customer/CustomerList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Customer/CustomerList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Customer/customerList.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Global/Sider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Global/Sider.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/CustomerProgram/CustomerProgram.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/CustomerProgram/CustomerProgram.jsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +45,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.NodeInterpreter" value="project" />
     <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\hamza\WebstormProjects\efit_app\node_modules\prettier" />
-    <property name="settings.editor.selected.configurable" value="watcher.settings" />
+    <property name="settings.editor.selected.configurable" value="web.server" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -81,7 +81,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ee2868c4-7ff2-4c4f-a307-c603d29253c8" name="Default Changelist" comment="" />
+      <changelist id="bcacbbfe-8faf-45b5-a25e-15ee452a5d03" name="Default Changelist" comment="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js" />
       <created>1569187053638</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -98,6 +98,7 @@
       <workItem from="1569664996325" duration="1245000" />
       <workItem from="1569775008802" duration="1165000" />
       <workItem from="1569777042873" duration="2260000" />
+      <workItem from="1570883380440" duration="15729000" />
     </task>
     <task id="LOCAL-00001" summary="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
       <created>1570803230300</created>
@@ -106,7 +107,21 @@
       <option name="project" value="LOCAL" />
       <updated>1570803230301</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
+      <created>1570825436465</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1570825436465</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Merge branch 'master' of https://gitlab.com/HamDom/eFit_app&#10;&#10;# Conflicts:&#10;#&#9;.gitignore&#10;#&#9;.idea/modules.xml&#10;#&#9;src/App.css&#10;#&#9;src/App.js">
+      <created>1570825488399</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1570825488399</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
