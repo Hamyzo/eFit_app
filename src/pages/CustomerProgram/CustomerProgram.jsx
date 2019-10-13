@@ -1,6 +1,7 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
 import "./CustomerProgram.css";
+import * as apiServices from "../../apiServices";
 const { Panel } = Collapse;
 const exercises = [];
 
@@ -51,20 +52,22 @@ class CustomerProgram extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     this.getProgram();
-  }
+  };
 
-  getProgram = _ => {
-    fetch(
-      "http://localhost:3009/customerPrograms?_id=5da1f67ccf53670572677651&populate=program"
-    )
-      .then(async response => await response.json())
-      .then(response => {
-        console.log(response);
-        this.setState({ program: response[0] });
-      })
-      .catch(err => console.error(err));
+  getProgram = async _ => {
+    try {
+      const program = await apiServices.getOne(
+        "customerPrograms",
+        "5da1f67ccf53670572677651",
+        "populate=program"
+      );
+      console.log("Program", program);
+      this.setState({ program });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   renderPeriod = (period, index) => (
@@ -176,8 +179,19 @@ class CustomerProgram extends React.Component {
     </div>
   );
 
+  callback = key => {
+    console.log(key);
+  };
+
   render() {
     const { program } = this.state;
+    const text = `
+    A dog is a type of domesticated animal.
+    Known for its loyalty and faithfulness,
+    it can be found as a welcome guest in many households across the world.
+   `;
+
+    const { Panel } = Collapse;
 
     return <div>{program ? this.renderProgram(program) : "Loading"}</div>;
   }
