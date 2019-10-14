@@ -21,7 +21,14 @@ class SiderComponent extends React.Component {
     const { collapsed } = this.state;
     return (
       <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-        <div className="logo" />
+        <div className="logoContainer">
+          <div className="logo" />
+          {setTimeout(
+            () =>
+              collapsed ? null : <span className="appName">eFit APP</span>,
+            100
+          )}
+        </div>
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1">
             <Icon type="pie-chart" />

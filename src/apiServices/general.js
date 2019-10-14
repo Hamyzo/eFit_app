@@ -25,7 +25,7 @@ export const get = (resource, filter) => {
     if (response.status === 200) {
       resolve(response.json());
     } else {
-      reject(response.error());
+      reject(response);
     }
   });
 };
@@ -47,7 +47,7 @@ export const getOne = (resource, id, filter) => {
     if (response.status === 200) {
       resolve(response.json());
     } else {
-      reject(response.error());
+      reject(response);
     }
   });
 };
