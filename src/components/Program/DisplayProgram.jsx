@@ -1,9 +1,10 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
-import "./CustomerProgram.css";
-import * as apiServices from "../../apiServices";
+import "./Program.css";
 const { Panel } = Collapse;
-const exercises = [];
+const date = new Date();
+const startDay = date.getDate();
+const startMonth = date.getMonth() + 1;
 
 const columns = [
   {
@@ -11,12 +12,12 @@ const columns = [
     dataIndex: "exercise"
   },
   {
-    title: "Sets ",
-    dataIndex: "sets"
+    title: "Weight (kg)",
+    dataIndex: "weight"
   },
   {
-    title: "Repetitions",
-    dataIndex: "reps"
+    title: "Sets X Repetitions",
+    dataIndex: "setsXrepetitions"
   }
 ];
 const data = [
@@ -40,34 +41,9 @@ const data = [
   }
 ];
 
-class CustomerProgram extends React.Component {
+class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      program: null
-    };
-  }
-
-  componentDidMount = async () => {
-    this.getProgram();
-  };
-
-  getProgram = async _ => {
-    try {
-      const program = await apiServices.getOne(
-        "customerPrograms",
-        this.props.match.params.customerProgramId,
-        "populate=program"
-      );
-      console.log("Program", program);
-      this.setState({ program });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  loadExercises = (exercises, index) => {
-
   }
 
   renderPeriod = (period, index) => (
@@ -88,6 +64,7 @@ class CustomerProgram extends React.Component {
             <Col span={6}>
               <p className="margin0">
                 <strong>Start Date:</strong>
+                {startDay}/{startMonth}
               </p>
             </Col>
             <Col span={6}>
@@ -103,14 +80,11 @@ class CustomerProgram extends React.Component {
       <Table
         pagination={false}
         columns={columns}
-        dataSource={period.exercises}
+        dataSource={data}
         size="middle"
       />
     </Panel>
   );
-
-
-
 
   renderSession = (session, index) => (
     <Panel
@@ -129,7 +103,7 @@ class CustomerProgram extends React.Component {
             </Col>
             <Col span={6}>
               <p className="margin0">
-                <strong>Start Date:</strong>
+                <strong>Start Date:</strong>{" "}
               </p>
             </Col>
             <Col span={6}>
@@ -142,7 +116,6 @@ class CustomerProgram extends React.Component {
       }
       key={index}
     >
-      <p>{session.description}</p>
       <Collapse>
         {session.periods.map((period, index) =>
           this.renderPeriod(period, index)
@@ -164,15 +137,11 @@ class CustomerProgram extends React.Component {
     </div>
   );
 
-  callback = key => {
-    console.log(key);
-  };
-
   render() {
-    const { program } = this.state;
+    const { program, editable } = this.props;
 
     return <div>{program ? this.renderProgram(program) : "Loading"}</div>;
   }
 }
 
-export default CustomerProgram;
+export default DisplayProgram;
