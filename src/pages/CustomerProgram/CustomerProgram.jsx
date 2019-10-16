@@ -11,16 +11,12 @@ const columns = [
     dataIndex: "exercise"
   },
   {
-    title: "Weight (kg)",
-    dataIndex: "weight"
-  },
-  {
     title: "Sets ",
     dataIndex: "sets"
   },
   {
     title: "Repetitions",
-    dataIndex: "repetitions"
+    dataIndex: "reps"
   }
 ];
 const data = [
@@ -70,6 +66,10 @@ class CustomerProgram extends React.Component {
     }
   };
 
+  loadExercises = (exercises, index) => {
+
+  }
+
   renderPeriod = (period, index) => (
     <Panel
       header={
@@ -103,29 +103,14 @@ class CustomerProgram extends React.Component {
       <Table
         pagination={false}
         columns={columns}
-        dataSource={exercises}
+        dataSource={period.exercises}
         size="middle"
       />
     </Panel>
   );
 
-  loadExercise = (exercise, index) => {
-    const i = index + 1;
-    const data = {
-      key: "{ i }",
-      exercise: "{ exercise.exercise }",
-      sets: "{ exercise.sets }",
-      repetitions: "{ exercise.repetitions }"
-    };
-    exercises.push(data);
-  };
 
-  dayAndMonth = date => {
-    const dateFormatted = Date(date);
-    const day = dateFormatted.getDate();
-    const month = dateFormatted.getMonth();
-    return day.toString() + "/" + month.toString();
-  };
+
 
   renderSession = (session, index) => (
     <Panel
@@ -185,13 +170,6 @@ class CustomerProgram extends React.Component {
 
   render() {
     const { program } = this.state;
-    const text = `
-    A dog is a type of domesticated animal.
-    Known for its loyalty and faithfulness,
-    it can be found as a welcome guest in many households across the world.
-   `;
-
-    const { Panel } = Collapse;
 
     return <div>{program ? this.renderProgram(program) : "Loading"}</div>;
   }
