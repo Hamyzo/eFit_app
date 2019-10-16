@@ -1,7 +1,6 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
-import "./CustomerProgram.css";
-import * as apiServices from "../../apiServices";
+import "./Program.css";
 const { Panel } = Collapse;
 const date = new Date();
 const startDay = date.getDate();
@@ -42,31 +41,10 @@ const data = [
   }
 ];
 
-class CustomerProgram extends React.Component {
+class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      program: null
-    };
   }
-
-  componentDidMount = async () => {
-    this.getProgram();
-  };
-
-  getProgram = async _ => {
-    try {
-      const program = await apiServices.getOne(
-        "customerPrograms",
-        this.props.match.params.customerProgramId,
-        "populate=program"
-      );
-      console.log("Program", program);
-      this.setState({ program });
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   renderPeriod = (period, index) => (
     <Panel
@@ -159,22 +137,11 @@ class CustomerProgram extends React.Component {
     </div>
   );
 
-  callback = key => {
-    console.log(key);
-  };
-
   render() {
-    const { program } = this.state;
-    const text = `
-    A dog is a type of domesticated animal.
-    Known for its loyalty and faithfulness,
-    it can be found as a welcome guest in many households across the world.
-   `;
-
-    const { Panel } = Collapse;
+    const { program, editable } = this.props;
 
     return <div>{program ? this.renderProgram(program) : "Loading"}</div>;
   }
 }
 
-export default CustomerProgram;
+export default DisplayProgram;

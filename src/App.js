@@ -9,9 +9,9 @@ import Footer from "./components/Global/Footer";
 
 // pages imports
 
-import Home from "./pages/Home/Home";
-import CustomerProgram from "./pages/CustomerProgram/CustomerProgram";
-import Customers from "./pages/Customer/Customers";
+import Home from "./pages/Common/Home";
+import CustomerProgram from "./pages/Coach/CustomerProgram";
+import Customers from "./pages/Coach/Customers";
 
 const { Content } = Layout;
 
