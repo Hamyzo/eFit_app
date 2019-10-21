@@ -12,6 +12,7 @@ import Footer from "./components/Global/Footer";
 import Home from "./pages/Home/Home";
 import CustomerProgram from "./pages/CustomerProgram/CustomerProgram";
 import Customers from "./pages/Customer/Customers";
+import Repetition from "./pages/Repetition/Repetition";
 
 const { Content } = Layout;
 
@@ -24,7 +25,7 @@ class App extends React.Component {
         <Sider />
         <Layout>
           <Header />
-          <Content style={{ margin: "0 16px" }}>
+          <Content style={{}}>
             <Router>
               <div>
                 <Route exact path="/" component={Home} />
@@ -34,6 +35,7 @@ class App extends React.Component {
                   component={CustomerProgram}
                 />
                 <Route path="/customers" component={Customers} />
+                <Route path="/repetition" component={Repetition} />
               </div>
             </Router>
           </Content>

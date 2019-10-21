@@ -24,6 +24,7 @@ class Customers extends React.Component {
 
   render() {
     const profileSize = 65;
+    //const customerProgramUrl = "/CustomerProgram?_id=" + row._id;
     const columns = [
       {
         title: "Profile",
@@ -62,7 +63,9 @@ class Customers extends React.Component {
         title: "View Program",
         //fixed: "left",
         width: 100,
-        render: () => <a>program</a>
+        render: (text, row, index) => (
+          <a href={"/CustomerProgram/" + row._id}>program</a>
+        )
       }
     ];
     return (
