@@ -2,11 +2,15 @@
 
 #idea
 /.idea
+
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
 package-lock.json
+
+#personal.json
+src/personal.json
 
 # testing
 /coverage

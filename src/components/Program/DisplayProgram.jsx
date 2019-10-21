@@ -1,6 +1,6 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
-import "./CustomerProgram.css";
+import "./Program.css";
 const { Panel } = Collapse;
 const date = new Date();
 const startDay = date.getDate();
@@ -41,29 +41,10 @@ const data = [
   }
 ];
 
-class CustomerProgram extends React.Component {
+class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      program: null
-    };
   }
-
-  componentDidMount() {
-    this.getProgram();
-  }
-
-  getProgram = _ => {
-    fetch(
-      "http://localhost:3009/customerPrograms?_id=5da1f67ccf53670572677651&populate=program"
-    )
-      .then(async response => await response.json())
-      .then(response => {
-        console.log(response);
-        this.setState({ program: response[0] });
-      })
-      .catch(err => console.error(err));
-  };
 
   renderPeriod = (period, index) => (
     <Panel
@@ -157,10 +138,10 @@ class CustomerProgram extends React.Component {
   );
 
   render() {
-    const { program } = this.state;
+    const { program, editable } = this.props;
 
     return <div>{program ? this.renderProgram(program) : "Loading"}</div>;
   }
 }
 
-export default CustomerProgram;
+export default DisplayProgram;

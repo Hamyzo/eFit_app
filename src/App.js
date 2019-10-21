@@ -9,9 +9,9 @@ import Footer from "./components/Global/Footer";
 
 // pages imports
 
-import Home from "./pages/Home/Home";
-import CustomerProgram from "./pages/CustomerProgram/CustomerProgram";
-import Customers from "./pages/Customer/Customers";
+import Home from "./pages/Common/Home";
+import CustomerProgram from "./pages/Coach/CustomerProgram";
+import Customers from "./pages/Coach/Customers";
 import Repetition from "./pages/Repetition/Repetition";
 
 const { Content } = Layout;
@@ -31,7 +31,7 @@ class App extends React.Component {
                 <Route exact path="/" component={Home} />
                 <Route
                   exact
-                  path="/customerProgram"
+                  path="/customerProgram/:customerProgramId"
                   component={CustomerProgram}
                 />
                 <Route path="/customers" component={Customers} />
