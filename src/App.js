@@ -10,12 +10,14 @@ import Header from "./components/Global/Header";
 import Footer from "./components/Global/Footer";
 import MobileFooter from "./components/Global/MobileFooter";
 
+
 // pages imports
 
 import Home from "./pages/Common/Home";
 import CustomerProgram from "./pages/Coach/CustomerProgram";
 import Customers from "./pages/Coach/Customers";
 import InfoStepper from "./pages/Customer/InfoStepper";
+import Dashboard from "./pages/Customer/Dashboard";
 
 const { Content } = Layout;
 
@@ -40,6 +42,7 @@ class App extends React.Component {
                 />
                 <Route path="/customers" component={Customers} />
                 <Route path="/infoStepper" component={InfoStepper} />
+                <Route path="/dashboard" component={Dashboard} />
               </div>
             </Router>
           </Content>
