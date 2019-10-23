@@ -15,15 +15,14 @@ import MobileFooter from "./components/Global/MobileFooter";
 import Home from "./pages/Common/Home";
 import CustomerProgram from "./pages/Coach/CustomerProgram";
 import Customers from "./pages/Coach/Customers";
-import Repetition from "./pages/Customer/Repetition";
-import RepetitionDone from "./pages/Customer/RepetitionDone";
+import InfoStepper from "./pages/Customer/InfoStepper";
 
 const { Content } = Layout;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.Component {
   state = {
-    content: <Customers />,
+    content: <Dashboard />,
     index: "2"
   };
 
@@ -34,7 +33,7 @@ class App extends React.Component {
         this.setState({ content: <InfoStepper /> });
         break;
       case "2":
-        this.setState({ content: <Customers /> });
+        this.setState({ content: <Dashboard /> });
         break;
       case "3":
         this.setState({ content: <CustomerProgram /> });
@@ -67,6 +66,7 @@ class App extends React.Component {
                   <Route path="/repetition" component={Repetition} />
                   <Route path="/repetitionDone" component={RepetitionDone} />
                   <Route path="/infoStepper" component={InfoStepper} />
+                  <Route path="/dashboard" component={Dashboard} />
                 </div>
                 </Router>
               : content }

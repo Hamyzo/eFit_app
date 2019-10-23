@@ -6,12 +6,14 @@ class CustomerProgram extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      program: null
+      program: null,
+
     };
   }
 
   componentDidMount = async () => {
     this.getProgram();
+
   };
 
   getProgram = async _ => {
@@ -27,6 +29,8 @@ class CustomerProgram extends React.Component {
       console.log(e);
     }
   };
+
+
 
   render() {
     const { program } = this.state;
