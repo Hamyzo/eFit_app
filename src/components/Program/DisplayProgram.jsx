@@ -1,6 +1,7 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
 import "./Program.css";
+import Spinner from "../Global/Spinner";
 const { Panel } = Collapse;
 
 
@@ -204,7 +205,7 @@ class DisplayProgram extends React.Component {
   render() {
     const { program, editable } = this.props;
 
-    return <div>{program ? this.renderProgram(program) : "Loading"}</div>;
+    return <div>{program ? this.renderProgram(program) : <Spinner />}</div>;
   }
 }
 

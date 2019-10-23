@@ -1,21 +1,39 @@
 import React from "react";
 
-import { Layout, Menu } from "antd";
+import { Icon, Layout, Menu } from "antd";
 
 const { Footer } = Layout;
 
-function MobileFooterComponent() {
+function MobileFooterComponent(props) {
   return (
-    <Footer className="footer">
+    <Footer className="mobileFooter">
       <Menu
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={["2"]}
+        defaultSelectedKeys={[props.index]}
         className="bottomMenu"
       >
-        <Menu.Item key="1">nav 1</Menu.Item>
-        <Menu.Item key="2">nav 2</Menu.Item>
-        <Menu.Item key="3">nav 3</Menu.Item>
+        <Menu.Item
+          onClick={() => props.handleClick("1")}
+          className="mobileMenuItem"
+          key="1"
+        >
+          <Icon style={{ fontSize: "24px" }} type="user" />
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => props.handleClick("2")}
+          className="mobileMenuItem"
+          key="2"
+        >
+          <Icon style={{ fontSize: "24px" }} type="dashboard" />
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => props.handleClick("3")}
+          className="mobileMenuItem"
+          key="3"
+        >
+          <Icon style={{ fontSize: "24px" }} type="carry-out" />
+        </Menu.Item>
       </Menu>
     </Footer>
   );
