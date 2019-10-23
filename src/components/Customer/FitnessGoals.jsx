@@ -46,7 +46,6 @@ class FitnessGoals extends React.Component {
             >
               <Meta title="General fitness" />
             </Card>
-            ,
           </Col>
           <Col span={8}>
             <Card
@@ -65,6 +64,7 @@ class FitnessGoals extends React.Component {
             </Card>
           </Col>
         </Row>
+        <div className="clearfix"></div>
       </div>
     );
   }

@@ -9,17 +9,17 @@ const { Step } = Steps;
 
 const steps = [
   {
-    title: "Step 1",
+    title: "Step 01",
     content: <PersonalInfo />,
     icon: "idcard"
   },
   {
-    title: "Step 2",
+    title: "Step 02",
     content: <FitnessGoals />,
     icon: "trophy"
   },
   {
-    title: "Step 3",
+    title: "Step 03",
     content: <CustomerPhoto />,
     icon: "camera"
   }
@@ -77,7 +77,10 @@ class InfoStepper extends React.Component {
             </Button>
           )}
           {current > 0 && (
-            <Button style={{ float: "right" }} onClick={() => this.prev()}>
+            <Button
+              style={{ float: "right", marginRight: "10px" }}
+              onClick={() => this.prev()}
+            >
               Previous
             </Button>
           )}
