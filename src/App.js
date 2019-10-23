@@ -12,7 +12,8 @@ import Footer from "./components/Global/Footer";
 import Home from "./pages/Common/Home";
 import CustomerProgram from "./pages/Coach/CustomerProgram";
 import Customers from "./pages/Coach/Customers";
-import Repetition from "./pages/Repetition/Repetition";
+import Repetition from "./pages/Customer/Repetition";
+import RepetitionDone from "./pages/Customer/RepetitionDone";
 
 const { Content } = Layout;
 
@@ -36,6 +37,7 @@ class App extends React.Component {
                 />
                 <Route path="/customers" component={Customers} />
                 <Route path="/repetition" component={Repetition} />
+                <Route path="/repetitionDone" component={RepetitionDone} />
               </div>
             </Router>
           </Content>

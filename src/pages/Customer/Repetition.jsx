@@ -1,6 +1,8 @@
 import React from "react";
-import { Card, Button, Steps, message } from "antd";
+import { Card, Button, Steps, message, Modal, Icon, Result } from "antd";
 import "./Repetition.css";
+import CongraIcon from "../../components/Global/CongraIcon";
+
 const { Meta } = Card;
 
 const { Step } = Steps;
@@ -68,7 +70,12 @@ class Repetition extends React.Component {
     super(props);
     this.state = {
       startCardShow: true,
-      currentStep: 0
+      currentStep: 0,
+
+      modalVisible: false,
+      btnEasyLoading: false,
+      btnProperLoading: false,
+      btnDiffiLoading: false,
     };
     //this.startOnClick = this.startOnClick.bind(this);
   }
@@ -80,12 +87,41 @@ class Repetition extends React.Component {
 
   nextStep() {
     const current = this.state.currentStep + 1;
-    this.setState({ currentStep: current });
+    this.setState({ currentStep: current, btnEasyLoading: false, btnProperLoading: false, btnDiffiLoading: false });
+    this.setState({btnEasyLoading: false});
+  }
+
+  showResultModal() {
+    this.setState({modalVisible: true});
+  }
+
+  handleBtn () {
+    setTimeout(()=>{
+      this.setState({modalVisible: false});
+      Modal.destroyAll();
+      this.nextStep();
+    }, 500);
+  }
+  handleEasyBtn () {
+    this.setState({btnEasyLoading: true});
+    this.handleBtn();
+  }
+  handleProperBtn(){
+    this.setState({btnProperLoading: true});
+    this.handleBtn();
+  }
+  handleDiffiBtn(){
+    this.setState({btnDiffiLoading: true});
+    this.handleBtn();
   }
 
   prevStep() {
     const current = this.state.currentStep - 1;
     this.setState({ currentStep: current });
+  }
+
+  handleDoneBtn(){
+    this.props.history.push('/repetitionDone');
   }
 
   render() {
@@ -107,8 +143,28 @@ class Repetition extends React.Component {
       </Card>
     );
 
+    const modalVisible = this.state.modalVisible;
+    //const modalWidth = "300px";
+    const modalTitle = "How was this exercise?";
+
     const stepDiv = (
       <div>
+
+        <Modal title={modalTitle}  visible={modalVisible} closable={false} maskClosable={false} footer={null} >
+          <p className={"modal-content"}>
+            <Button onClick={()=> this.handleEasyBtn()} className={"feedbackBtn"} loading={this.state.btnEasyLoading}>
+              <Icon type="check-circle" theme="twoTone" twoToneColor="#81E5D9" />
+              Easy
+            </Button>
+            <Button onClick={()=> this.handleProperBtn()} className={"feedbackBtn"} loading={this.state.btnProperLoading}>
+              <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" /> Proper
+            </Button>
+            <Button onClick={()=> this.handleDiffiBtn()} className={"feedbackBtn"} loading={this.state.btnDiffiLoading}>
+              <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37"/>Hard
+            </Button>
+          </p>
+        </Modal>
+
         <Steps current={this.state.currentStep}>
           {steps.map(item => (
             <Step key={item.title} title={item.title} />
@@ -120,14 +176,15 @@ class Repetition extends React.Component {
         </div>
         <div className="steps-action">
           {this.state.currentStep < steps.length - 1 && (
-            <Button type="primary" onClick={() => this.nextStep()}>
+            <Button type="primary" onClick={() => this.showResultModal()}>
               Done, Next!
             </Button>
           )}
           {this.state.currentStep === steps.length - 1 && (
             <Button
               type="primary"
-              onClick={() => message.success("Processing complete!")}
+              //onClick={() => message.success("Processing complete!")}
+              onClick={() => this.handleDoneBtn()}
             >
               Done
             </Button>

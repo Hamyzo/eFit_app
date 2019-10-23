@@ -15,3 +15,11 @@
 .steps-action {
     margin-top: 24px;
 }
+
+.modal-content {
+    text-align: center;
+}
+
+.feedbackBtn {
+    margin: 0 10px;
+}

@@ -17,7 +17,7 @@ class Customers extends React.Component {
   getCustomers = async () => {
     try {
       const customers = await apiServices.get("customers", "");
-      console.log("Customers", customers);
+      //console.log("Customers", customers);
       this.setState({ customersData: customers });
     } catch (e) {
       console.log(e);
