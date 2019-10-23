@@ -16,13 +16,17 @@ import Home from "./pages/Common/Home";
 import CustomerProgram from "./pages/Coach/CustomerProgram";
 import Customers from "./pages/Coach/Customers";
 import InfoStepper from "./pages/Customer/InfoStepper";
+import Repetition from "./pages/Customer/Repetition";
+import RepetitionDone from "./pages/Customer/RepetitionDone";
+import Dashboard from "./pages/Customer/Dashboard";
+
 
 const { Content } = Layout;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.Component {
   state = {
-    content: <Customers />,
+    content: <Dashboard />,
     index: "3"
   };
 
@@ -33,10 +37,10 @@ class App extends React.Component {
         this.setState({ content: <InfoStepper /> });
         break;
       case "2":
-        this.setState({ content: <CustomerProgram /> });
+        this.setState({ content: <Repetition /> });
         break;
       case "3":
-        this.setState({ content: <Customers /> });
+        this.setState({ content: <Dashboard /> });
         break;
       default:
         break;
