@@ -15,6 +15,7 @@ import MobileFooter from "./components/Global/MobileFooter";
 import Home from "./pages/Common/Home";
 import CustomerProgram from "./pages/Coach/CustomerProgram";
 import Customers from "./pages/Coach/Customers";
+import InfoStepper from "./pages/Customer/InfoStepper";
 
 const { Content } = Layout;
 
@@ -38,6 +39,7 @@ class App extends React.Component {
                   component={CustomerProgram}
                 />
                 <Route path="/customers" component={Customers} />
+                <Route path="/infoStepper" component={InfoStepper} />
               </div>
             </Router>
           </Content>
