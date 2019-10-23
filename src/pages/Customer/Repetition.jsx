@@ -1,7 +1,6 @@
 import React from "react";
-import { Card, Button, Steps, message, Modal, Icon, Result } from "antd";
+import { Card, Button, Steps, Modal, Icon, Result } from "antd";
 import "./Repetition.css";
-import CongraIcon from "../../components/Global/CongraIcon";
 
 const { Meta } = Card;
 
