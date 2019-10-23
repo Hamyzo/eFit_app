@@ -10,15 +10,18 @@ const { Step } = Steps;
 const steps = [
   {
     title: "Step 1",
-    content: <PersonalInfo />
+    content: <PersonalInfo />,
+    icon: "idcard"
   },
   {
     title: "Step 2",
-    content: <FitnessGoals />
+    content: <FitnessGoals />,
+    icon: "trophy"
   },
   {
     title: "Step 3",
-    content: <CustomerPhoto />
+    content: <CustomerPhoto />,
+    icon: "camera"
   }
 ];
 
@@ -49,7 +52,7 @@ class InfoStepper extends React.Component {
             <Step
               key={item.title}
               title={item.title}
-              icon={<Icon type="user" />}
+              icon={<Icon type={item.icon} />}
             />
           ))}
         </Steps>

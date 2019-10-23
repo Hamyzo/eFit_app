@@ -4,7 +4,6 @@ import "./Program.css";
 import Spinner from "../Global/Spinner";
 const { Panel } = Collapse;
 
-
 const columns = [
   {
     title: "Exercise",
@@ -47,67 +46,82 @@ class DisplayProgram extends React.Component {
 
   formatDate = rawDate => {
     var monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
     ];
 
     var d = new Date(rawDate);
     var day = d.getDate();
     var monthIndex = d.getMonth();
-    return day + '/' + monthNames[monthIndex];
-
-  }
-
+    return day + "/" + monthNames[monthIndex];
+  };
 
   add_days_date = (date, days) => {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
-  }
+  };
 
-  session_end_date= (session, session_start_date) => {
+  session_end_date = (session, session_start_date) => {
     var total_days = 0;
-    for(var j = 0; j < session.periods.length; j++) {
+    for (var j = 0; j < session.periods.length; j++) {
       total_days = total_days + parseInt(session.periods[j].nb_days);
     }
     return this.formatDate(this.add_days_date(session_start_date, total_days));
-}
+  };
 
-  period_end_date = (period_length, period_start_date)=> {
-    return this.formatDate(this.add_days_date(period_start_date, period_length));
-  }
+  period_end_date = (period_length, period_start_date) => {
+    return this.formatDate(
+      this.add_days_date(period_start_date, period_length)
+    );
+  };
 
   session_length = periods => {
     var length = 0;
-    for(var j = 0; j < periods.length; j++){
+    for (var j = 0; j < periods.length; j++) {
       console.log("PERIOD DAYS: " + periods[j].nb_days);
       length = length + parseInt(periods[j].nb_days);
     }
     return length;
-  }
+  };
 
-  session_start_date = (program_start_date, sessions_array, current_session_index) => {
-   var days_to_sum = 0;
-    for(var i = 0; i < current_session_index; i++) {
-        days_to_sum = days_to_sum + 1+  this.session_length(sessions_array[i].periods) + 1;
+  session_start_date = (
+    program_start_date,
+    sessions_array,
+    current_session_index
+  ) => {
+    var days_to_sum = 0;
+    for (var i = 0; i < current_session_index; i++) {
+      days_to_sum =
+        days_to_sum + 1 + this.session_length(sessions_array[i].periods) + 1;
     }
     var new_date = this.add_days_date(program_start_date, days_to_sum);
     return this.formatDate(new_date);
-  }
+  };
 
   period_start_date = (program_start_date, periods_array, period_index) => {
     var days_to_sum = 0;
     //console.log("PERIOD INDEX: "+ period_index + "SES SD: " + session_start_date)
-    for(var j = 0; j < period_index; j++){
+    for (var j = 0; j < period_index; j++) {
       days_to_sum = days_to_sum + 1 + parseInt(periods_array[j].nb_days);
     }
-    var new_date = this.add_days_date(this.session_start_date(program_start_date), days_to_sum);
-    console.log("----TOTAL: "+ days_to_sum);
+    var new_date = this.add_days_date(
+      this.session_start_date(program_start_date),
+      days_to_sum
+    );
+    console.log("----TOTAL: " + days_to_sum);
     return this.formatDate(new_date);
-  }
-
+  };
 
   renderPeriod = (period, index, start_date, periods_array) => (
     <Panel
@@ -133,7 +147,10 @@ class DisplayProgram extends React.Component {
             <Col span={6}>
               <p className="margin0">
                 <strong>End Date:</strong>
-                {this.period_end_date(period.nb_days, this.period_start_date(start_date, periods_array, index))}
+                {this.period_end_date(
+                  period.nb_days,
+                  this.period_start_date(start_date, periods_array, index)
+                )}
               </p>
             </Col>
           </Row>
@@ -167,12 +184,25 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={6}>
               <p className="margin0">
-                <strong>Start Date:</strong> {this.session_start_date(program_start_date, sessions_array, index)}
+                <strong>Start Date:</strong>{" "}
+                {this.session_start_date(
+                  program_start_date,
+                  sessions_array,
+                  index
+                )}
               </p>
             </Col>
             <Col span={6}>
               <p className="margin0">
-                <strong>End Date:</strong> {this.session_end_date(session, this.session_start_date(program_start_date, sessions_array, index))}
+                <strong>End Date:</strong>{" "}
+                {this.session_end_date(
+                  session,
+                  this.session_start_date(
+                    program_start_date,
+                    sessions_array,
+                    index
+                  )
+                )}
               </p>
             </Col>
           </Row>
@@ -182,21 +212,29 @@ class DisplayProgram extends React.Component {
     >
       <Collapse>
         {session.periods.map((period, pindex) =>
-          this.renderPeriod(period, pindex, this.session_start_date(program_start_date, sessions_array, index), session.periods)
+          this.renderPeriod(
+            period,
+            pindex,
+            this.session_start_date(program_start_date, sessions_array, index),
+            session.periods
+          )
         )}
       </Collapse>
     </Panel>
   );
 
-  renderProgram = (program) => (
+  renderProgram = program => (
     <div>
-
       <h1>{program.program.name}</h1>
-
 
       <Collapse>
         {program.sessions.map((session, index) =>
-          this.renderSession(session, index, program.creation_date, program.sessions)
+          this.renderSession(
+            session,
+            index,
+            program.creation_date,
+            program.sessions
+          )
         )}
       </Collapse>
     </div>

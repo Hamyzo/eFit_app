@@ -47,7 +47,7 @@ class PersonalInfo extends React.Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 }
+        sm: { span: 6 }
       },
       wrapperCol: {
         xs: { span: 24 },
@@ -75,16 +75,13 @@ class PersonalInfo extends React.Component {
             <h3>Personal Information:</h3>
             <div className="clearfix"></div>
             <Row>
-              <Col span={8}>
-                <Form.Item label="Title">
+              <Form.Item>
+                <Col span={12}>
                   {getFieldDecorator("radio-group")(
-                    <Radio.Group>
-                      <Radio value="M">M.</Radio>
-                      <Radio value="Ms">Ms.</Radio>
-                    </Radio.Group>
+                    <Radio.Group options={["M.", "Ms."]} />
                   )}
-                </Form.Item>
-              </Col>
+                </Col>
+              </Form.Item>
             </Row>
             <Row>
               <Col span={12}>
@@ -105,21 +102,6 @@ class PersonalInfo extends React.Component {
                           style={{ color: "rgba(0,0,0,.25)" }}
                         />
                       }
-                    />
-                  )}
-                </Form.Item>
-                <Form.Item label="Phone Number">
-                  {getFieldDecorator("phone", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please enter your phone number!"
-                      }
-                    ]
-                  })(
-                    <Input
-                      addonBefore={prefixSelector}
-                      style={{ width: "100%" }}
                     />
                   )}
                 </Form.Item>
@@ -146,6 +128,35 @@ class PersonalInfo extends React.Component {
                     />
                   )}
                 </Form.Item>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col span={12}>
+                <Form.Item label="Phone Number">
+                  {getFieldDecorator("phone", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please enter your phone number!"
+                      }
+                    ]
+                  })(
+                    <Input
+                      addonBefore={prefixSelector}
+                      style={{ width: "100%" }}
+                      suffix={
+                        <Icon
+                          type="phone"
+                          style={{ color: "rgba(0,0,0,.25)" }}
+                        />
+                      }
+                    />
+                  )}
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
                 <Form.Item label="Birth Date">
                   {getFieldDecorator("date-picker", config)(
                     <DatePicker style={{ width: "100%" }} />
@@ -160,12 +171,12 @@ class PersonalInfo extends React.Component {
             <div className="clearfix"></div>
             <Row>
               <Col span={12}>
-                <Form.Item label={<span> Street Number </span>}>
-                  {getFieldDecorator("Number", {
+                <Form.Item label={<span> Address </span>}>
+                  {getFieldDecorator("Address", {
                     rules: [
                       {
                         required: true,
-                        message: "Please enter your Number!",
+                        message: "Please enter your Address!",
                         whitespace: true
                       }
                     ]
@@ -173,47 +184,7 @@ class PersonalInfo extends React.Component {
                     <Input
                       suffix={
                         <Icon
-                          type="user"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
-                      }
-                      placeholder="Street Number"
-                    />
-                  )}
-                </Form.Item>
-                <Form.Item label={<span> Street Name </span>}>
-                  {getFieldDecorator("Street", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please enter your Street!",
-                        whitespace: true
-                      }
-                    ]
-                  })(
-                    <Input
-                      suffix={
-                        <Icon
-                          type="user"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
-                      }
-                      placeholder="Street"
-                    />
-                  )}
-                </Form.Item>
-                <Form.Item label={<span> Additional Info</span>}>
-                  {getFieldDecorator("Additional info", {
-                    rules: [
-                      {
-                        required: false
-                      }
-                    ]
-                  })(
-                    <Input
-                      suffix={
-                        <Icon
-                          type="user"
+                          type="environment"
                           style={{ color: "rgba(0,0,0,.25)" }}
                         />
                       }
@@ -223,67 +194,50 @@ class PersonalInfo extends React.Component {
               </Col>
 
               <Col span={12}>
-                <Form.Item label={<span> Post Code </span>}>
-                  {getFieldDecorator("post code", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please enter your post code!",
-                        whitespace: true
-                      }
-                    ]
-                  })(
-                    <Input
-                      suffix={
-                        <Icon
-                          type="user"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
-                      }
-                    />
-                  )}
-                </Form.Item>
-
-                <Form.Item label={<span> City </span>}>
-                  {getFieldDecorator("City", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please enter your City!",
-                        whitespace: true
-                      }
-                    ]
-                  })(
-                    <Input
-                      suffix={
-                        <Icon
-                          type="user"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
-                      }
-                    />
-                  )}
-                </Form.Item>
-                <Form.Item label={<span> State </span>}>
-                  {getFieldDecorator("State", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please enter your State!",
-                        whitespace: true
-                      }
-                    ]
-                  })(
-                    <Input
-                      suffix={
-                        <Icon
-                          type="user"
-                          style={{ color: "rgba(0,0,0,.25)" }}
-                        />
-                      }
-                    />
-                  )}
-                </Form.Item>
+                <Col span={12}>
+                  <Form.Item label={<span> Post Code </span>}>
+                    {getFieldDecorator("Zipcode", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Please enter your post code!",
+                          whitespace: true
+                        }
+                      ]
+                    })(
+                      <Input
+                        suffix={
+                          <Icon
+                            type="environment"
+                            style={{ color: "rgba(0,0,0,.25)" }}
+                          />
+                        }
+                      />
+                    )}
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item label={<span> City </span>}>
+                    {getFieldDecorator("City", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Please enter your City!",
+                          whitespace: true
+                        }
+                      ]
+                    })(
+                      <Input
+                        suffix={
+                          <Icon
+                            type="environment"
+                            style={{ color: "rgba(0,0,0,.25)" }}
+                          />
+                        }
+                      />
+                    )}
+                  </Form.Item>
+                </Col>
               </Col>
             </Row>
           </div>
