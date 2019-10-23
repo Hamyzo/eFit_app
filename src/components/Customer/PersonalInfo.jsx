@@ -76,7 +76,7 @@ class PersonalInfo extends React.Component {
             <div className="clearfix"></div>
             <Row>
               <Form.Item>
-                <Col span={12}>
+                <Col xs={24} md={6}>
                   {getFieldDecorator("radio-group")(
                     <Radio.Group options={["M.", "Ms."]} />
                   )}
@@ -195,7 +195,7 @@ class PersonalInfo extends React.Component {
 
               <Col span={12}>
                 <Col span={12}>
-                  <Form.Item label={<span> Post Code </span>}>
+                  <Form.Item label={<span> Zipcode </span>}>
                     {getFieldDecorator("Zipcode", {
                       rules: [
                         {
@@ -267,6 +267,8 @@ class PersonalInfo extends React.Component {
                     />
                   )}
                 </Form.Item>
+              </Col>
+              <Col span={12}>
                 <Form.Item label={<span> Weight </span>}>
                   {getFieldDecorator("Weight", {
                     rules: [

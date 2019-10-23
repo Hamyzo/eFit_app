@@ -74,7 +74,7 @@ class Repetition extends React.Component {
       modalVisible: false,
       btnEasyLoading: false,
       btnProperLoading: false,
-      btnDiffiLoading: false,
+      btnDiffiLoading: false
     };
     //this.startOnClick = this.startOnClick.bind(this);
   }
@@ -86,31 +86,36 @@ class Repetition extends React.Component {
 
   nextStep() {
     const current = this.state.currentStep + 1;
-    this.setState({ currentStep: current, btnEasyLoading: false, btnProperLoading: false, btnDiffiLoading: false });
-    this.setState({btnEasyLoading: false});
+    this.setState({
+      currentStep: current,
+      btnEasyLoading: false,
+      btnProperLoading: false,
+      btnDiffiLoading: false
+    });
+    this.setState({ btnEasyLoading: false });
   }
 
   showResultModal() {
-    this.setState({modalVisible: true});
+    this.setState({ modalVisible: true });
   }
 
-  handleBtn () {
-    setTimeout(()=>{
-      this.setState({modalVisible: false});
+  handleBtn() {
+    setTimeout(() => {
+      this.setState({ modalVisible: false });
       Modal.destroyAll();
       this.nextStep();
     }, 500);
   }
-  handleEasyBtn () {
-    this.setState({btnEasyLoading: true});
+  handleEasyBtn() {
+    this.setState({ btnEasyLoading: true });
     this.handleBtn();
   }
-  handleProperBtn(){
-    this.setState({btnProperLoading: true});
+  handleProperBtn() {
+    this.setState({ btnProperLoading: true });
     this.handleBtn();
   }
-  handleDiffiBtn(){
-    this.setState({btnDiffiLoading: true});
+  handleDiffiBtn() {
+    this.setState({ btnDiffiLoading: true });
     this.handleBtn();
   }
 
@@ -119,8 +124,8 @@ class Repetition extends React.Component {
     this.setState({ currentStep: current });
   }
 
-  handleDoneBtn(){
-    this.props.history.push('/repetitionDone');
+  handleDoneBtn() {
+    this.props.history.push("/repetitionDone");
   }
 
   render() {
@@ -148,18 +153,41 @@ class Repetition extends React.Component {
 
     const stepDiv = (
       <div>
-
-        <Modal title={modalTitle}  visible={modalVisible} closable={false} maskClosable={false} footer={null} >
+        <Modal
+          title={modalTitle}
+          visible={modalVisible}
+          closable={false}
+          maskClosable={false}
+          footer={null}
+        >
           <p className={"modal-content"}>
-            <Button onClick={()=> this.handleEasyBtn()} className={"feedbackBtn"} loading={this.state.btnEasyLoading}>
-              <Icon type="check-circle" theme="twoTone" twoToneColor="#81E5D9" />
+            <Button
+              onClick={() => this.handleEasyBtn()}
+              className={"feedbackBtn"}
+              loading={this.state.btnEasyLoading}
+            >
+              <Icon
+                type="check-circle"
+                theme="twoTone"
+                twoToneColor="#81E5D9"
+              />
               Easy
             </Button>
-            <Button onClick={()=> this.handleProperBtn()} className={"feedbackBtn"} loading={this.state.btnProperLoading}>
-              <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" /> Proper
+            <Button
+              onClick={() => this.handleProperBtn()}
+              className={"feedbackBtn"}
+              loading={this.state.btnProperLoading}
+            >
+              <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
+              Proper
             </Button>
-            <Button onClick={()=> this.handleDiffiBtn()} className={"feedbackBtn"} loading={this.state.btnDiffiLoading}>
-              <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37"/>Hard
+            <Button
+              onClick={() => this.handleDiffiBtn()}
+              className={"feedbackBtn"}
+              loading={this.state.btnDiffiLoading}
+            >
+              <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
+              Hard
             </Button>
           </p>
         </Modal>

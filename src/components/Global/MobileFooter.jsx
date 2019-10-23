@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Badge, Icon, Layout, Menu} from "antd";
+import { Badge, Icon, Layout, Menu } from "antd";
 
 const { Footer } = Layout;
 
