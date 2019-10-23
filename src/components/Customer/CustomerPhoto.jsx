@@ -41,7 +41,7 @@ class CustomerPhoto extends React.Component {
       wrapperCol: { span: 12 }
     };
     return (
-      <div className="container">
+      <div className="container" style={{ padding: "10px" }}>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
           <Form.Item label="Upload a Photo: ">
             {getFieldDecorator("dragger", {
