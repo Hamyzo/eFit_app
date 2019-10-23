@@ -23,7 +23,7 @@ const { Content } = Layout;
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.Component {
   state = {
-    content: <Customers />,
+    content: <Dashboard />,
     index: "2"
   };
 
@@ -34,7 +34,7 @@ class App extends React.Component {
         this.setState({ content: <InfoStepper /> });
         break;
       case "2":
-        this.setState({ content: <Customers /> });
+        this.setState({ content: <Dashboard /> });
         break;
       case "3":
         this.setState({ content: <CustomerProgram /> });
