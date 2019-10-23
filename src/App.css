@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 .App {
   text-align: center;
@@ -49,10 +49,10 @@
 }
 
 .mobileFooter {
-  position:fixed;
-  left:0;
-  bottom:0;
-  width:100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   text-align: center;
   padding: 0;
 }
@@ -74,4 +74,13 @@
   min-width: 24px;
   margin-right: 20px;
   font-size: 14.4px;
+}
+
+.header {
+  background-color: white;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }

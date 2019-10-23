@@ -6,7 +6,7 @@ const { Header } = Layout;
 
 function HeaderComponent() {
   return (
-    <Header style={{ background: "#fff", padding: 0 }}>
+    <Header className="header">
       <Col span={3} />
       <Col span={18} align="center">
         <Icon style={{ fontSize: "24px" }} type="trophy" />

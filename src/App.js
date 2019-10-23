@@ -19,6 +19,7 @@ import InfoStepper from "./pages/Customer/InfoStepper";
 import Repetition from "./pages/Customer/Repetition";
 import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
+import Messaging from "./pages/Customer/Messaging";
 
 
 const { Content } = Layout;
@@ -42,6 +43,9 @@ class App extends React.Component {
       case "3":
         this.setState({ content: <Dashboard /> });
         break;
+      case "5":
+        this.setState({ content: <Messaging /> });
+        break;
       default:
         break;
     }
@@ -53,12 +57,11 @@ class App extends React.Component {
     return (
       // eslint-disable-next-line react/jsx-filename-extension
       <Layout style={{ minHeight: "100vh" }}>
-        {windowWidth >= 576 ? <Sider /> : null}
+        {windowWidth >= 576 ? <Sider handleClick={this.handleClick} index={index} /> : null}
         <Layout>
           <Header />
-          <Content style={{ margin: "0 10px 64px 10px" }}>
-            {windowWidth >= 576
-              ? <Router>
+          <Content style={{ margin: "64px 10px 64px 10px" }}>
+            {/* <Router>
                 <div>
                   <Route exact path="/" component={Home} />
                   <Route
@@ -69,8 +72,8 @@ class App extends React.Component {
                   <Route path="/customers" component={Customers} />
                   <Route path="/infoStepper" component={InfoStepper} />
                 </div>
-                </Router>
-              : content }
+                </Router> */}
+            {content}
           </Content>
           <Footer />
           {windowWidth < 576
