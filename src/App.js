@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Sider from "./components/Global/Sider";
 import Header from "./components/Global/Header";
 import Footer from "./components/Global/Footer";
+import Dashboard from "./pages/Customer/Dashboard";
 
 // pages imports
 
@@ -21,9 +22,9 @@ class App extends React.Component {
     return (
       // eslint-disable-next-line react/jsx-filename-extension
       <Layout style={{ minHeight: "100vh" }}>
-        <Sider />
+
         <Layout>
-          <Header />
+
           <Content style={{ margin: "0 16px" }}>
             <Router>
               <div>
@@ -34,6 +35,8 @@ class App extends React.Component {
                   component={CustomerProgram}
                 />
                 <Route path="/customers" component={Customers} />
+                <Route path="/dashboard" component={Dashboard} />
+
               </div>
             </Router>
           </Content>

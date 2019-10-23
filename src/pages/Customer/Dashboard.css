@@ -1,0 +1,52 @@
+.plant {
+    margin-top: 20%;
+    margin-left: 30%;
+}
+
+.img-responsive{
+    border-radius: 50%;
+}
+
+.progress {
+    margin-top: 7%;
+    background-color: white;
+    width: 100%;
+
+}
+
+.prg_circle  {
+    margin-left: 24%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.program {
+    width: 100%;
+}
+
+.timeline {
+    margin-bottom: -5%;
+}
+.rep_button{
+    margin-top: -20%;
+}
+.days{
+    margin-top: 8%;
+}
+.cardio {
+    margin-top: 2%;
+}
+
+.icon{
+    width: 35%;
+    height: 35%;
+    background: white;
+    margin-left: 24%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+
+}
+
+
+
+
