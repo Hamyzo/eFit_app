@@ -65,5 +65,13 @@
 .mobileMenuItem {
   padding-left: 25px;
   padding-right: 15px;
-  width: 33.33%;
+  width: 20%;
+}
+
+.badge {
+  height: 24px;
+  line-height: 24px;
+  min-width: 24px;
+  margin-right: 20px;
+  font-size: 14.4px;
 }

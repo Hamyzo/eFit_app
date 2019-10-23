@@ -18,7 +18,9 @@ class CustomerProgram extends React.Component {
     try {
       const program = await apiServices.getOne(
         "customerPrograms",
-        this.props.match.params.customerProgramId,
+        this.props.match
+          ? this.props.match.params.customerProgramId
+          : "5da1f67ccf53670572677651",
         "populate=program"
       );
       console.log("Program", program);

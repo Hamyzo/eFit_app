@@ -23,7 +23,7 @@ const { Content } = Layout;
 class App extends React.Component {
   state = {
     content: <Customers />,
-    index: "2"
+    index: "3"
   };
 
   handleClick = (i) => {
@@ -33,10 +33,10 @@ class App extends React.Component {
         this.setState({ content: <InfoStepper /> });
         break;
       case "2":
-        this.setState({ content: <Customers /> });
+        this.setState({ content: <CustomerProgram /> });
         break;
       case "3":
-        this.setState({ content: <CustomerProgram /> });
+        this.setState({ content: <Customers /> });
         break;
       default:
         break;
