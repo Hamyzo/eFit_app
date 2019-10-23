@@ -10,12 +10,17 @@ import Header from "./components/Global/Header";
 import Footer from "./components/Global/Footer";
 import MobileFooter from "./components/Global/MobileFooter";
 
+
 // pages imports
 
 import Home from "./pages/Common/Home";
 import CustomerProgram from "./pages/Coach/CustomerProgram";
 import Customers from "./pages/Coach/Customers";
+import Repetition from "./pages/Customer/Repetition";
+import RepetitionDone from "./pages/Customer/RepetitionDone";
 import InfoStepper from "./pages/Customer/InfoStepper";
+import Dashboard from "./pages/Customer/Dashboard";
+
 
 const { Content } = Layout;
 
