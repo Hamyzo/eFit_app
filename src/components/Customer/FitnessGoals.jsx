@@ -1,11 +1,4 @@
 import React from "react";
-//import WeightLoss from "./img/weight-loss.jpg";
-//import MuscleBuilding from "./img/muscle-building.jpg";
-//import BodyToning from "./img/body-toning.jpg";
-//import GeneralFitness from "./img/general-fitness.jpg";
-//import Athletic from "./img/athletic.jpg";
-//import RehabFit from "./img/rehab-fit.jpg";
-//import MetabolicFit from "./img/metabolic-fit.jpg";
 import { Form, Card, Col, Row } from "antd";
 import InfoStepper from "../../pages/Customer/InfoStepper";
 
@@ -21,8 +14,7 @@ class FitnessGoals extends React.Component {
           <Col span={8}>
             <Card
               hoverable
-              style={{ width: 240 }}
-             // cover={<img alt="example" src={WeightLoss} />}
+              cover={<img alt="example" src="/img/weight-loss.jpg" />}
             >
               <Meta title="Weight loss" />
             </Card>
@@ -31,8 +23,7 @@ class FitnessGoals extends React.Component {
           <Col span={8}>
             <Card
               hoverable
-              style={{ width: 240 }}
-             // cover={<img alt="example" src={MuscleBuilding} />}
+              cover={<img alt="example" src="/img/muscle-building.jpg" />}
             >
               <Meta title="Muscle Building" />
             </Card>
@@ -40,8 +31,7 @@ class FitnessGoals extends React.Component {
           <Col span={8}>
             <Card
               hoverable
-              style={{ width: 240 }}
-              //cover={<img alt="example" src={BodyToning} />}
+              cover={<img alt="example" src="/img/body-toning.jpg" />}
             >
               <Meta title="Body Toning" />
             </Card>
@@ -52,18 +42,15 @@ class FitnessGoals extends React.Component {
           <Col span={8}>
             <Card
               hoverable
-              style={{ width: 240 }}
-             // cover={<img alt="example" src={GeneralFitness} />}
+              cover={<img alt="example" src="/img/general-fitness.jpg" />}
             >
               <Meta title="General fitness" />
             </Card>
-            ,
           </Col>
           <Col span={8}>
             <Card
               hoverable
-              style={{ width: 240 }}
-            //  cover={<img alt="example" src={Athletic} />}
+              cover={<img alt="example" src="/img/athletic.jpg" />}
             >
               <Meta title="Athletic" />
             </Card>
@@ -71,13 +58,13 @@ class FitnessGoals extends React.Component {
           <Col span={8}>
             <Card
               hoverable
-              style={{ width: 240 }}
-            //  cover={<img alt="example" src={RehabFit} />}
+              cover={<img alt="example" src="/img/rehab-fit.jpg" />}
             >
               <Meta title="Rehab fit" />
             </Card>
           </Col>
         </Row>
+        <div className="clearfix"></div>
       </div>
     );
   }

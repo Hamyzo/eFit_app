@@ -1,16 +1,22 @@
-import React from 'react';
+import React from "react";
 
-import { Layout, Icon } from 'antd';
+import { Layout, Icon, Col } from "antd";
 
 const { Header } = Layout;
 
-
 function HeaderComponent() {
   return (
-    <Header style={{ background: '#fff', padding: 0 }}>
-      <Icon />
+    <Header className="header">
+      <Col span={3} />
+      <Col span={18} align="center">
+        <Icon style={{ fontSize: "24px" }} type="trophy" />
+        <span>JD Coaching</span>
+        <Icon style={{ fontSize: "24px" }} type="trophy" />
+      </Col>
+      <Col span={3}>
+        <Icon style={{ fontSize: "24px" }} type="setting" />
+      </Col>
     </Header>
-
   );
 }
 
