@@ -17,7 +17,7 @@ class Customers extends React.Component {
   getCustomers = async () => {
     try {
       const customers = await apiServices.get("customers", "");
-      console.log("Customers", customers);
+      //console.log("Customers", customers);
       this.setState({ customersData: customers });
     } catch (e) {
       console.log(e);
@@ -27,6 +27,7 @@ class Customers extends React.Component {
   render() {
     const { customersData } = this.state;
     const profileSize = 65;
+    //const customerProgramUrl = "/CustomerProgram?_id=" + row._id;
     const columns = [
       {
         title: "Profile",
@@ -65,7 +66,9 @@ class Customers extends React.Component {
         title: "View Program",
         //fixed: "left",
         width: 100,
-        render: () => <a>program</a>
+        render: (text, row, index) => (
+          <a href={"/CustomerProgram/" + row._id}>program</a>
+        )
       }
     ];
     return (
