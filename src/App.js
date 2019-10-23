@@ -21,29 +21,57 @@ const { Content } = Layout;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.Component {
+  state = {
+    content: <Customers />,
+    index: "2"
+  };
+
+  handleClick = (i) => {
+    this.setState({ index: i });
+    switch (i) {
+      case "1":
+        this.setState({ content: <InfoStepper /> });
+        break;
+      case "2":
+        this.setState({ content: <Customers /> });
+        break;
+      case "3":
+        this.setState({ content: <CustomerProgram /> });
+        break;
+      default:
+        break;
+    }
+  };
+
   render() {
     const { windowWidth } = this.props;
+    const { content, index } = this.state;
     return (
       // eslint-disable-next-line react/jsx-filename-extension
       <Layout style={{ minHeight: "100vh" }}>
-        {windowWidth >= 768 ? <Sider /> : null}
+        {windowWidth >= 576 ? <Sider /> : null}
         <Layout>
           <Header />
-          <Content style={{ margin: "0 16px" }}>
-            <Router>
-              <div>
-                <Route exact path="/" component={Home} />
-                <Route
-                  exact
-                  path="/customerProgram/:customerProgramId"
-                  component={CustomerProgram}
-                />
-                <Route path="/customers" component={Customers} />
-                <Route path="/infoStepper" component={InfoStepper} />
-              </div>
-            </Router>
+          <Content style={{ margin: "0 10px 64px 10px" }}>
+            {windowWidth >= 576
+              ? <Router>
+                <div>
+                  <Route exact path="/" component={Home} />
+                  <Route
+                    exact
+                    path="/customerProgram/:customerProgramId"
+                    component={CustomerProgram}
+                  />
+                  <Route path="/customers" component={Customers} />
+                  <Route path="/infoStepper" component={InfoStepper} />
+                </div>
+                </Router>
+              : content }
           </Content>
-          {windowWidth >= 768 ? <Footer /> : <MobileFooter />}
+          <Footer />
+          {windowWidth < 576
+            ? <MobileFooter handleClick={this.handleClick} index={index} />
+            : null}
         </Layout>
       </Layout>
     );

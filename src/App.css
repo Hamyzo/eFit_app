@@ -1,4 +1,4 @@
-@import 'App.less';
+@import '~antd/dist/antd.css';
 
 .App {
   text-align: center;
@@ -40,5 +40,30 @@
   margin-left: 16px;
 }
 
+.pageSpinner {
+  margin: 200px;
+}
 
+.normalMargin {
+  margin: 10px 0px 20px 0px;
+}
 
+.mobileFooter {
+  position:fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  text-align: center;
+  padding: 0;
+}
+
+.bottomMenu {
+  margin: 0;
+  line-height: 64px;
+}
+
+.mobileMenuItem {
+  padding-left: 25px;
+  padding-right: 15px;
+  width: 33.33%;
+}
