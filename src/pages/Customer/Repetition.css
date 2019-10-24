@@ -1,16 +1,15 @@
 .btn-start {
-    margin-top: 22px;
+  margin-top: 22px;
 }
 
-#card, #stepDiv {
-    padding: 20px !important;
+#card,
+#stepDiv {
+  padding: 20px !important;
 }
 
-
-
-.feedback-modal{
-    top:200px;
-    /*left: -79px;*/
+.feedback-modal {
+  top: 200px;
+  /*left: -79px;*/
 }
 .modal-content{
     align: center;

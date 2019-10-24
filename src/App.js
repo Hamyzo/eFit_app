@@ -28,12 +28,17 @@ const { Content } = Layout;
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.Component {
   state = {
-    content: <InfoStepper />  ,
-    index: "1"
+    content: <Dashboard />,
+    index: "3"
   };
 
   handleClick = (i) => {
     this.setState({ index: i });
+    if (i !== "6") {
+      for (let i = 0; i < 10; i++) {
+        notification.close(`${i}`);
+      }
+    }
     switch (i) {
       case "1":
         this.setState({ content: <InfoStepper /> });
@@ -51,7 +56,7 @@ class App extends React.Component {
         this.setState({ content: <Messaging /> });
         break;
       case "6":
-        this.setState({ content: null});
+        this.setState({ content: <Notification /> });
         break;
       default:
         break;
