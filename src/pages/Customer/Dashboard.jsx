@@ -12,11 +12,11 @@ class Dashboard extends React.Component {
   renderWaterIcon = _ =>
     (
       <Row>
-        <Col span={4}>
+        <Col span={4} style={{height:'18px', width:'18px'}}>
           <img className="water_progress" src="/assets/raindrop.svg" />
         </Col>
-        <Col span={4} offset={12}>
-          Water
+        <Col span={4}>
+          <p className="progress_tags">Water</p>
         </Col>
       </Row>
 
@@ -24,22 +24,22 @@ class Dashboard extends React.Component {
   renderSunIcon = _ =>
     (
       <Row>
-        <Col span={4}>
+        <Col span={4} style={{height:'18px', width:'18px'}}>
           <img className="water_progress" src="/assets/contrast.svg" />
         </Col>
-        <Col span={4} offset={12}>
-          Sunlight
+        <Col span={4}>
+          <p className="progress_tags">Sunlight</p>
         </Col>
       </Row>
     );
   renderLevelIcon = _ =>
     (
       <Row>
-        <Col span={4}>
-          <img className="water_progress" src="/assets/objective.svg" />
+        <Col span={4} style={{height:'18px', width:'18px'}}>
+          <img className="water_progress"  src="/assets/objective.svg" />
         </Col>
-        <Col span={4} offset={12}>
-         Level
+        <Col span={4}>
+          <p className="progress_tags">Level</p>
         </Col>
       </Row>
     );

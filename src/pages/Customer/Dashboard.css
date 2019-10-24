@@ -128,11 +128,16 @@
     margin-bottom: 8.5%;
 }
 .water_progress{
-    height: 13px;
-    width: 13px;
+    height: 20px;
+    width: 20px;
 }
 .progress_bars {
     margin-top: 5%;
+}
+
+.progress_tags {
+    margin-top: 15%;
+    margin-left: 23%;
 }
 
 
