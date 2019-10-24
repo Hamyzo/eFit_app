@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, Button, Steps, Modal, Icon, Result, Col, Row } from "antd";
 import "./Repetition.css";
+import "./Customer.css";
+import RepetitionDone from "./RepetitionDone";
 
 const { Meta } = Card;
 
@@ -68,7 +70,7 @@ class Repetition extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startCardShow: true,
+      startCardShow: 1,
       currentStep: 0,
 
       modalVisible: false,
@@ -81,7 +83,7 @@ class Repetition extends React.Component {
 
   startOnClick(event) {
     console.log(this);
-    this.setState({ startCardShow: false });
+    this.setState({ startCardShow: -1 });
   }
 
   nextStep() {
@@ -125,15 +127,15 @@ class Repetition extends React.Component {
   }
 
   handleDoneBtn() {
-    this.props.history.push("/repetitionDone");
+    this.setState({startCardShow: 0});
   }
 
   render() {
 
     const startCard = (
-      <Row>
+      <Row className={"top-row"}>
       <Col span={24}>
-      <Card
+      <Card className={"wrapper"} id={"card"}
         style={{  }}
         cover={
           <img
@@ -155,8 +157,9 @@ class Repetition extends React.Component {
     const modalTitle = "How was this exercise?";
 
     const stepDiv = (
-      <div>
+      <div className={"wrapper"} id={"stepDiv"}>
         <Modal
+          className={"feedback-modal"}
           title={modalTitle}
           visible={modalVisible}
           closable={false}
@@ -195,18 +198,21 @@ class Repetition extends React.Component {
           </p>
         </Modal>
 
-        <Row>
-          <Col span={24}>
+        <Row className={"top-row"}>
+          <Col>
         <div>
-        <Steps current={this.state.currentStep}>
+        <Steps current={this.state.currentStep} direction={"vertical"}>
           {steps.map(item => (
             <Step key={item.title} title={item.title} />
           ))}
         </Steps>
         <div className="steps-content">
           {steps[this.state.currentStep].content}
+          <p></p>
+          <p></p>
           -------- Exercise Description --------
         </div>
+
         <div className="steps-action">
           {this.state.currentStep < steps.length - 1 && (
             <Button type="primary" onClick={() => this.showResultModal()}>
@@ -231,11 +237,16 @@ class Repetition extends React.Component {
       </div>
     );
 
-    if (this.state.startCardShow) {
+    const repetitionDone = <RepetitionDone/>;
+
+    if (this.state.startCardShow == 1) {
       return startCard;
-    } else {
+    } else if(this.state.startCardShow == -1){
       // else ： hide startCard
       return stepDiv;
+    }
+    else if(this.state.startCardShow == 0) {
+      return repetitionDone;
     }
   }
 }
