@@ -15,7 +15,6 @@ class RepetitionDone extends React.Component {
   componentDidMount(){
 
     message.open({
-      //icon: "./raindrop.svg",
       content: "💧 + 3",
       top: 100,
       duration: 2,
