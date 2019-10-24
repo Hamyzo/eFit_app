@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, Steps, Modal, Icon, Result } from "antd";
+import { Card, Button, Steps, Modal, Icon, Result, Col, Row } from "antd";
 import "./Repetition.css";
 
 const { Meta } = Card;
@@ -11,10 +11,10 @@ const steps = [
     title: "Exercise 1",
     content: (
       <img
+        className={"step-img"}
         alt={"Loading"}
         src={
-          "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fbien-etre.2Fsport-fitness.2Finsanity-workout-programme-fitness-41369.2F14622169-1-fre-FR.2Finsanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.2Ejpg/748x372/quality/90/crop-from/center/insanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.jpeg"
-        }
+"https://www.thetimes.co.uk/imageserver/image/methode%2Ftimes%2Fprod%2Fweb%2Fbin%2F71b65044-ce1d-11e7-b1ec-8503a5941b97.jpg?crop=4476%2C2518%2C248%2C647&resize=685"        }
       />
     )
   },
@@ -22,10 +22,10 @@ const steps = [
     title: "Exercise 2",
     content: (
       <img
+        className={"step-img"}
         alt={"Loading"}
         src={
-          "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fbien-etre.2Fsport-fitness.2Finsanity-workout-programme-fitness-41369.2F14622169-1-fre-FR.2Finsanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.2Ejpg/748x372/quality/90/crop-from/center/insanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.jpeg"
-        }
+"http://www.mariadicroce.com/wp-content/uploads/2015/02/workout-at-home.jpg"        }
       />
     )
   },
@@ -33,10 +33,10 @@ const steps = [
     title: "Exercise 3",
     content: (
       <img
+        className={"step-img"}
         alt={"Loading"}
         src={
-          "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fbien-etre.2Fsport-fitness.2Finsanity-workout-programme-fitness-41369.2F14622169-1-fre-FR.2Finsanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.2Ejpg/748x372/quality/90/crop-from/center/insanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.jpeg"
-        }
+"https://d50b62f6164e0c4a0279-11570554cb5edae3285603e6ab25c978.ssl.cf5.rackcdn.com/html_body_blocks/images/000/005/515/original/working_out_at_home_1024x1024_enf0625e2c742e37a36e857417ca769d0f.jpg?1508904721"        }
       />
     )
   },
@@ -44,10 +44,10 @@ const steps = [
     title: "Exercise 4",
     content: (
       <img
+        className={"step-img"}
         alt={"Loading"}
         src={
-          "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fbien-etre.2Fsport-fitness.2Finsanity-workout-programme-fitness-41369.2F14622169-1-fre-FR.2Finsanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.2Ejpg/748x372/quality/90/crop-from/center/insanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.jpeg"
-        }
+"http://www.yaduki.com/ss/wp-content/uploads/2018/01/Yoga-Indoors-Downward-Facing-Dog-Pose-532343318_1258x838.jpeg"        }
       />
     )
   },
@@ -55,10 +55,10 @@ const steps = [
     title: "Exercise 5",
     content: (
       <img
+        className={"step-img"}
         alt={"Loading"}
         src={
-          "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fbien-etre.2Fsport-fitness.2Finsanity-workout-programme-fitness-41369.2F14622169-1-fre-FR.2Finsanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.2Ejpg/748x372/quality/90/crop-from/center/insanity-workout-le-programme-fitness-extreme-qui-va-nous-faire-fondre.jpeg"
-        }
+"https://s3-ap-northeast-1.amazonaws.com/bhive-jp/media/yogaroom/article/4821/shutterstock_713195971.jpg"        }
       />
     )
   }
@@ -129,9 +129,12 @@ class Repetition extends React.Component {
   }
 
   render() {
+
     const startCard = (
+      <Row>
+      <Col span={24}>
       <Card
-        style={{ width: 300 }}
+        style={{  }}
         cover={
           <img
             src={
@@ -144,7 +147,7 @@ class Repetition extends React.Component {
         <Button block className="btn-start" onClick={() => this.startOnClick()}>
           START
         </Button>
-      </Card>
+      </Card></Col></Row>
     );
 
     const modalVisible = this.state.modalVisible;
@@ -192,6 +195,9 @@ class Repetition extends React.Component {
           </p>
         </Modal>
 
+        <Row>
+          <Col span={24}>
+        <div>
         <Steps current={this.state.currentStep}>
           {steps.map(item => (
             <Step key={item.title} title={item.title} />
@@ -220,8 +226,8 @@ class Repetition extends React.Component {
             <Button style={{ marginLeft: 8 }} onClick={() => this.prevStep()}>
               Previous
             </Button>
-          )}
-        </div>
+          )} </div>
+        </div></Col></Row>
       </div>
     );
 
