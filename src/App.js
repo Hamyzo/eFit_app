@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Layout } from "antd";
+import { Layout, notification } from "antd";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import windowSize from "react-window-size";
 
@@ -21,6 +21,7 @@ import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
 import Messaging from "./pages/Customer/Messaging";
 import AppointmentScheduler from "./pages/Customer/Appointment";
+import Notification from "./pages/Customer/Notification";
 
 
 const { Content } = Layout;
