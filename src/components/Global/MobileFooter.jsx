@@ -25,7 +25,7 @@ function MobileFooterComponent(props) {
           className="mobileMenuItem"
           key="2"
         >
-          <Icon style={{ fontSize: "24px" }} type="carry-out" />
+          <Icon style={{ fontSize: "24px" }} type="play-circle" />
         </Menu.Item>
         <Menu.Item
           onClick={() => props.handleClick("3")}
@@ -39,8 +39,8 @@ function MobileFooterComponent(props) {
           className="mobileMenuItem"
           key="4"
         >
-          <Badge count={3} overflowCount={9}>
-            <Icon style={{ fontSize: "24px" }} type="bell" />
+          <Badge>
+            <Icon style={{ fontSize: "24px" }} type="carry-out" />
           </Badge>
         </Menu.Item>
         <Menu.Item

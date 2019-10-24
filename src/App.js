@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Layout } from "antd";
+import { Layout, notification } from "antd";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import windowSize from "react-window-size";
 
@@ -20,6 +20,7 @@ import Repetition from "./pages/Customer/Repetition";
 import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
 import Messaging from "./pages/Customer/Messaging";
+import Notification from "./pages/Customer/Notification";
 
 
 const { Content } = Layout;
@@ -33,6 +34,11 @@ class App extends React.Component {
 
   handleClick = (i) => {
     this.setState({ index: i });
+    if (i !== "6") {
+      for (let i = 0; i < 10; i++) {
+        notification.close(`${i}`);
+      }
+    }
     switch (i) {
       case "1":
         this.setState({ content: <InfoStepper /> });
@@ -43,8 +49,14 @@ class App extends React.Component {
       case "3":
         this.setState({ content: <Dashboard /> });
         break;
+      case "4":
+        this.setState({ content: null });
+        break;
       case "5":
         this.setState({ content: <Messaging /> });
+        break;
+      case "6":
+        this.setState({ content: <Notification /> });
         break;
       default:
         break;
@@ -59,7 +71,7 @@ class App extends React.Component {
       <Layout style={{ minHeight: "100vh" }}>
         {windowWidth >= 576 ? <Sider handleClick={this.handleClick} index={index} /> : null}
         <Layout>
-          <Header />
+          <Header handleClick={this.handleClick} index={index} />
           <Content style={{ margin: "64px 10px 64px 10px" }}>
             {/* <Router>
                 <div>
