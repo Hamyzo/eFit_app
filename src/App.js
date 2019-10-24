@@ -20,6 +20,8 @@ import Repetition from "./pages/Customer/Repetition";
 import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
 import Messaging from "./pages/Customer/Messaging";
+import AppointmentScheduler from "./pages/Customer/Appointment";
+
 
 
 const { Content } = Layout;
@@ -45,6 +47,9 @@ class App extends React.Component {
         break;
       case "5":
         this.setState({ content: <Messaging /> });
+        break;
+      case "4":
+        this.setState({ content: <AppointmentScheduler /> });
         break;
       default:
         break;
