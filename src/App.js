@@ -20,6 +20,7 @@ import Repetition from "./pages/Customer/Repetition";
 import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
 import Messaging from "./pages/Customer/Messaging";
+import Notification from "./pages/Customer/Notification";
 
 
 const { Content } = Layout;
@@ -50,7 +51,7 @@ class App extends React.Component {
         this.setState({ content: <Messaging /> });
         break;
       case "6":
-        this.setState({ content: null});
+        this.setState({ content: <Notification /> });
         break;
       default:
         break;
