@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Menu, Icon, Badge } from "antd";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -29,55 +29,30 @@ class SiderComponent extends React.Component {
             100
           )}
         </div>
-        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
-          <Menu.Item key="1">
-            <Icon type="pie-chart" />
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={[this.props.index]}
+          mode="inline"
+        >
+          <Menu.Item onClick={() => this.props.handleClick("1")} key="1">
+            <Icon type="user" />
+            <span>My account</span>
+          </Menu.Item>
+          <Menu.Item onClick={() => this.props.handleClick("2")} key="2">
+            <Icon type="carry-out" />
+            <span>My program</span>
+          </Menu.Item>
+          <Menu.Item onClick={() => this.props.handleClick("3")} key="3">
+            <Icon type="dashboard" />
             <span>Dashboard</span>
           </Menu.Item>
-          <SubMenu
-            key="subPrograms"
-            title={
-              <span>
-                <Icon type="desktop" />
-                <span>My Programs</span>
-              </span>
-            }
-          >
-            <Menu.Item key="11">Stamina Pro</Menu.Item>
-            <Menu.Item key="12">Lose up to 40lb in 2 months</Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="sub1"
-            title={
-              <span>
-                <Icon type="user" />
-                <span>My Coaches</span>
-              </span>
-            }
-          >
-            <Menu.Item key="3">Tom</Menu.Item>
-            <Menu.Item key="4">Bill</Menu.Item>
-            <Menu.Item key="5">Alex</Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="sub2"
-            title={
-              <span>
-                <Icon type="team" />
-                <span>My Teams</span>
-              </span>
-            }
-          >
-            <Menu.Item key="6">Team 1</Menu.Item>
-            <Menu.Item key="8">Team 2</Menu.Item>
-          </SubMenu>
-          <Menu.Item key="8">
-            <Icon type="team" />
-            <span>My Customers</span>
+          <Menu.Item onClick={() => this.props.handleClick("4")} key="4">
+            <Icon type="bell" />
+            <span>Notifications</span>
           </Menu.Item>
-          <Menu.Item key="9">
-            <Icon type="file" />
-            <span>File</span>
+          <Menu.Item onClick={() => this.props.handleClick("5")} key="5">
+            <Icon type="message" />
+            <span>Messages</span>
           </Menu.Item>
         </Menu>
       </Sider>

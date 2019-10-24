@@ -1,0 +1,155 @@
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css";
+
+.wrapperMessaging {
+  height: 100%;
+  min-height: 700px;
+  background: #fff;
+  margin: 0 -10px -20px -10px;
+  padding-bottom: 1px;
+  padding-top: 1px;
+  margin-top: 64px;
+}
+
+.container {
+  max-width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+img {
+  max-width: 100%;
+}
+
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 60%;
+  margin-bottom: 10px;
+}
+.received_msg p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #646464;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+}
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.received_withd_msg {
+  width: 80%;
+}
+.mesgs {
+  width: 100%;
+}
+
+.sent_msg p {
+  background: #40ba34 none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0;
+  color: #fff;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+}
+
+.sent_msg {
+  overflow: hidden;
+  margin: 0 10px 10px 10px;
+  float: right;
+  width: 60%;
+}
+.type_msg input {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 48px;
+  width: 100%;
+}
+
+.type_msg {
+  border-top: 1px solid #c4c4c4;
+  background-color: white;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 0 0 0 5px;
+  margin-bottom: 64px;
+}
+.msg_send_btn {
+  background: #40ba34 none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  width: 33px;
+}
+.msg_history {
+  height: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  overflow-y: auto;
+}
+
+.top_spac {
+  margin: 20px 0 0;
+}
+
+.recent_heading {
+  float: left;
+  width: 50%;
+}
+.srch_bar {
+  display: inline-block;
+  text-align: right;
+  width: 50%;
+}
+.headind_srch {
+  border-top: 1px solid #c4c4c4;
+  position: fixed;
+  top: 64px;
+  padding: 10px 29px 10px 20px;
+  overflow: hidden;
+  border-bottom: 1px solid #c4c4c4;
+  background-color: white;
+}
+
+.recent_heading h4 {
+  color: #40ba34;
+  font-size: 21px;
+  margin: auto;
+}
+
+.srch_bar input {
+  border: 1px solid #cdcdcd;
+  border-width: 0 0 1px 0;
+  width: 80%;
+  padding: 2px 0 4px 6px;
+  background: none;
+}
+.srch_bar .input-group-addon button {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding: 0;
+  color: #707070;
+  font-size: 18px;
+}
+.srch_bar .input-group-addon {
+  margin: 0 0 0 -27px;
+}

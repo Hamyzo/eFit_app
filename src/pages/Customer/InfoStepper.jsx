@@ -9,16 +9,19 @@ const { Step } = Steps;
 
 const steps = [
   {
-    title: "Step 1",
-    content: <PersonalInfo />
+    title: "Step 01",
+    content: <PersonalInfo />,
+    icon: "idcard"
   },
   {
-    title: "Step 2",
-    content: <FitnessGoals />
+    title: "Step 02",
+    content: <FitnessGoals />,
+    icon: "trophy"
   },
   {
-    title: "Step 3",
-    content: <CustomerPhoto />
+    title: "Step 03",
+    content: <CustomerPhoto />,
+    icon: "camera"
   }
 ];
 
@@ -49,27 +52,35 @@ class InfoStepper extends React.Component {
             <Step
               key={item.title}
               title={item.title}
-              icon={<Icon type="user" />}
+              icon={<Icon type={item.icon} />}
             />
           ))}
         </Steps>
-        <div className="steps-content">{steps[current].content}</div>
+        <div className="steps-pers-content">{steps[current].content}</div>
         <div className="steps-action">
           {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => this.next()}>
+            <Button
+              type="primary"
+              style={{ float: "right" }}
+              onClick={() => this.next()}
+            >
               Next
             </Button>
           )}
           {current === steps.length - 1 && (
             <Button
               type="primary"
+              style={{ float: "right" }}
               onClick={() => message.success("Processing complete!")}
             >
               Done
             </Button>
           )}
           {current > 0 && (
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+            <Button
+              style={{ float: "right", marginRight: "10px" }}
+              onClick={() => this.prev()}
+            >
               Previous
             </Button>
           )}

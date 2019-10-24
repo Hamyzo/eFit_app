@@ -3,7 +3,6 @@ import { Result, Icon, message} from "antd";
 import "./RepetitionDone.css";
 //import CongraIcon from "../../components/Global/CongraIcon";
 
-
 class RepetitionDone extends React.Component {
   constructor(props) {
     super(props);
