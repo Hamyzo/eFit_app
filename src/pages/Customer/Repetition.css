@@ -12,3 +12,10 @@
     top:200px;
     /*left: -79px;*/
 }
+.modal-content{
+    align: center;
+}
+
+.hr {
+    color: #43978D;
+}

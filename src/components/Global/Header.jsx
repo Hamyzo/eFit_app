@@ -14,7 +14,7 @@ function HeaderComponent(props) {
       </Col>
       <Col span={18} align="center">
 
-        <span>JD Coaching</span>
+        <span><img src="/assets/96960342-6d75-4269-a814-a7425e62c057.jpg" height={"60px"}/></span>
 
       </Col>
       <Col span={3}>

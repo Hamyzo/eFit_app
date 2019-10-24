@@ -20,6 +20,7 @@ import Repetition from "./pages/Customer/Repetition";
 import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
 import Messaging from "./pages/Customer/Messaging";
+import AppointmentScheduler from "./pages/Customer/Appointment";
 
 
 const { Content } = Layout;
@@ -27,8 +28,8 @@ const { Content } = Layout;
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.Component {
   state = {
-    content: <Dashboard />,
-    index: "3"
+    content: <InfoStepper />  ,
+    index: "1"
   };
 
   handleClick = (i) => {
@@ -44,7 +45,7 @@ class App extends React.Component {
         this.setState({ content: <Dashboard /> });
         break;
       case "4":
-        this.setState({ content: null });
+        this.setState({ content: <AppointmentScheduler />});
         break;
       case "5":
         this.setState({ content: <Messaging /> });

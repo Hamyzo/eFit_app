@@ -1,6 +1,7 @@
 import React from "react";
 import { Steps, Button, message, Icon } from "antd";
 import "./Customer.css";
+
 import PersonalInfo from "../../components/Customer/PersonalInfo";
 import CustomerPhoto from "../../components/Customer/CustomerPhoto";
 import FitnessGoals from "../../components/Customer/FitnessGoals";
@@ -46,16 +47,18 @@ class InfoStepper extends React.Component {
   render() {
     const { current } = this.state;
     return (
-      <div className="wrapper">
-        <Steps current={current}>
+      <div >
+        <Steps className="steps" size= "small" current={current}>
           {steps.map(item => (
             <Step
               key={item.title}
               title={item.title}
-              icon={<Icon type={item.icon} />}
+              /*icon={<Icon type={item.icon} />}*/
             />
           ))}
         </Steps>
+      <div className="wrapper">
+
         <div className="steps-pers-content">{steps[current].content}</div>
         <div className="steps-action">
           {current < steps.length - 1 && (
@@ -85,6 +88,7 @@ class InfoStepper extends React.Component {
             </Button>
           )}
         </div>
+      </div>
       </div>
     );
   }
