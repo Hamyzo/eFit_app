@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Layout } from "antd";
+import { Layout, notification } from "antd";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import windowSize from "react-window-size";
 
@@ -34,6 +34,11 @@ class App extends React.Component {
 
   handleClick = (i) => {
     this.setState({ index: i });
+    if (i !== "6") {
+      for (let i = 0; i < 10; i++) {
+        notification.close(`${i}`);
+      }
+    }
     switch (i) {
       case "1":
         this.setState({ content: <InfoStepper /> });

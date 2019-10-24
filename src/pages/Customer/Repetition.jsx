@@ -179,34 +179,46 @@ class Repetition extends React.Component {
           footer={null}
         >
           <p className={"modal-content"}>
-            <Button
-              onClick={() => this.handleEasyBtn()}
-              className={"feedbackBtn"}
-              loading={this.state.btnEasyLoading}
-            >
-              <Icon
-                type="check-circle"
-                theme="twoTone"
-                twoToneColor="#81E5D9"
-              />
-              Easy
-            </Button>
-            <Button
-              onClick={() => this.handleProperBtn()}
-              className={"feedbackBtn"}
-              loading={this.state.btnProperLoading}
-            >
-              <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
-              Proper
-            </Button>
-            <Button
-              onClick={() => this.handleDiffiBtn()}
-              className={"feedbackBtn"}
-              loading={this.state.btnDiffiLoading}
-            >
-              <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
-              Hard
-            </Button>
+            <Row gutter={[0, 16]}>
+              <Col align="center" span={24}>
+                <Button
+                  onClick={() => this.handleEasyBtn()}
+                  className={"feedbackBtn"}
+                  loading={this.state.btnEasyLoading}
+                >
+                  <Icon
+                    type="check-circle"
+                    theme="twoTone"
+                    twoToneColor="#81E5D9"
+                  />
+                  Easy
+                </Button>
+              </Col>
+            </Row>
+            <Row gutter={[0, 16]}>
+              <Col align="center" span={24}>
+                <Button
+                  onClick={() => this.handleProperBtn()}
+                  className={"feedbackBtn"}
+                  loading={this.state.btnProperLoading}
+                >
+                  <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
+                  Proper
+                </Button>
+              </Col>
+            </Row>
+            <Row gutter={[0, 16]}>
+              <Col align="center" span={24}>
+                <Button
+                  onClick={() => this.handleDiffiBtn()}
+                  className={"feedbackBtn"}
+                  loading={this.state.btnDiffiLoading}
+                >
+                  <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
+                  Hard
+                </Button>
+              </Col>
+            </Row>
           </p>
         </Modal>
 

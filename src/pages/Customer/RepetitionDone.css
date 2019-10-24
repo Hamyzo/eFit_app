@@ -1,18 +1,18 @@
-.welldone-img{
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    -o-box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    border-radius: 10px;
+.welldone-img {
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
 }
 
 .content {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .finished-text {
-    font-size: 27px;
-    margin-top: 25%;
+  font-size: 27px;
+  margin-top: 25%;
 }
