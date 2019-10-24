@@ -43,8 +43,14 @@ class App extends React.Component {
       case "3":
         this.setState({ content: <Dashboard /> });
         break;
+      case "4":
+        this.setState({ content: null });
+        break;
       case "5":
         this.setState({ content: <Messaging /> });
+        break;
+      case "6":
+        this.setState({ content: null});
         break;
       default:
         break;
@@ -59,7 +65,7 @@ class App extends React.Component {
       <Layout style={{ minHeight: "100vh" }}>
         {windowWidth >= 576 ? <Sider handleClick={this.handleClick} index={index} /> : null}
         <Layout>
-          <Header />
+          <Header handleClick={this.handleClick} index={index} />
           <Content style={{ margin: "64px 10px 64px 10px" }}>
             {/* <Router>
                 <div>
