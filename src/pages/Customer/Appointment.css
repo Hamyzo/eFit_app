@@ -1,7 +1,7 @@
 .date {
     margin-top: 4%;
     padding-top: 5%;
-    padding-left: 30%;
+
     padding-bottom: 5%;
     background-color: white;
     width: 100%;
@@ -14,7 +14,7 @@
 }
 
 .datePicker{
-    padding-left: 3%;
+
 }
 .timeslots {
     margin-top: 3%;

@@ -1,5 +1,5 @@
 import React from "react";
-import { DatePicker, Table } from 'antd';
+import { Col, DatePicker, Row, Table } from "antd";
 import "./Appointment.css";
 
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
@@ -68,10 +68,12 @@ class AppointmentScheduler extends React.Component {
   render() {
     return (
       <div>
-        <div className="date">
+        <Row className="date">
+          <Col span={24} align="center">
           <h1> Book your next appointment: </h1>
           <DatePicker className="datePicker" onChange={onChange} />
-        </div>
+          </Col>
+        </Row>
         <h1 className="timeslots">Available Time Slots:</h1>
         <div className="time">
         <Table columns={columns} dataSource={data} pagination={false} />
