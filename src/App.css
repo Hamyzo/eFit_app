@@ -24407,6 +24407,7 @@ div.ant-typography-edit-content {
   width: 100%;
   text-align: center;
   padding: 0;
+  z-index: 10000;
 }
 
 .bottomMenu {
