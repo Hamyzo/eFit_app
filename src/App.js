@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 
-import { Layout, notification } from "antd";
+import { Layout } from "antd";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import windowSize from "react-window-size";
 
@@ -20,7 +20,6 @@ import Repetition from "./pages/Customer/Repetition";
 import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
 import Messaging from "./pages/Customer/Messaging";
-import Notification from "./pages/Customer/Notification";
 
 
 const { Content } = Layout;
@@ -34,11 +33,6 @@ class App extends React.Component {
 
   handleClick = (i) => {
     this.setState({ index: i });
-    if (i !== "6") {
-      for (let i = 0; i < 10; i++) {
-        notification.close(`${i}`);
-      }
-    }
     switch (i) {
       case "1":
         this.setState({ content: <InfoStepper /> });
@@ -56,7 +50,7 @@ class App extends React.Component {
         this.setState({ content: <Messaging /> });
         break;
       case "6":
-        this.setState({ content: <Notification /> });
+        this.setState({ content: null});
         break;
       default:
         break;

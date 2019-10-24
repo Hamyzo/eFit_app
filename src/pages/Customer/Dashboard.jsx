@@ -10,7 +10,7 @@ class Dashboard extends React.Component {
     this.state = {};
   }
   renderWaterIcon = _ => (
-    <Row>
+    <Row >
       <Col span={4} style={{ height: "18px", width: "18px" }}>
         <img className="water_progress" src="/assets/raindrop.svg" />
       </Col>
@@ -101,8 +101,8 @@ class Dashboard extends React.Component {
               <img className="one" src="/assets/one.svg" />
             </Col>
             <Col span={10}>
-              <h3 className="daysSLW">Days since last workout</h3>
-              <p className="daysSLWmessage">No more than 3 days!</p>
+              <h3 className="daysSLW" style={{fontSize:'105%'}} >Days since last workout</h3>
+              <p className="daysSLWmessage" style={{fontSize:'90%'}}>No more than 3 days!</p>
             </Col>
             <Col span={6}>
               <Row className="plantwater">
@@ -125,8 +125,8 @@ class Dashboard extends React.Component {
               <img className="one" src="/assets/pulse.svg" />
             </Col>
             <Col span={10}>
-              <h3 className="daysSLW">Cardio Fitness</h3>
-              <p className="daysSLWmessage"> Your current score: 50 </p>
+              <h3 className="daysSLW" style={{fontSize:'105%'}}>Cardio Fitness</h3>
+              <p className="daysSLWmessage" style={{fontSize:'90%'}}> Your current score: 50 </p>
             </Col>
             <Col span={6}>
               <Row className="plantwater">
@@ -153,7 +153,7 @@ class Dashboard extends React.Component {
             <Timeline.Item color="green">
               <Row>
                 <Col span={6}>
-                  <h3>Period 1 </h3>
+                  <h3 style={{fontSize:'110%'}}>Period 1 </h3>
                 </Col>
                 <Col span={6} offset={12}>
                   {" "}
@@ -164,7 +164,7 @@ class Dashboard extends React.Component {
             <Timeline.Item color="green">
               <Row>
                 <Col span={6}>
-                  <h3>Period 2 </h3>
+                  <h3 style={{fontSize:'110%'}}>Period 2 </h3>
                 </Col>
                 <Col span={6} offset={12}>
                   {" "}
@@ -176,7 +176,7 @@ class Dashboard extends React.Component {
               {" "}
               <Row>
                 <Col span={6}>
-                  <h3>Period 3</h3>
+                  <h3 style={{fontSize:'110%'}}>Period 3</h3>
                 </Col>
                 <Col span={6} offset={12}>
                   {" "}
