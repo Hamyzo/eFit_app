@@ -25,14 +25,20 @@ function MobileFooterComponent(props) {
           className="mobileMenuItem"
           key="2"
         >
-          <Icon style={{ fontSize: "24px", color: "#fafafa" }} type="play-circle" />
+          <Icon
+            style={{ fontSize: "24px", color: "#fafafa" }}
+            type="play-circle"
+          />
         </Menu.Item>
         <Menu.Item
           onClick={() => props.handleClick("3")}
           className="mobileMenuItem"
           key="3"
         >
-          <Icon style={{ fontSize: "24px", color: "#fafafa" }} type="dashboard" />
+          <Icon
+            style={{ fontSize: "24px", color: "#fafafa" }}
+            type="dashboard"
+          />
         </Menu.Item>
         <Menu.Item
           onClick={() => props.handleClick("4")}
@@ -40,7 +46,10 @@ function MobileFooterComponent(props) {
           key="4"
         >
           <Badge>
-            <Icon style={{ fontSize: "24px", color: "#fafafa" }} type="carry-out" />
+            <Icon
+              style={{ fontSize: "24px", color: "#fafafa" }}
+              type="carry-out"
+            />
           </Badge>
         </Menu.Item>
         <Menu.Item
@@ -48,7 +57,11 @@ function MobileFooterComponent(props) {
           className="mobileMenuItem"
           key="5"
         >
-          <Badge count={7} overflowCount={9}  style={{backgroundColor:"#D46C4E"}} >
+          <Badge
+            count={7}
+            overflowCount={9}
+            style={{ backgroundColor: "#D46C4E" }}
+          >
             <Icon style={{ fontSize: "24px", color: "white" }} type="message" />
           </Badge>
         </Menu.Item>
