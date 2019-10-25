@@ -20,6 +20,7 @@ import Repetition from "./pages/Customer/Repetition";
 import RepetitionDone from "./pages/Customer/RepetitionDone";
 import Dashboard from "./pages/Customer/Dashboard";
 import Messaging from "./pages/Customer/Messaging";
+import AppointmentScheduler from "./pages/Customer/Appointment";
 import Notification from "./pages/Customer/Notification";
 
 
@@ -50,7 +51,7 @@ class App extends React.Component {
         this.setState({ content: <Dashboard /> });
         break;
       case "4":
-        this.setState({ content: null });
+        this.setState({ content: <AppointmentScheduler />});
         break;
       case "5":
         this.setState({ content: <Messaging /> });

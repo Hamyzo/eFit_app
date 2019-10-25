@@ -8,6 +8,7 @@
   padding-bottom: 1px;
   padding-top: 1px;
   margin-top: 64px;
+
 }
 
 .container {
@@ -16,6 +17,11 @@
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.headind_srch{
+
+
 }
 
 img {
@@ -28,6 +34,7 @@ img {
   vertical-align: top;
   width: 60%;
   margin-bottom: 10px;
+
 }
 .received_msg p {
   background: #ebebeb none repeat scroll 0 0;
@@ -52,7 +59,7 @@ img {
 }
 
 .sent_msg p {
-  background: #40ba34 none repeat scroll 0 0;
+  background: #43978D none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
   margin: 0;
@@ -74,6 +81,11 @@ img {
   font-size: 15px;
   min-height: 48px;
   width: 100%;
+  box-shadow:  0 0 4px  rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 0 4px  rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0 0 7px  rgba(0,0,0,0.2);
+  -o-box-shadow: 0 0 10px  rgba(0,0,0,0.2);
+  border-radius: 5px;
 }
 
 .type_msg {
@@ -88,7 +100,7 @@ img {
   margin-bottom: 64px;
 }
 .msg_send_btn {
-  background: #40ba34 none repeat scroll 0 0;
+  background: #43978D none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;
   color: #fff;
@@ -99,6 +111,8 @@ img {
   right: 0;
   top: 11px;
   width: 33px;
+  margin-right: 3%;
+  margin-bottom: 3%;
 }
 .msg_history {
   height: 100%;
@@ -119,19 +133,27 @@ img {
   display: inline-block;
   text-align: right;
   width: 50%;
+  margin-top: 2%;
+
 }
 .headind_srch {
   border-top: 1px solid #c4c4c4;
+
   position: fixed;
   top: 64px;
-  padding: 10px 29px 10px 20px;
+  padding: 10px 29px 10px 30px;
   overflow: hidden;
   border-bottom: 1px solid #c4c4c4;
-  background-color: white;
+  width: 100%;
+  background-color: #264D59;
+  box-shadow:  0 0 4px  rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 0 4px  rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0 0 7px  rgba(0,0,0,0.2);
+  -o-box-shadow: 0 0 10px  rgba(0,0,0,0.2);
 }
 
 .recent_heading h4 {
-  color: #40ba34;
+  color: #ededed;
   font-size: 21px;
   margin: auto;
 }

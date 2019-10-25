@@ -85,7 +85,7 @@ class PersonalInfo extends React.Component {
             </Row>
             <Row>
               <Col span={12}>
-                <Form.Item label={<span> First Name </span>}>
+                <Form.Item >
                   {getFieldDecorator("first name", {
                     rules: [
                       {
@@ -96,10 +96,12 @@ class PersonalInfo extends React.Component {
                     ]
                   })(
                     <Input
+                      placeholder="First Name"
                       suffix={
                         <Icon
                           type="user"
                           style={{ color: "rgba(0,0,0,.25)" }}
+
                         />
                       }
                     />
@@ -108,7 +110,7 @@ class PersonalInfo extends React.Component {
               </Col>
 
               <Col span={12}>
-                <Form.Item label={<span> Last Name </span>}>
+                <Form.Item >
                   {getFieldDecorator("first name", {
                     rules: [
                       {
@@ -119,6 +121,7 @@ class PersonalInfo extends React.Component {
                     ]
                   })(
                     <Input
+                      placeholder="Second Name"
                       suffix={
                         <Icon
                           type="user"
@@ -134,7 +137,7 @@ class PersonalInfo extends React.Component {
 
             <Row>
               <Col span={12}>
-                <Form.Item label="Phone Number">
+                <Form.Item>
                   {getFieldDecorator("phone", {
                     rules: [
                       {
@@ -144,6 +147,7 @@ class PersonalInfo extends React.Component {
                     ]
                   })(
                     <Input
+                      placeholder="Phone Number"
                       addonBefore={prefixSelector}
                       style={{ width: "100%" }}
                       suffix={
@@ -158,9 +162,10 @@ class PersonalInfo extends React.Component {
               </Col>
 
               <Col span={12}>
-                <Form.Item label="Birth Date">
+                <Form.Item >
                   {getFieldDecorator("date-picker", config)(
-                    <DatePicker style={{ width: "100%" }} />
+                    <DatePicker placeholder="Date of Birth"
+                                style={{ width: "100%" }} />
                   )}
                 </Form.Item>
               </Col>
@@ -172,7 +177,7 @@ class PersonalInfo extends React.Component {
             <div className="clearfix"></div>
             <Row>
               <Col span={12}>
-                <Form.Item label={<span> Address </span>}>
+                <Form.Item >
                   {getFieldDecorator("Address", {
                     rules: [
                       {
@@ -183,6 +188,7 @@ class PersonalInfo extends React.Component {
                     ]
                   })(
                     <Input
+                      placeholder="e.g. 34 Rue Matabiau"
                       suffix={
                         <Icon
                           type="environment"
@@ -196,7 +202,23 @@ class PersonalInfo extends React.Component {
 
               <Col span={12}>
                 <Col span={12}>
-                  <Form.Item label={<span> Zipcode </span>}>
+                  <Input
+                    type="text"
+                    placeholder="Zip Code"
+                    value=''
+                    style={{ width: '65%', marginRight: '3%' }}
+                  />
+                  <Select
+                    placeholder="City"
+                    value=''
+
+                    style={{ width: '32%' }}
+
+                  >
+                    <Option value="rmb">Toulouse</Option>
+                    <Option value="dollar">Paris</Option>
+                  </Select>
+                  {/*<Form.Item label={<span> Zipcode </span>}>
                     {getFieldDecorator("Zipcode", {
                       rules: [
                         {
@@ -237,18 +259,18 @@ class PersonalInfo extends React.Component {
                         }
                       />
                     )}
-                  </Form.Item>
+                  </Form.Item>*/}
                 </Col>
               </Col>
             </Row>
           </div>
 
           <div id="bodyMeasures">
-            <h3>Body Measures:</h3>
+            <h3 style={{marginTop:'7%'}}>Body Measures:</h3>
             <div className="clearfix"></div>
             <Row>
-              <Col span={12}>
-                <Form.Item label={<span> Height </span>}>
+              <Col span={8}  offset={4}>
+                <Form.Item >
                   {getFieldDecorator("Height", {
                     rules: [
                       {
@@ -259,6 +281,7 @@ class PersonalInfo extends React.Component {
                     ]
                   })(
                     <Input
+                      placeholder="Height (cm)"
                       suffix={
                         <Icon
                           type="user"
@@ -269,8 +292,8 @@ class PersonalInfo extends React.Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item label={<span> Weight </span>}>
+              <Col span={8}>
+                <Form.Item >
                   {getFieldDecorator("Weight", {
                     rules: [
                       {
@@ -281,6 +304,7 @@ class PersonalInfo extends React.Component {
                     ]
                   })(
                     <Input
+                      placeholder="Weight (kg)"
                       suffix={
                         <Icon
                           type="user"
