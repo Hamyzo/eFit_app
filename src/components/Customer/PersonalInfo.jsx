@@ -123,6 +123,7 @@ class PersonalInfo extends React.Component {
                         <Icon
                           type="user"
                           style={{ color: "rgba(0,0,0,.25)" }}
+                          placeholder="first name"
                         />
                       }
                     />
