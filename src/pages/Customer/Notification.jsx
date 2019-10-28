@@ -61,7 +61,8 @@ class Notification extends React.Component {
   }
 
   componentDidMount = () => {
-    this.state.notifications.forEach((notif, i) => {
+    const { notifications } = this.state;
+    notifications.forEach((notif, i) => {
       setTimeout(() => {
         notification.open({
           message: notif.message,
