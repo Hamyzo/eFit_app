@@ -47,8 +47,8 @@ class InfoStepper extends React.Component {
   render() {
     const { current } = this.state;
     return (
-      <div >
-        <Steps className="steps" size= "small" current={current}>
+      <div>
+        <Steps className="steps" size="small" current={current}>
           {steps.map(item => (
             <Step
               key={item.title}
@@ -57,38 +57,37 @@ class InfoStepper extends React.Component {
             />
           ))}
         </Steps>
-      <div className="wrapper">
-
-        <div className="steps-pers-content">{steps[current].content}</div>
-        <div className="steps-action">
-          {current < steps.length - 1 && (
-            <Button
-              type="primary"
-              style={{ float: "right" }}
-              onClick={() => this.next()}
-            >
-              Next
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button
-              type="primary"
-              style={{ float: "right" }}
-              onClick={() => message.success("Processing complete!")}
-            >
-              Done
-            </Button>
-          )}
-          {current > 0 && (
-            <Button
-              style={{ float: "right", marginRight: "10px" }}
-              onClick={() => this.prev()}
-            >
-              Previous
-            </Button>
-          )}
+        <div className="wrapper">
+          <div className="steps-pers-content">{steps[current].content}</div>
+          <div className="steps-action">
+            {current < steps.length - 1 && (
+              <Button
+                type="primary"
+                style={{ float: "right" }}
+                onClick={() => this.next()}
+              >
+                Next
+              </Button>
+            )}
+            {current === steps.length - 1 && (
+              <Button
+                type="primary"
+                style={{ float: "right" }}
+                onClick={() => message.success("Processing complete!")}
+              >
+                Done
+              </Button>
+            )}
+            {current > 0 && (
+              <Button
+                style={{ float: "right", marginRight: "10px" }}
+                onClick={() => this.prev()}
+              >
+                Previous
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
       </div>
     );
   }

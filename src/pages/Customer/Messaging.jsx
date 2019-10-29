@@ -36,16 +36,18 @@ class Messaging extends React.Component {
                 <img
                   src="https://ptetutorials.com/images/user-profile.png"
                   alt="sunil"
-                   />
+                />
               </Col>
               <Col span={16} offset={2}>
-                <h4 style={{fontSize:'150%', marginTop:'5%'}}>Jean-David</h4>
+                <h4 style={{ fontSize: "150%", marginTop: "5%" }}>
+                  Jean-David
+                </h4>
               </Col>
             </Row>
           </div>
           <div className="srch_bar">
             <div className="stylish-input-group">
-              { /* <input type="text" className="search-bar" placeholder="Search"  />
+              {/* <input type="text" className="search-bar" placeholder="Search"  />
               <span className="input-group-addon">
                 <button type="button">
                   {" "}
