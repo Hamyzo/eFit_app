@@ -14,7 +14,7 @@ import {
   AutoComplete,
   DatePicker
 } from "antd";
-import InfoStepper from "../../pages/Customer/InfoStepper";
+import CustomerInfoStepper from "../CustomerInfoStepper";
 
 const { Option } = Select;
 const { MonthPicker, RangePicker } = DatePicker;

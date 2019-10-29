@@ -1,7 +1,8 @@
 import React from "react";
 import { Collapse, Table, Row, Col } from "antd";
-import "./Program.css";
+import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
+
 const { Panel } = Collapse;
 
 const columns = [
@@ -45,7 +46,7 @@ class DisplayProgram extends React.Component {
   }
 
   formatDate = rawDate => {
-    var monthNames = [
+    const monthNames = [
       "January",
       "February",
       "March",
@@ -60,37 +61,34 @@ class DisplayProgram extends React.Component {
       "December"
     ];
 
-    var d = new Date(rawDate);
-    var day = d.getDate();
-    var monthIndex = d.getMonth();
-    return day + "/" + monthNames[monthIndex];
+    const d = new Date(rawDate);
+    const day = d.getDate();
+    const monthIndex = d.getMonth();
+    return `${day}/${monthNames[monthIndex]}`;
   };
 
   add_days_date = (date, days) => {
-    var result = new Date(date);
+    const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
   };
 
   session_end_date = (session, session_start_date) => {
-    var total_days = 0;
-    for (var j = 0; j < session.periods.length; j++) {
-      total_days = total_days + parseInt(session.periods[j].nb_days);
+    let total_days = 0;
+    for (let j = 0; j < session.periods.length; j++) {
+      total_days += parseInt(session.periods[j].nb_days);
     }
     return this.formatDate(this.add_days_date(session_start_date, total_days));
   };
 
-  period_end_date = (period_length, period_start_date) => {
-    return this.formatDate(
-      this.add_days_date(period_start_date, period_length)
-    );
-  };
+  period_end_date = (period_length, period_start_date) =>
+    this.formatDate(this.add_days_date(period_start_date, period_length));
 
   session_length = periods => {
-    var length = 0;
-    for (var j = 0; j < periods.length; j++) {
-      console.log("PERIOD DAYS: " + periods[j].nb_days);
-      length = length + parseInt(periods[j].nb_days);
+    let length = 0;
+    for (let j = 0; j < periods.length; j++) {
+      console.log(`PERIOD DAYS: ${periods[j].nb_days}`);
+      length += parseInt(periods[j].nb_days);
     }
     return length;
   };
@@ -100,26 +98,26 @@ class DisplayProgram extends React.Component {
     sessions_array,
     current_session_index
   ) => {
-    var days_to_sum = 0;
-    for (var i = 0; i < current_session_index; i++) {
+    let days_to_sum = 0;
+    for (let i = 0; i < current_session_index; i++) {
       days_to_sum =
         days_to_sum + 1 + this.session_length(sessions_array[i].periods) + 1;
     }
-    var new_date = this.add_days_date(program_start_date, days_to_sum);
+    const new_date = this.add_days_date(program_start_date, days_to_sum);
     return this.formatDate(new_date);
   };
 
   period_start_date = (program_start_date, periods_array, period_index) => {
-    var days_to_sum = 0;
-    //console.log("PERIOD INDEX: "+ period_index + "SES SD: " + session_start_date)
-    for (var j = 0; j < period_index; j++) {
+    let days_to_sum = 0;
+    // console.log("PERIOD INDEX: "+ period_index + "SES SD: " + session_start_date)
+    for (let j = 0; j < period_index; j++) {
       days_to_sum = days_to_sum + 1 + parseInt(periods_array[j].nb_days);
     }
-    var new_date = this.add_days_date(
+    const new_date = this.add_days_date(
       this.session_start_date(program_start_date),
       days_to_sum
     );
-    console.log("----TOTAL: " + days_to_sum);
+    console.log(`----TOTAL: ${days_to_sum}`);
     return this.formatDate(new_date);
   };
 
@@ -130,7 +128,10 @@ class DisplayProgram extends React.Component {
           <Row>
             <Col span={6}>
               <p className="margin0">
-                <strong>Period {index + 1}</strong>
+                <strong>
+                  Period
+                  {index + 1}
+                </strong>
               </p>
             </Col>
             <Col span={6}>

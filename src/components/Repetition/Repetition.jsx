@@ -12,7 +12,11 @@ const steps = [
   {
     title: "Run for 45 minutes",
     content: (
-      <img className="step-img" alt="Loading" src="/assets/running.jpg" />
+      <img
+        className="step-img"
+        alt="Loading"
+        src="/assets/images/running.jpg"
+      />
     )
   },
   {
@@ -133,7 +137,7 @@ class Repetition extends React.Component {
             className="wrapper"
             id="card"
             style={{}}
-            cover={<img alt="run" src="/assets/run.jpg" />}
+            cover={<img alt="run" src="/assets/images/run.jpg" />}
           >
             <Meta
               title="Strong and Energetic"

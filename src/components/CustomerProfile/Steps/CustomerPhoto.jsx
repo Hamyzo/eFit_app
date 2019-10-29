@@ -14,7 +14,7 @@ import {
   Row,
   Col
 } from "antd";
-import InfoStepper from "../../pages/Customer/InfoStepper";
+import CustomerInfoStepper from "../CustomerInfoStepper";
 
 class CustomerPhoto extends React.Component {
   handleSubmit = e => {
