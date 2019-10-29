@@ -12,18 +12,16 @@ const steps = [
   {
     title: "Run for 45 minutes",
     content: (
-      <img className={"step-img"} alt={"Loading"} src={"/assets/running.jpg"} />
+      <img className="step-img" alt="Loading" src="/assets/running.jpg" />
     )
   },
   {
     title: "Crunches",
     content: (
       <img
-        className={"step-img"}
-        alt={"Loading"}
-        src={
-          "http://www.mariadicroce.com/wp-content/uploads/2015/02/workout-at-home.jpg"
-        }
+        className="step-img"
+        alt="Loading"
+        src="http://www.mariadicroce.com/wp-content/uploads/2015/02/workout-at-home.jpg"
       />
     )
   },
@@ -31,11 +29,9 @@ const steps = [
     title: "Weird Abs Workout",
     content: (
       <img
-        className={"step-img"}
-        alt={"Loading"}
-        src={
-          "https://d50b62f6164e0c4a0279-11570554cb5edae3285603e6ab25c978.ssl.cf5.rackcdn.com/html_body_blocks/images/000/005/515/original/working_out_at_home_1024x1024_enf0625e2c742e37a36e857417ca769d0f.jpg?1508904721"
-        }
+        className="step-img"
+        alt="Loading"
+        src="https://d50b62f6164e0c4a0279-11570554cb5edae3285603e6ab25c978.ssl.cf5.rackcdn.com/html_body_blocks/images/000/005/515/original/working_out_at_home_1024x1024_enf0625e2c742e37a36e857417ca769d0f.jpg?1508904721"
       />
     )
   },
@@ -43,11 +39,9 @@ const steps = [
     title: "Yoga",
     content: (
       <img
-        className={"step-img"}
-        alt={"Loading"}
-        src={
-          "http://www.yaduki.com/ss/wp-content/uploads/2018/01/Yoga-Indoors-Downward-Facing-Dog-Pose-532343318_1258x838.jpeg"
-        }
+        className="step-img"
+        alt="Loading"
+        src="http://www.yaduki.com/ss/wp-content/uploads/2018/01/Yoga-Indoors-Downward-Facing-Dog-Pose-532343318_1258x838.jpeg"
       />
     )
   },
@@ -56,11 +50,9 @@ const steps = [
     description: "",
     content: (
       <img
-        className={"step-img"}
-        alt={"Loading"}
-        src={
-          "https://s3-ap-northeast-1.amazonaws.com/bhive-jp/media/yogaroom/article/4821/shutterstock_713195971.jpg"
-        }
+        className="step-img"
+        alt="Loading"
+        src="https://s3-ap-northeast-1.amazonaws.com/bhive-jp/media/yogaroom/article/4821/shutterstock_713195971.jpg"
       />
     )
   }
@@ -78,15 +70,14 @@ class Repetition extends React.Component {
       btnProperLoading: false,
       btnDiffiLoading: false
     };
-    //this.startOnClick = this.startOnClick.bind(this);
+    // this.startOnClick = this.startOnClick.bind(this);
   }
 
-  startOnClick(event) {
-    console.log(this);
+  startOnClick = () => {
     this.setState({ startCardShow: -1 });
-  }
+  };
 
-  nextStep() {
+  nextStep = () => {
     const current = this.state.currentStep + 1;
     this.setState({
       currentStep: current,
@@ -95,50 +86,54 @@ class Repetition extends React.Component {
       btnDiffiLoading: false
     });
     this.setState({ btnEasyLoading: false });
-  }
+  };
 
-  showResultModal() {
+  showResultModal = () => {
     this.setState({ modalVisible: true });
-  }
+  };
 
-  handleBtn() {
+  handleBtn = () => {
     setTimeout(() => {
       this.setState({ modalVisible: false });
       Modal.destroyAll();
       this.nextStep();
     }, 500);
-  }
-  handleEasyBtn() {
+  };
+
+  handleEasyBtn = () => {
     this.setState({ btnEasyLoading: true });
     this.handleBtn();
-  }
-  handleProperBtn() {
+  };
+
+  handleProperBtn = () => {
     this.setState({ btnProperLoading: true });
     this.handleBtn();
-  }
-  handleDiffiBtn() {
+  };
+
+  handleDiffiBtn = () => {
     this.setState({ btnDiffiLoading: true });
     this.handleBtn();
-  }
+  };
 
-  prevStep() {
+  prevStep = () => {
     const current = this.state.currentStep - 1;
     this.setState({ currentStep: current });
-  }
+  };
 
-  handleDoneBtn() {
+  handleDoneBtn = () => {
     this.setState({ startCardShow: 0 });
-  }
+  };
 
-  render() {
+  render = () => {
+    const { startCardShow } = this.state;
     const startCard = (
-      <Row className={"top-row"}>
+      <Row className="top-row">
         <Col span={24}>
           <Card
-            className={"wrapper"}
-            id={"card"}
+            className="wrapper"
+            id="card"
             style={{}}
-            cover={<img src={"/assets/run.jpg"} />}
+            cover={<img alt="run" src="/assets/run.jpg" />}
           >
             <Meta
               title="Strong and Energetic"
@@ -157,14 +152,14 @@ class Repetition extends React.Component {
       </Row>
     );
 
-    const modalVisible = this.state.modalVisible;
-    //const modalWidth = "300px";
+    const { modalVisible } = this.state;
+    // const modalWidth = "300px";
     const modalTitle = "How was this exercise?";
 
     const stepDiv = (
-      <div className="wrapper" id={"stepDiv"}>
+      <div className="wrapper" id="stepDiv">
         <Modal
-          className={"feedback-modal"}
+          className="feedback-modal"
           title={modalTitle}
           visible={modalVisible}
           closable={false}
@@ -176,7 +171,7 @@ class Repetition extends React.Component {
               <Col span={8} align="center">
                 <Button
                   onClick={() => this.handleEasyBtn()}
-                  className={"feedbackBtn"}
+                  className="feedbackBtn"
                   loading={this.state.btnEasyLoading}
                 >
                   <Icon
@@ -190,7 +185,7 @@ class Repetition extends React.Component {
               <Col span={8} align="center">
                 <Button
                   onClick={() => this.handleProperBtn()}
-                  className={"feedbackBtn"}
+                  className="feedbackBtn"
                   loading={this.state.btnProperLoading}
                 >
                   <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
@@ -200,7 +195,7 @@ class Repetition extends React.Component {
               <Col span={8} align="center">
                 <Button
                   onClick={() => this.handleDiffiBtn()}
-                  className={"feedbackBtn"}
+                  className="feedbackBtn"
                   loading={this.state.btnDiffiLoading}
                 >
                   <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
@@ -213,11 +208,11 @@ class Repetition extends React.Component {
 
         <Steps current={this.state.currentStep}>
           {steps.map(item => (
-            <Step key={item.title} title={""} />
+            <Step key={item.title} title="" />
           ))}
         </Steps>
 
-        <Row className={"top-row"} style={{ marginTop: "-4%" }}>
+        <Row className="top-row" style={{ marginTop: "-4%" }}>
           <Col>
             <div>
               <div className="steps-content">
@@ -249,7 +244,7 @@ class Repetition extends React.Component {
                 {this.state.currentStep === steps.length - 1 && (
                   <Button
                     type="primary"
-                    //onClick={() => message.success("Processing complete!")}
+                    // onClick={() => message.success("Processing complete!")}
                     onClick={() => this.handleDoneBtn()}
                   >
                     Done
@@ -264,15 +259,18 @@ class Repetition extends React.Component {
 
     const repetitionDone = <RepetitionDone />;
 
-    if (this.state.startCardShow == 1) {
+    if (startCardShow === 1) {
       return startCard;
-    } else if (this.state.startCardShow == -1) {
+    }
+    if (startCardShow === -1) {
       // else ： hide startCard
       return stepDiv;
-    } else if (this.state.startCardShow == 0) {
+    }
+    if (startCardShow === 0) {
       return repetitionDone;
     }
-  }
+    return null;
+  };
 }
 
 export default Repetition;

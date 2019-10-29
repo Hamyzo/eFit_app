@@ -71,6 +71,7 @@ class Dashboard extends React.Component {
                   }}
                   format={this.renderWaterIcon}
                   size="small"
+                  status="active"
                 />
                 <Progress
                   percent={50}
@@ -90,6 +91,7 @@ class Dashboard extends React.Component {
                   }}
                   format={this.renderLevelIcon}
                   size="small"
+                  status="active"
                 />
               </div>
             </div>
