@@ -35,13 +35,13 @@ class InfoStepper extends React.Component {
   }
 
   next() {
-    const current = this.state.current + 1;
-    this.setState({ current });
+    const { current } = this.state;
+    this.setState({ current: current + 1 });
   }
 
   prev() {
-    const current = this.state.current - 1;
-    this.setState({ current });
+    const { current } = this.state;
+    this.setState({ current: current - 1 });
   }
 
   render() {

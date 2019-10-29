@@ -1,8 +1,6 @@
 import React from "react";
-import { Layout, Icon, Col, Row } from "antd";
+import { Icon, Col, Row } from "antd";
 import "./Messaging.css";
-
-const { Header } = Layout;
 
 class Messaging extends React.Component {
   constructor(props) {
@@ -20,6 +18,16 @@ class Messaging extends React.Component {
         {
           content: "I'm doing very well!",
           type: "sent"
+        },
+        {
+          content:
+            "I had a question, What diet should I follow to maximize my gains?",
+          type: "sent"
+        },
+        {
+          content:
+            "A balanced diet is one that gives your body the nutrients it needs to function correctly. To get the proper nutrition from your diet, you should consume the majority of your daily calories in fresh fruits, fresh vegetables and whole grains",
+          type: "received"
         }
       ]
     };
@@ -53,7 +61,7 @@ class Messaging extends React.Component {
                   {" "}
                   <i className="fa fa-search" aria-hidden="true" />{" "}
                 </button>
-              </span>*/}
+              </span> */}
             </div>
           </div>
         </div>
