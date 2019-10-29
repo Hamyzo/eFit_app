@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, DatePicker, Row, Table } from "antd";
-import "./Appointment.css";
+import "./CustomerAppointments.css";
 
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 function onChange(date, dateString) {

@@ -13,7 +13,7 @@ import {
   Form,
   Select
 } from "antd";
-import "./Program.css";
+import "./CoachProgram.css";
 
 class NewSessionModal extends React.Component {
   constructor(props) {

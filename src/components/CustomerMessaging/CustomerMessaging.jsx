@@ -1,8 +1,8 @@
 import React from "react";
 import { Icon, Col, Row } from "antd";
-import "./Messaging.css";
+import "./CustomerMessaging.css";
 
-class Messaging extends React.Component {
+class CustomerMessaging extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,4 +92,4 @@ class Messaging extends React.Component {
   }
 }
 
-export default Messaging;
+export default CustomerMessaging;

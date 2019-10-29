@@ -1,10 +1,10 @@
 import React from "react";
 import { Steps, Button, message, Icon } from "antd";
-import "./Customer.css";
+import "./CustomerProfile.css";
 
-import PersonalInfo from "../../components/Customer/PersonalInfo";
-import CustomerPhoto from "../../components/Customer/CustomerPhoto";
-import FitnessGoals from "../../components/Customer/FitnessGoals";
+import PersonalInfo from "./Steps/PersonalInfo";
+import CustomerPhoto from "./Steps/CustomerPhoto";
+import FitnessGoals from "./Steps/FitnessGoals";
 
 const { Step } = Steps;
 
@@ -26,7 +26,7 @@ const steps = [
   }
 ];
 
-class InfoStepper extends React.Component {
+class CustomerInfoStepper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,4 +93,4 @@ class InfoStepper extends React.Component {
   }
 }
 
-export default InfoStepper;
+export default CustomerInfoStepper;

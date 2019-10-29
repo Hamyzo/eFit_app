@@ -2,7 +2,7 @@ import React from "react";
 import { Table, Avatar } from "antd";
 import * as apiServices from "../../apiServices";
 
-class Customers extends React.Component {
+class CustomersList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +17,7 @@ class Customers extends React.Component {
   getCustomers = async () => {
     try {
       const customers = await apiServices.get("customers", "");
-      //console.log("Customers", customers);
+      //console.log("CustomersList", customers);
       this.setState({ customersData: customers });
     } catch (e) {
       console.log(e);
@@ -83,4 +83,4 @@ class Customers extends React.Component {
   }
 }
 
-export default Customers;
+export default CustomersList;

@@ -19,6 +19,7 @@ class SiderComponent extends React.Component {
 
   render() {
     const { collapsed } = this.state;
+    const { index, handleClick } = this.props;
     return (
       <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
         <div className="logoContainer">
@@ -29,28 +30,24 @@ class SiderComponent extends React.Component {
             100
           )}
         </div>
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={[this.props.index]}
-          mode="inline"
-        >
-          <Menu.Item onClick={() => this.props.handleClick("1")} key="1">
+        <Menu theme="dark" defaultSelectedKeys={[index]} mode="inline">
+          <Menu.Item onClick={() => handleClick("1")} key="1">
             <Icon type="user" />
             <span>My account</span>
           </Menu.Item>
-          <Menu.Item onClick={() => this.props.handleClick("2")} key="2">
-            <Icon type="carry-out" />
+          <Menu.Item onClick={() => handleClick("2")} key="2">
+            <Icon type="play-circle" />
             <span>My program</span>
           </Menu.Item>
-          <Menu.Item onClick={() => this.props.handleClick("3")} key="3">
+          <Menu.Item onClick={() => handleClick("3")} key="3">
             <Icon type="dashboard" />
             <span>Dashboard</span>
           </Menu.Item>
-          <Menu.Item onClick={() => this.props.handleClick("4")} key="4">
-            <Icon type="bell" />
-            <span>Notifications</span>
+          <Menu.Item onClick={() => handleClick("4")} key="4">
+            <Icon type="carry-out" />
+            <span>Appointments</span>
           </Menu.Item>
-          <Menu.Item onClick={() => this.props.handleClick("5")} key="5">
+          <Menu.Item onClick={() => handleClick("5")} key="5">
             <Icon type="message" />
             <span>Messages</span>
           </Menu.Item>

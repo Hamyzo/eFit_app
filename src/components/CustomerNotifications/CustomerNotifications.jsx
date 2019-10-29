@@ -1,8 +1,8 @@
 import React from "react";
 import { notification, Icon } from "antd";
-import "./Customer.css";
+import "../CustomerProfile/CustomerProfile.css";
 
-class Notification extends React.Component {
+class CustomerNotifications extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,7 +36,7 @@ class Notification extends React.Component {
           color: "#faad14"
         },
         {
-          message: "Notification 4",
+          message: "CustomerNotifications 4",
           description:
             "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
           type: "bulb",
@@ -50,7 +50,7 @@ class Notification extends React.Component {
           color: "#f5222d"
         },
         {
-          message: "Notification 5",
+          message: "CustomerNotifications 5",
           description:
             "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
           type: "heart",
@@ -85,4 +85,4 @@ class Notification extends React.Component {
   }
 }
 
-export default Notification;
+export default CustomerNotifications;

@@ -12,16 +12,15 @@ import MobileFooter from "./components/Global/MobileFooter";
 
 // pages imports
 
-import Home from "./pages/Common/Home";
-import CustomerProgram from "./pages/Coach/CustomerProgram";
-import Customers from "./pages/Coach/Customers";
-import InfoStepper from "./pages/Customer/InfoStepper";
-import Repetition from "./pages/Customer/Repetition";
-import RepetitionDone from "./pages/Customer/RepetitionDone";
-import Dashboard from "./pages/Customer/Dashboard";
-import Messaging from "./pages/Customer/Messaging";
-import AppointmentScheduler from "./pages/Customer/Appointment";
-import Notification from "./pages/Customer/Notification";
+import CustomerProgram from "./components/CoachProgram/CustomerProgram";
+import CustomersList from "./components/CustomersList/CustomersList";
+import CustomerInfoStepper from "./components/CustomerProfile/CustomerInfoStepper";
+import Repetition from "./components/Repetition/Repetition";
+import RepetitionDone from "./components/Repetition/RepetitionDone";
+import CustomerDashboard from "./components/CustomerDashboard/CustomerDashboard";
+import CustomerMessaging from "./components/CustomerMessaging/CustomerMessaging";
+import AppointmentScheduler from "./components/CustomerAppointments/CustomerAppointments";
+import CustomerNotifications from "./components/CustomerNotifications/CustomerNotifications";
 
 
 const { Content } = Layout;
@@ -29,7 +28,7 @@ const { Content } = Layout;
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends React.Component {
   state = {
-    content: <Dashboard />,
+    content: <CustomerDashboard />,
     index: "3"
   };
 
@@ -42,22 +41,22 @@ class App extends React.Component {
     }
     switch (i) {
       case "1":
-        this.setState({ content: <InfoStepper /> });
+        this.setState({ content: <CustomerInfoStepper /> });
         break;
       case "2":
         this.setState({ content: <Repetition /> });
         break;
       case "3":
-        this.setState({ content: <Dashboard /> });
+        this.setState({ content: <CustomerDashboard /> });
         break;
       case "4":
         this.setState({ content: <AppointmentScheduler />});
         break;
       case "5":
-        this.setState({ content: <Messaging /> });
+        this.setState({ content: <CustomerMessaging /> });
         break;
       case "6":
-        this.setState({ content: <Notification /> });
+        this.setState({ content: <CustomerNotifications /> });
         break;
       default:
         break;

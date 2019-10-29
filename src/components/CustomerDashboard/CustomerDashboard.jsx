@@ -1,38 +1,39 @@
 import React from "react";
 import { Row, Col, Progress, Timeline, Button, Card, Icon } from "antd";
-import "./Dashboard.css";
+import "./CustomerDashboard.css";
 
-import water from "./assets/raindrop.svg";
-
-class Dashboard extends React.Component {
+class CustomerDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  renderWaterIcon = _ => (
+
+  renderWaterIcon = () => (
     <Row>
       <Col span={4} style={{ height: "18px", width: "18px" }}>
-        <img className="water_progress" src="/assets/raindrop.svg" />
+        <img className="water_progress" src="/assets/images/raindrop.svg" />
       </Col>
       <Col span={4}>
         <p className="progress_tags">Water</p>
       </Col>
     </Row>
   );
-  renderSunIcon = _ => (
+
+  renderSunIcon = () => (
     <Row>
       <Col span={4} style={{ height: "18px", width: "18px" }}>
-        <img className="water_progress" src="/assets/contrast.svg" />
+        <img className="water_progress" src="/assets/images/contrast.svg" />
       </Col>
       <Col span={4}>
         <p className="progress_tags">Sunlight</p>
       </Col>
     </Row>
   );
-  renderLevelIcon = _ => (
+
+  renderLevelIcon = () => (
     <Row>
       <Col span={4} style={{ height: "18px", width: "18px" }}>
-        <img className="water_progress" src="/assets/objective.svg" />
+        <img className="water_progress" src="/assets/images/objective.svg" />
       </Col>
       <Col span={4}>
         <p className="progress_tags">Level</p>
@@ -46,21 +47,19 @@ class Dashboard extends React.Component {
         <Row>
           <Col span={10}>
             <div className="plant">
-              <a href="">
-                <img
-                  className={"img-responsive"}
-                  typeof="foaf:Image"
-                  src="https://making-the-web.com/sites/default/files/clipart/131252/cartoon-plant-131252-4910920.jpg"
-                  width="50%"
-                  height="50%"
-                  alt="Cartoon Plant 6 - 540 X 554"
-                  title="Cartoon Plant 6 - 540 X 554"
-                />
-              </a>
+              <img
+                className="img-responsive"
+                typeof="foaf:Image"
+                src="https://making-the-web.com/sites/default/files/clipart/131252/cartoon-plant-131252-4910920.jpg"
+                width="50%"
+                height="50%"
+                alt="Cartoon Plant 6 - 540 X 554"
+                title="Cartoon Plant 6 - 540 X 554"
+              />
             </div>
           </Col>
           <Col span={10}>
-            <div className={"plant_progress"}>
+            <div className="plant_progress">
               <h1> My plant </h1>
               <div className="progress_bars">
                 <Progress
@@ -71,6 +70,7 @@ class Dashboard extends React.Component {
                   }}
                   format={this.renderWaterIcon}
                   size="small"
+                  status="active"
                 />
                 <Progress
                   percent={50}
@@ -90,6 +90,7 @@ class Dashboard extends React.Component {
                   }}
                   format={this.renderLevelIcon}
                   size="small"
+                  status="active"
                 />
               </div>
             </div>
@@ -98,7 +99,7 @@ class Dashboard extends React.Component {
         <div className="progress">
           <Row>
             <Col span={8}>
-              <img className="one" src="/assets/one.svg" />
+              <img className="one" src="/assets/images/one.svg" />
             </Col>
             <Col span={10}>
               <h3 className="daysSLW" style={{ fontSize: "105%" }}>
@@ -111,13 +112,13 @@ class Dashboard extends React.Component {
             <Col span={6}>
               <Row className="plantwater">
                 <Col span={8}>
-                  <img className="add" src="/assets/add.svg" />
+                  <img className="add" src="/assets/images/add.svg" />
                 </Col>
                 <Col span={8}>
                   <h4>3</h4>
                 </Col>
                 <Col span={8}>
-                  <img className="water" src="/assets/raindrop.svg" />
+                  <img className="water" src="/assets/images/raindrop.svg" />
                 </Col>
               </Row>
             </Col>
@@ -126,7 +127,7 @@ class Dashboard extends React.Component {
         <div className="progress2">
           <Row>
             <Col span={8}>
-              <img className="one" src="/assets/pulse.svg" />
+              <img className="one" src="/assets/images/pulse.svg" />
             </Col>
             <Col span={10}>
               <h3 className="daysSLW" style={{ fontSize: "105%" }}>
@@ -140,13 +141,13 @@ class Dashboard extends React.Component {
             <Col span={6}>
               <Row className="plantwater">
                 <Col span={8}>
-                  <img className="add" src="/assets/add.svg" />
+                  <img className="add" src="/assets/images/add.svg" />
                 </Col>
                 <Col span={8}>
                   <h4>2</h4>
                 </Col>
                 <Col span={8}>
-                  <img className="water" src="/assets/contrast.svg" />
+                  <img className="water" src="/assets/images/contrast.svg" />
                 </Col>
               </Row>
             </Col>
@@ -203,4 +204,4 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+export default CustomerDashboard;

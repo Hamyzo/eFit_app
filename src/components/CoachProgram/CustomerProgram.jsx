@@ -1,6 +1,6 @@
 import React from "react";
 import * as apiServices from "../../apiServices";
-import DisplayProgram from "../../components/Program/DisplayProgram";
+import DisplayProgram from "./DisplayProgram";
 
 class CustomerProgram extends React.Component {
   constructor(props) {

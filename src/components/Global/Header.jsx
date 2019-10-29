@@ -19,7 +19,7 @@ function HeaderComponent(props) {
       <Col span={18} align="center">
         <span>
           <img
-            src="/assets/96960342-6d75-4269-a814-a7425e62c057.jpg"
+            src="/assets/images/96960342-6d75-4269-a814-a7425e62c057.jpg"
             height={"60px"}
           />
         </span>
