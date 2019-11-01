@@ -1,22 +1,25 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "./Header.css";
-import { Layout, Icon, Col, Menu, Badge } from "antd";
+import { Layout, Icon, Col, Badge } from "antd";
 
 const { Header } = Layout;
 
-function HeaderComponent(props) {
+function HeaderComponent() {
   return (
     <Header className="header">
-      <Col span={3} align="center" onClick={() => props.handleClick("6")}>
-        <Badge
-          count={3}
-          overflowCount={9}
-          style={{ backgroundColor: "#D46C4E" }}
-        >
-          <Icon style={{ fontSize: "24px" }} type="bell" />
-        </Badge>
+      <Col span={3} align="left" offset={1}>
+        <NavLink to="notifications">
+          <Badge
+            count={3}
+            overflowCount={9}
+            style={{ backgroundColor: "#D46C4E" }}
+          >
+            <Icon style={{ fontSize: "24px" }} type="bell" />
+          </Badge>
+        </NavLink>
       </Col>
-      <Col span={18} align="center">
+      <Col span={16} align="center">
         <span>
           <img
             src="/assets/images/96960342-6d75-4269-a814-a7425e62c057.jpg"
@@ -24,7 +27,7 @@ function HeaderComponent(props) {
           />
         </span>
       </Col>
-      <Col span={3}>
+      <Col span={3} align="right">
         <Icon style={{ fontSize: "24px" }} type="setting" />
       </Col>
     </Header>
