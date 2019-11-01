@@ -1,9 +1,10 @@
 import React from "react";
-import { Collapse, Table, Row, Col } from "antd";
+import { Collapse, Table, Row, Col, Button, Modal, Tabs } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 
 const { Panel } = Collapse;
+const { TabPane } = Tabs;
 
 const columns = [
   {
@@ -43,22 +44,44 @@ const data = [
 class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
+
   }
+  state = { visible: false };
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
+
 
   formatDate = rawDate => {
     const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
       "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec"
     ];
 
     const d = new Date(rawDate);
@@ -126,7 +149,7 @@ class DisplayProgram extends React.Component {
       header={
         <div className="margin0">
           <Row>
-            <Col span={6}>
+            <Col span={8}>
               <p className="margin0">
                 <strong>
                   Period
@@ -134,26 +157,22 @@ class DisplayProgram extends React.Component {
                 </strong>
               </p>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <p className="margin0">
-                <strong>Length:</strong> {period.nb_days}
+                <strong>Reps: </strong>
+                ?/{period.nb_repetitions}
               </p>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <p className="margin0">
-                <strong>Start Date: </strong>
-                {this.period_start_date(start_date, periods_array, index)}
+                <strong> </strong>
+                {this.period_start_date(start_date, periods_array, index)} - {this.period_end_date(
+                period.nb_days,
+                this.period_start_date(start_date, periods_array, index)
+              )}
               </p>
             </Col>
-            <Col span={6}>
-              <p className="margin0">
-                <strong>End Date:</strong>
-                {this.period_end_date(
-                  period.nb_days,
-                  this.period_start_date(start_date, periods_array, index)
-                )}
-              </p>
-            </Col>
+
           </Row>
         </div>
       }
@@ -165,6 +184,37 @@ class DisplayProgram extends React.Component {
         dataSource={data}
         size="middle"
       />
+      <Row className="period_btns">
+        <Col>
+          <Button className="results_btn" type="primary" onClick={this.showModal}>See Results</Button>
+          <Button className="edit_btn" type="primary">Edit Period</Button>
+        </Col>
+      </Row>
+      <Modal
+        title="Period Results"
+        visible={this.state.visible}
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+      >
+        <Tabs defaultActiveKey="1" >
+          <TabPane tab="Rep 1" key="1">
+            <Table
+              pagination={false}
+              columns={columns}
+              dataSource={data}
+              size="middle"
+            />
+          </TabPane>
+          <TabPane tab="Tab 2" key="2">
+            Content of Tab Pane 2
+          </TabPane>
+          <TabPane tab="Tab 3" key="3">
+            Content of Tab Pane 3
+          </TabPane>
+        </Tabs>
+
+
+      </Modal>
     </Panel>
   );
 
@@ -173,37 +223,31 @@ class DisplayProgram extends React.Component {
       header={
         <div className="margin0">
           <Row>
-            <Col span={6}>
+            <Col span={8}>
               <p className="margin0">
                 <strong>{session.name}</strong>
               </p>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <p className="margin0">
                 <strong>Status:</strong> In Progress
               </p>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <p className="margin0">
-                <strong>Start Date:</strong>{" "}
+
                 {this.session_start_date(
                   program_start_date,
                   sessions_array,
                   index
-                )}
-              </p>
-            </Col>
-            <Col span={6}>
-              <p className="margin0">
-                <strong>End Date:</strong>{" "}
-                {this.session_end_date(
-                  session,
-                  this.session_start_date(
-                    program_start_date,
-                    sessions_array,
-                    index
-                  )
-                )}
+                )} - {this.session_end_date(
+                session,
+                this.session_start_date(
+                  program_start_date,
+                  sessions_array,
+                  index
+                )
+              )}
               </p>
             </Col>
           </Row>
@@ -226,7 +270,7 @@ class DisplayProgram extends React.Component {
 
   renderProgram = program => (
     <div>
-      <h1>{program.program.name}</h1>
+      <h1 className="program_name">{program.program.name}</h1>
 
       <Collapse>
         {program.sessions.map((session, index) =>
@@ -244,7 +288,11 @@ class DisplayProgram extends React.Component {
   render() {
     const { program, editable } = this.props;
 
-    return <div>{program ? this.renderProgram(program) : <Spinner />}</div>;
+    return (
+      <div>
+        {program ? this.renderProgram(program) : <Spinner />}
+
+      </div>);
   }
 }
 
