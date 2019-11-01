@@ -51,6 +51,10 @@ class SiderComponent extends React.Component {
             <Icon type="message" />
             <span>Messages</span>
           </Menu.Item>
+          <Menu.Item onClick={() => handleClick("7")} key="7">
+            <Icon type="team" />
+            <span>My Customers</span>
+          </Menu.Item>
         </Menu>
       </Sider>
     );

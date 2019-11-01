@@ -27,7 +27,7 @@ class CustomersList extends React.Component {
   render() {
     const { customersData } = this.state;
     const profileSize = 65;
-    //const customerProgramUrl = "/CustomerProgram?_id=" + row._id;
+    //const customerProgramUrl = "/CoachProgram?_id=" + row._id;
     const columns = [
       {
         title: "Profile",

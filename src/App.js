@@ -12,7 +12,7 @@ import MobileFooter from "./components/Global/MobileFooter";
 
 // pages imports
 
-import CustomerProgram from "./components/CoachProgram/CustomerProgram";
+import CoachProgram from "./components/CoachProgram/CoachProgram";
 import CustomersList from "./components/CustomersList/CustomersList";
 import CustomerInfoStepper from "./components/CustomerProfile/CustomerInfoStepper";
 import Repetition from "./components/Repetition/Repetition";
@@ -50,13 +50,16 @@ class App extends React.Component {
         this.setState({ content: <CustomerDashboard /> });
         break;
       case "4":
-        this.setState({ content: <AppointmentScheduler />});
+        this.setState({ content: <AppointmentScheduler /> });
         break;
       case "5":
         this.setState({ content: <CustomerMessaging /> });
         break;
       case "6":
         this.setState({ content: <CustomerNotifications /> });
+        break;
+      case "7":
+        this.setState({ content: <CustomersList /> });
         break;
       default:
         break;
@@ -73,19 +76,20 @@ class App extends React.Component {
         <Layout>
           <Header handleClick={this.handleClick} index={index} />
           <Content style={{ margin: "64px 10px 64px 10px" }}>
-            {/* <Router>
+            {windowWidth >= 576
+              ? <Router>
                 <div>
-                  <Route exact path="/" component={Home} />
+                  <Route exact path="/" component={CustomerDashboard} />
                   <Route
                     exact
-                    path="/customerProgram/:customerProgramId"
-                    component={CustomerProgram}
+                    path="/coachProgram/:customerProgramId"
+                    component={CoachProgram}
                   />
-                  <Route path="/customers" component={Customers} />
-                  <Route path="/infoStepper" component={InfoStepper} />
+                  <Route path="/customersList" component={CustomersList} />
+                  <Route path="/customerInfoStepper" component={CustomerInfoStepper} />
                 </div>
-                </Router> */}
-            {content}
+              </Router>
+              : content}
           </Content>
           <Footer />
           {windowWidth < 576
