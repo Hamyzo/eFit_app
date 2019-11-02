@@ -17,7 +17,10 @@ class CustomersList extends React.Component {
 
   getCustomers = async () => {
     try {
-      const customers = await apiServices.get("customers", "");
+      const customers = await apiServices.get(
+        "customers",
+        "populate=current_program.program"
+      );
       //console.log("CustomersList", customers);
       this.setState({ customersData: customers });
     } catch (e) {
@@ -67,11 +70,14 @@ class CustomersList extends React.Component {
         title: "View Program",
         //fixed: "left",
         width: 100,
-        render: (text, row, index) => (
-          <NavLink to={"/coachProgram/5da1f67ccf53670572677651"}>
-            program
-          </NavLink>
-        )
+        render: (text, row, index) =>
+          row.current_program && row.current_program._id ? (
+            <NavLink to={`/coachProgram/${row.current_program._id}`}>
+              {row.current_program.program.name}
+            </NavLink>
+          ) : (
+            <span>No program assigned</span>
+          )
       }
     ];
     return (
