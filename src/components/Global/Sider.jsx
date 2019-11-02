@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import { Layout, Menu, Icon, Badge } from "antd";
 
@@ -31,25 +32,41 @@ class SiderComponent extends React.Component {
           )}
         </div>
         <Menu theme="dark" defaultSelectedKeys={[index]} mode="inline">
-          <Menu.Item onClick={() => handleClick("1")} key="1">
-            <Icon type="user" />
-            <span>My account</span>
+          <Menu.Item key="1">
+            <NavLink to="/customerInfoStepper">
+              <Icon type="user" />
+              <span>My account</span>
+            </NavLink>
           </Menu.Item>
-          <Menu.Item onClick={() => handleClick("2")} key="2">
-            <Icon type="play-circle" />
-            <span>My program</span>
+          <Menu.Item key="2">
+            <NavLink to="/myProgram">
+              <Icon type="play-circle" />
+              <span>My program</span>
+            </NavLink>
           </Menu.Item>
-          <Menu.Item onClick={() => handleClick("3")} key="3">
-            <Icon type="dashboard" />
-            <span>Dashboard</span>
+          <Menu.Item key="3">
+            <NavLink to="/">
+              <Icon type="dashboard" />
+              <span>Dashboard</span>
+            </NavLink>
           </Menu.Item>
-          <Menu.Item onClick={() => handleClick("4")} key="4">
-            <Icon type="carry-out" />
-            <span>Appointments</span>
+          <Menu.Item key="4">
+            <NavLink to="/appointments">
+              <Icon type="carry-out" />
+              <span>Appointments</span>
+            </NavLink>
           </Menu.Item>
-          <Menu.Item onClick={() => handleClick("5")} key="5">
-            <Icon type="message" />
-            <span>Messages</span>
+          <Menu.Item key="5">
+            <NavLink to="/messages">
+              <Icon type="message" />
+              <span>Messages</span>
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item key="7">
+            <NavLink to="/customersList">
+              <Icon type="team" />
+              <span>My Customers</span>
+            </NavLink>
           </Menu.Item>
         </Menu>
       </Sider>

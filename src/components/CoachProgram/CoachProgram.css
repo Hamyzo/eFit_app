@@ -16,3 +16,26 @@
   margin-right: 4%;
   margin-bottom: 2%;
 }
+
+.program_name{
+  margin-top: 4%;
+}
+
+.period_btns{
+  margin-top: 2%;
+  float: right;
+  margin-bottom: 2%;
+  width: 100%;
+
+}
+.edit_btn{
+  margin-right: 1%;
+  margin-bottom: 1%;
+  float: right;
+}
+.results_btn{
+  margin-right: 1%;
+  margin-bottom: 1%;
+  float: right;
+}
+

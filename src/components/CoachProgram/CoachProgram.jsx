@@ -2,7 +2,7 @@ import React from "react";
 import * as apiServices from "../../apiServices";
 import DisplayProgram from "./DisplayProgram";
 
-class CustomerProgram extends React.Component {
+class CoachProgram extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,4 +37,4 @@ class CustomerProgram extends React.Component {
   }
 }
 
-export default CustomerProgram;
+export default CoachProgram;
