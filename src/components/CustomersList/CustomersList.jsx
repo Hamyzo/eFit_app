@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, Avatar } from "antd";
 import * as apiServices from "../../apiServices";
+import { NavLink } from "react-router-dom";
 
 class CustomersList extends React.Component {
   constructor(props) {
@@ -16,7 +17,10 @@ class CustomersList extends React.Component {
 
   getCustomers = async () => {
     try {
-      const customers = await apiServices.get("customers", "");
+      const customers = await apiServices.get(
+        "customers",
+        "populate=current_program.program"
+      );
       //console.log("CustomersList", customers);
       this.setState({ customersData: customers });
     } catch (e) {
@@ -66,9 +70,14 @@ class CustomersList extends React.Component {
         title: "View Program",
         //fixed: "left",
         width: 100,
-        render: (text, row, index) => (
-          <a href={"/CustomerProgram/" + row._id}>program</a>
-        )
+        render: (text, row, index) =>
+          row.current_program && row.current_program._id ? (
+            <NavLink to={`/coachProgram/${row.current_program._id}`}>
+              {row.current_program.program.name}
+            </NavLink>
+          ) : (
+            <span>No program assigned</span>
+          )
       }
     ];
     return (
