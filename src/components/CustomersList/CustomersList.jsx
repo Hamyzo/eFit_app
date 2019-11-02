@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, Avatar } from "antd";
 import * as apiServices from "../../apiServices";
+import { NavLink } from "react-router-dom";
 
 class CustomersList extends React.Component {
   constructor(props) {
@@ -67,7 +68,9 @@ class CustomersList extends React.Component {
         //fixed: "left",
         width: 100,
         render: (text, row, index) => (
-          <a href={"/CustomerProgram/" + row._id}>program</a>
+          <NavLink to={"/coachProgram/5da1f67ccf53670572677651"}>
+            program
+          </NavLink>
         )
       }
     ];

@@ -44,29 +44,27 @@ const data = [
 class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
-
   }
   state = { visible: false };
   showModal = () => {
     this.setState({
-      visible: true,
+      visible: true
     });
   };
 
   handleOk = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visible: false
     });
   };
 
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visible: false,
+      visible: false
     });
   };
-
 
   formatDate = rawDate => {
     const monthNames = [
@@ -166,13 +164,17 @@ class DisplayProgram extends React.Component {
             <Col span={8}>
               <p className="margin0">
                 <strong> </strong>
-                {this.period_start_date(start_date, periods_array, index)} - {this.period_end_date(
-                period.nb_days,
-                this.period_start_date(start_date, periods_array, index)
-              )}
+                {this.period_start_date(
+                  start_date,
+                  periods_array,
+                  index
+                )} -{" "}
+                {this.period_end_date(
+                  period.nb_days,
+                  this.period_start_date(start_date, periods_array, index)
+                )}
               </p>
             </Col>
-
           </Row>
         </div>
       }
@@ -186,8 +188,16 @@ class DisplayProgram extends React.Component {
       />
       <Row className="period_btns">
         <Col>
-          <Button className="results_btn" type="primary" onClick={this.showModal}>See Results</Button>
-          <Button className="edit_btn" type="primary">Edit Period</Button>
+          <Button
+            className="results_btn"
+            type="primary"
+            onClick={this.showModal}
+          >
+            See Results
+          </Button>
+          <Button className="edit_btn" type="primary">
+            Edit Period
+          </Button>
         </Col>
       </Row>
       <Modal
@@ -196,7 +206,7 @@ class DisplayProgram extends React.Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <Tabs defaultActiveKey="1" >
+        <Tabs defaultActiveKey="1">
           <TabPane tab="Rep 1" key="1">
             <Table
               pagination={false}
@@ -212,8 +222,6 @@ class DisplayProgram extends React.Component {
             Content of Tab Pane 3
           </TabPane>
         </Tabs>
-
-
       </Modal>
     </Panel>
   );
@@ -235,19 +243,20 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={8}>
               <p className="margin0">
-
                 {this.session_start_date(
                   program_start_date,
                   sessions_array,
                   index
-                )} - {this.session_end_date(
-                session,
-                this.session_start_date(
-                  program_start_date,
-                  sessions_array,
-                  index
-                )
-              )}
+                )}{" "}
+                -{" "}
+                {this.session_end_date(
+                  session,
+                  this.session_start_date(
+                    program_start_date,
+                    sessions_array,
+                    index
+                  )
+                )}
               </p>
             </Col>
           </Row>
@@ -288,11 +297,7 @@ class DisplayProgram extends React.Component {
   render() {
     const { program, editable } = this.props;
 
-    return (
-      <div>
-        {program ? this.renderProgram(program) : <Spinner />}
-
-      </div>);
+    return <div>{program ? this.renderProgram(program) : <Spinner />}</div>;
   }
 }
 

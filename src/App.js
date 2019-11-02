@@ -21,6 +21,7 @@ import CustomerDashboard from "./components/CustomerDashboard/CustomerDashboard"
 import CustomerMessaging from "./components/CustomerMessaging/CustomerMessaging";
 import CustomerAppointments from "./components/CustomerAppointments/CustomerAppointments";
 import CustomerNotifications from "./components/CustomerNotifications/CustomerNotifications";
+import CustomerProgram from "./components/CoachProgram/CustomerProgram";
 
 
 const { Content } = Layout;
@@ -40,6 +41,10 @@ class App extends React.Component {
               <Route
                 path="/coachProgram/:customerProgramId"
                 component={CoachProgram}
+              />
+              <Route
+                  path="/customerPrograms"
+                  component={CustomerProgram}
               />
               <Route path="/customersList" component={CustomersList} />
               <Route path="/customerInfoStepper" component={CustomerInfoStepper} />
