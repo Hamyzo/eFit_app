@@ -200,12 +200,8 @@ class CustomersList extends React.Component {
                        /> */
                       />
                       <div>
-                        <Button
-                          className="btn-start"
-                          onClick={() => this.startOnClick()}
-                          type="default"
-                        >
-                          VIEW
+                        <Button className="btn-start" type="default">
+                          <NavLink to={`/program/${program._id}`}>VIEW</NavLink>
                         </Button>
                         <Button
                           className="btn-start"

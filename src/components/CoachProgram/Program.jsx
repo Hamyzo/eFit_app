@@ -2,7 +2,7 @@ import React from "react";
 import * as apiServices from "../../apiServices";
 import DisplayProgram from "./DisplayProgram";
 
-class CoachProgram extends React.Component {
+class Program extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,9 +17,9 @@ class CoachProgram extends React.Component {
   getProgram = async _ => {
     try {
       const program = await apiServices.getOne(
-        "customerPrograms",
+        "programs",
         this.props.match
-          ? this.props.match.params.customerProgramId
+          ? this.props.match.params.programId
           : "5da1f67ccf53670572677651",
         "populate=program"
       );
@@ -37,10 +37,10 @@ class CoachProgram extends React.Component {
       <DisplayProgram
         program={program}
         editable={true}
-        isCustomerProgram={true}
+        isCustomerProgram={false}
       />
     );
   }
 }
 
-export default CoachProgram;
+export default Program;
