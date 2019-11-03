@@ -30,6 +30,20 @@ class CoachProgram extends React.Component {
     }
   };
 
+  handleSubmitNewSession = async (session, index) => {
+    console.log(`session ${index}`, session);
+    try {
+      const { program } = this.state;
+      program.sessions.splice(index, 0, session);
+      console.log(program.sessions);
+      await apiServices.patchOne("customerPrograms", program._id, {
+        sessions: program.sessions
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   render() {
     const { program } = this.state;
 
@@ -38,6 +52,7 @@ class CoachProgram extends React.Component {
         program={program}
         editable={true}
         isCustomerProgram={true}
+        onSubmitNewSession={this.handleSubmitNewSession}
       />
     );
   }

@@ -1,7 +1,8 @@
 import React from "react";
-import { Collapse, Table, Row, Col, Button, Modal, Tabs } from "antd";
+import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
+import NewSessionModal from "./NewSessionModal";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -44,8 +45,12 @@ const data = [
 class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      visible: false,
+      displayAddSession: false
+    };
   }
-  state = { visible: false };
+
   showModal = () => {
     this.setState({
       visible: true
@@ -158,7 +163,8 @@ class DisplayProgram extends React.Component {
             <Col span={8}>
               <p className="margin0">
                 <strong>Reps: </strong>
-                ?/{period.nb_repetitions}
+                ?/
+                {period.nb_repetitions}
               </p>
             </Col>
             <Col span={8}>
@@ -293,15 +299,56 @@ class DisplayProgram extends React.Component {
           )
         )}
       </Collapse>
+      <Row className="period_btns">
+        <Col offset={7} span={10}>
+          <Button
+            onClick={() => this.setState({ displayAddSession: true })}
+            className="results_btn"
+            type="primary"
+            block
+          >
+            <Icon type="plus" /> Add session
+          </Button>
+        </Col>
+      </Row>
     </div>
   );
 
-  render() {
-    const { program, editable, isCustomerProgram } = this.props;
+  addTwoValues = (firstValue, secondValue) => {
+    const sum = firstValue + secondValue;
+    if (sum > 0) {
+      console.log(`The sum is positive: ${sum}`);
+    } else {
+      console.log(`The sum is negative: ${sum}`);
+    }
+    return sum;
+  };
 
+  render() {
+    const {
+      program,
+      editable,
+      isCustomerProgram,
+      onSubmitNewSession
+    } = this.props;
+    const { displayAddSession } = this.state;
+
+    this.addTwoValues(1, 2);
     return (
       <div>
-        {program ? this.renderProgram(program, isCustomerProgram) : <Spinner />}
+        {program ? (
+          <div>
+            {this.renderProgram(program, isCustomerProgram)}
+            <NewSessionModal
+              displayAddSession={displayAddSession}
+              onSubmitNewSession={onSubmitNewSession}
+              sessions={program.sessions || program.program.sessions}
+              onCancel={() => this.setState({ displayAddSession: false })}
+            />
+          </div>
+        ) : (
+          <Spinner />
+        )}
       </div>
     );
   }

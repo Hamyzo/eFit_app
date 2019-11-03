@@ -23,7 +23,6 @@ import CustomerAppointments from "./components/CustomerAppointments/CustomerAppo
 import CustomerNotifications from "./components/CustomerNotifications/CustomerNotifications";
 import Program from "./components/CoachProgram/Program";
 
-
 const { Content } = Layout;
 
 // eslint-disable-next-line react/prefer-stateless-function
