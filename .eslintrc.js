@@ -22,6 +22,7 @@ module.exports = {
     "comma-dangle": "off",
     "arrow-parens": "off",
     "react/jsx-wrap-multilines": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "no-underscore-dangle": "off"
   }
 };

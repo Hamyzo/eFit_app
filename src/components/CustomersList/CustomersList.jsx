@@ -68,6 +68,20 @@ class CustomersList extends React.Component {
     }
   };
 
+  handleAssign = async program => {
+    try {
+      const { selectedCustomer } = this.state;
+      const newCustomerProgram = {
+        customer: selectedCustomer._id,
+        program: program._id,
+        sessions: program.sessions
+      };
+      await apiServices.postOne("customerPrograms", newCustomerProgram);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   render() {
     const { customersData, programs, selectedCustomer, visible } = this.state;
     const profileSize = 65;
@@ -195,7 +209,7 @@ class CustomersList extends React.Component {
                         </Button>
                         <Button
                           className="btn-start"
-                          onClick={() => this.startOnClick()}
+                          onClick={() => this.handleAssign(program)}
                           type="primary"
                           style={{ marginLeft: "2px" }}
                         >
