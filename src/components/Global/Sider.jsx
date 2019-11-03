@@ -16,7 +16,13 @@ class SiderComponent extends React.Component {
 
   onCollapse = collapsed => {
     this.setState({ collapsed });
+    localStorage.setItem("collapse_state", collapsed);
   };
+
+  componentDidMount() {
+    const collapsed = localStorage.getItem("collapse_state") === "true";
+    this.setState({ collapsed });
+  }
 
   render() {
     const { collapsed } = this.state;

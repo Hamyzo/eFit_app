@@ -61,7 +61,7 @@ class CustomersList extends React.Component {
   getAllPrograms = async _ => {
     try {
       const programs = await apiServices.get("programs", "");
-      console.log("Program", programs);
+      // console.log("Program", programs);
       this.setState({ programs });
     } catch (e) {
       console.log(e);
