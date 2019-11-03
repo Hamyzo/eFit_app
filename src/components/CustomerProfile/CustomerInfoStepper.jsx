@@ -5,6 +5,7 @@ import "./CustomerProfile.css";
 import PersonalInfo from "./Steps/PersonalInfo";
 import CustomerPhoto from "./Steps/CustomerPhoto";
 import FitnessGoals from "./Steps/FitnessGoals";
+import CustomerInfoFinish from "./Steps/CustomerInfoFinish";
 
 const { Step } = Steps;
 
@@ -30,7 +31,8 @@ class CustomerInfoStepper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: 0
+      current: 0,
+      finish: false
     };
   }
 
@@ -44,9 +46,16 @@ class CustomerInfoStepper extends React.Component {
     this.setState({ current: current - 1 });
   }
 
-  render() {
-    const { current } = this.state;
-    return (
+  handleDoneBtn = () => {
+    this.setState({ finish: true });
+  };
+
+  render = () => {
+    const { current, finish } = this.state;
+
+    const customerInfoDone = <CustomerInfoFinish />;
+
+    const stepDiv = (
       <div>
         <Steps className="steps" size="small" current={current}>
           {steps.map(item => (
@@ -73,7 +82,8 @@ class CustomerInfoStepper extends React.Component {
               <Button
                 type="primary"
                 style={{ float: "right" }}
-                onClick={() => message.success("Processing complete!")}
+                // onClick={() => message.success("Processing complete!")}
+                onClick={() => this.handleDoneBtn()}
               >
                 Done
               </Button>
@@ -90,7 +100,13 @@ class CustomerInfoStepper extends React.Component {
         </div>
       </div>
     );
-  }
+
+    if (finish === true) {
+      return customerInfoDone;
+    }
+
+    return stepDiv;
+  };
 }
 
 export default CustomerInfoStepper;

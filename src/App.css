@@ -26400,3 +26400,10 @@ div.ant-typography-edit-content {
   width: 100%;
   z-index: 1000;
 }
+
+.table {
+  margin: 5px 0 5px 0;
+  background: #fff;
+  width: 100%;
+  max-width: 100%;
+}
