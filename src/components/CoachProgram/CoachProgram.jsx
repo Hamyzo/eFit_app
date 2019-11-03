@@ -21,7 +21,7 @@ class CoachProgram extends React.Component {
         this.props.match
           ? this.props.match.params.customerProgramId
           : "5da1f67ccf53670572677651",
-        "populate=program"
+        "populate=program,sessions.exercises.exercise"
       );
       console.log("Program", program);
       this.setState({ program });
