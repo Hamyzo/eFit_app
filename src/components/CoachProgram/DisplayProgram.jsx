@@ -277,9 +277,11 @@ class DisplayProgram extends React.Component {
     </Panel>
   );
 
-  renderProgram = program => (
+  renderProgram = (program, isCustomerProgram) => (
     <div>
-      <h1 className="program_name">{program.program.name}</h1>
+      <h1 className="program_name">
+        {isCustomerProgram ? program.program.name : program.name}
+      </h1>
 
       <Collapse>
         {program.sessions.map((session, index) =>
@@ -295,9 +297,13 @@ class DisplayProgram extends React.Component {
   );
 
   render() {
-    const { program, editable } = this.props;
+    const { program, editable, isCustomerProgram } = this.props;
 
-    return <div>{program ? this.renderProgram(program) : <Spinner />}</div>;
+    return (
+      <div>
+        {program ? this.renderProgram(program, isCustomerProgram) : <Spinner />}
+      </div>
+    );
   }
 }
 
