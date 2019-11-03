@@ -77,6 +77,10 @@ class CustomersList extends React.Component {
         sessions: program.sessions
       };
       await apiServices.postOne("customerPrograms", newCustomerProgram);
+
+      // try to understand the two following lines, you'll need them a lot later
+      this.setState({ visible: false });
+      this.getCustomers();
     } catch (e) {
       console.log(e);
     }
