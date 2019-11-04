@@ -2,7 +2,7 @@ import React from "react";
 import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
-import NewSessionModal from "./NewSessionModal";
+import SessionModal from "./SessionModal";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -35,13 +35,134 @@ class DisplayProgram extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      displayAddSession: false
+      displaySessionModal: false,
+      selectedSession: {
+        periods: [{}],
+        exercises: [{}]
+      },
+      isNewSession: false,
+      index: 0,
+      originalIndex: 0
     };
   }
 
-  showModal = () => {
+  handleChangeSession = (name, value) => {
+    this.setState({
+      selectedSession: {
+        ...this.state.selectedSession,
+        [name]: value
+      }
+    });
+  };
+
+  handleChangeSessionPeriods = (index, name, value) => {
+    console.log(index);
+    const { periods } = this.state.selectedSession;
+    periods[index] = {
+      ...this.state.selectedSession.periods[index],
+      [name]: value
+    };
+    this.setState({
+      selectedSession: {
+        ...this.state.selectedSession,
+        periods
+      }
+    });
+  };
+
+  handleAddPeriod = () => {
+    let { periods } = this.state.selectedSession;
+    if (periods) {
+      periods.push({});
+    } else {
+      periods = [{}];
+    }
+    console.log(periods);
+    this.setState({
+      selectedSession: {
+        ...this.state.selectedSession,
+        periods
+      }
+    });
+  };
+
+  handleDeletePeriod = i => {
+    const { periods } = this.state.selectedSession;
+    periods.splice(i, 1);
+
+    console.log(i, periods);
+    this.setState({
+      selectedSession: {
+        ...this.state.selectedSession,
+        periods
+      }
+    });
+  };
+
+  handleChangeSessionExercises = (index, name, value) => {
+    console.log(index);
+    const { exercises } = this.state.selectedSession;
+    exercises[index] = {
+      ...this.state.selectedSession.exercises[index],
+      [name]: value
+    };
+    this.setState({
+      selectedSession: {
+        ...this.state.selectedSession,
+        exercises
+      }
+    });
+  };
+
+  handleAddExercise = () => {
+    let { exercises } = this.state.selectedSession;
+    if (exercises) {
+      exercises.push({});
+    } else {
+      exercises = [{}];
+    }
+    console.log(exercises);
+    this.setState({
+      selectedSession: {
+        ...this.state.selectedSession,
+        exercises
+      }
+    });
+  };
+
+  handleDeleteExercise = i => {
+    const { exercises } = this.state.selectedSession;
+    exercises.splice(i, 1);
+
+    console.log(i, exercises);
+    this.setState({
+      selectedSession: {
+        ...this.state.selectedSession,
+        exercises
+      }
+    });
+  };
+
+  handleChangeIndex = index => {
+    this.setState({ index });
+  };
+
+  showResultsModal = () => {
     this.setState({
       visible: true
+    });
+  };
+
+  showSessionModal = (selectedSession, index) => {
+    this.setState({
+      selectedSession: selectedSession || {
+        periods: [{}],
+        exercises: [{}]
+      },
+      index,
+      originalIndex: index,
+      isNewSession: !selectedSession,
+      displaySessionModal: true
     });
   };
 
@@ -184,11 +305,10 @@ class DisplayProgram extends React.Component {
           <Button
             className="results_btn"
             type="primary"
-            onClick={this.showModal}
+            onClick={this.showResultsModal}
           >
             See Results
           </Button>
-          {/* <Button className="edit_btn" type="primary">Edit Period</Button> */}
         </Col>
       </Row>
       <Modal
@@ -249,6 +369,17 @@ class DisplayProgram extends React.Component {
       }
       key={index}
     >
+      <Row>
+        <Col span={24}>
+          <Button
+            className="edit_btn"
+            type="primary"
+            onClick={() => this.showSessionModal(session, index)}
+          >
+            Edit Session
+          </Button>
+        </Col>
+      </Row>
       <Collapse bordered={false}>
         {session.periods.map((period, pindex) =>
           this.renderPeriod(
@@ -265,7 +396,7 @@ class DisplayProgram extends React.Component {
 
   renderProgram = program => (
     <div>
-      <h1 className="program_name">{program.program.name}</h1>
+      <h1 className="program_name">{program.name || program.program.name}</h1>
 
       <Collapse>
         {program.sessions.map((session, index) =>
@@ -280,7 +411,7 @@ class DisplayProgram extends React.Component {
       <Row className="period_btns">
         <Col offset={7} span={10}>
           <Button
-            onClick={() => this.setState({ displayAddSession: true })}
+            onClick={() => this.showSessionModal(null)}
             className="results_btn"
             type="primary"
             block
@@ -297,20 +428,40 @@ class DisplayProgram extends React.Component {
       program,
       editable,
       isCustomerProgram,
-      onSubmitNewSession
+      onSubmitSession
     } = this.props;
-    const { displayAddSession } = this.state;
+    const {
+      displaySessionModal,
+      selectedSession,
+      index,
+      isNewSession,
+      originalIndex
+    } = this.state;
 
+    console.log(selectedSession);
     return (
       <div>
         {program ? (
           <div>
             {this.renderProgram(program, isCustomerProgram)}
-            <NewSessionModal
-              displayAddSession={displayAddSession}
-              onSubmitNewSession={onSubmitNewSession}
+            <SessionModal
+              displaySessionModal={displaySessionModal}
+              onSubmitSession={(session, i) =>
+                onSubmitSession(session, i, originalIndex, isNewSession)
+              }
+              selectedSession={selectedSession}
               sessions={program.sessions || program.program.sessions}
-              onCancel={() => this.setState({ displayAddSession: false })}
+              index={index}
+              onCancel={() => this.setState({ displaySessionModal: false })}
+              onChangeSession={this.handleChangeSession}
+              onChangeSessionPeriods={this.handleChangeSessionPeriods}
+              onAddPeriod={this.handleAddPeriod}
+              onDeletePeriod={this.handleDeletePeriod}
+              onChangeIndex={this.handleChangeIndex}
+              onChangeSessionExercises={this.handleChangeSessionExercises}
+              onAddExercise={this.handleAddExercise}
+              onDeleteExercise={this.handleDeleteExercise}
+              isNewSession={isNewSession}
             />
           </div>
         ) : (
