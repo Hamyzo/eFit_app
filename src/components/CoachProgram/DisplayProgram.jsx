@@ -30,7 +30,6 @@ const customPanelStyle = {
   overflow: "hidden"
 };
 
-
 class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
@@ -150,7 +149,7 @@ class DisplayProgram extends React.Component {
 
   showResultsModal = () => {
     this.setState({
-      visible: true,
+      visible: true
     });
   };
 
@@ -412,11 +411,7 @@ class DisplayProgram extends React.Component {
   );
 
   render() {
-    const {
-      program,
-      editable,
-      onSubmitSession
-    } = this.props;
+    const { program, editable, onSubmitSession } = this.props;
     const {
       displaySessionModal,
       selectedSession,
