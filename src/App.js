@@ -24,6 +24,7 @@ import CustomerNotifications from "./components/CustomerNotifications/CustomerNo
 import Program from "./components/CoachProgram/Program";
 import Login from "./components/Login/Login";
 
+
 const { Content } = Layout;
 
 /* const PrivateRoute = ({ isLoggedIn, ...props }) => (

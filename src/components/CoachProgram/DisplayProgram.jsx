@@ -2,6 +2,7 @@ import React from "react";
 import { Collapse, Table, Row, Col, Button, Modal, Tabs } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
+import NewSessionModal from "./NewSessionModal";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -9,62 +10,57 @@ const { TabPane } = Tabs;
 const columns = [
   {
     title: "Exercise",
-    dataIndex: "exercise"
+    dataIndex: "exercise.name"
   },
   {
-    title: "Weight (kg)",
-    dataIndex: "weight"
+    title: "Sets",
+    dataIndex: "sets"
   },
   {
-    title: "Sets X Repetitions",
-    dataIndex: "setsXrepetitions"
+    title: "Repetitions",
+    dataIndex: "reps"
   }
 ];
-const data = [
-  {
-    key: "1",
-    exercise: "Push ups",
-    weight: "N/A",
-    setsXrepetitions: "3 x 12"
-  },
-  {
-    key: "2",
-    exercise: "Squats",
-    weight: 42,
-    setsXrepetitions: "3 x 12"
-  },
-  {
-    key: "3",
-    exercise: "Deadlift",
-    weight: 30,
-    setsXrepetitions: "4x6"
-  }
-];
+
+const customPanelStyle = {
+  background: '#f7f7f7',
+  borderRadius: 4,
+  marginBottom: 10,
+  border: 0,
+  overflow: 'hidden',
+};
+
 
 class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      visible: false,
+      displayAddSession: false
+    };
   }
-  state = { visible: false };
+
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
+  onChange = checked => {
+    console.log(`switch to ${checked}`);
+  };
   handleOk = e => {
-    console.log(e);
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
-      visible: false
+      visible: false,
     });
   };
+
 
   formatDate = rawDate => {
     const monthNames = [
@@ -108,7 +104,6 @@ class DisplayProgram extends React.Component {
   session_length = periods => {
     let length = 0;
     for (let j = 0; j < periods.length; j++) {
-      console.log(`PERIOD DAYS: ${periods[j].nb_days}`);
       length += parseInt(periods[j].nb_days);
     }
     return length;
@@ -130,7 +125,6 @@ class DisplayProgram extends React.Component {
 
   period_start_date = (program_start_date, periods_array, period_index) => {
     let days_to_sum = 0;
-    // console.log("PERIOD INDEX: "+ period_index + "SES SD: " + session_start_date)
     for (let j = 0; j < period_index; j++) {
       days_to_sum = days_to_sum + 1 + parseInt(periods_array[j].nb_days);
     }
@@ -138,11 +132,12 @@ class DisplayProgram extends React.Component {
       this.session_start_date(program_start_date),
       days_to_sum
     );
-    console.log(`----TOTAL: ${days_to_sum}`);
     return this.formatDate(new_date);
   };
 
-  renderPeriod = (period, index, start_date, periods_array) => (
+
+
+  renderPeriod = (session, period, index, start_date, periods_array) => (
     <Panel
       header={
         <div className="margin0">
@@ -157,47 +152,35 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <strong>Reps: </strong>
-                ?/{period.nb_repetitions}
+                <strong><img className="calendar" src="/assets/images/update.svg" />Reps: </strong>
+                -/{period.nb_repetitions}
               </p>
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <strong> </strong>
-                {this.period_start_date(
-                  start_date,
-                  periods_array,
-                  index
-                )} -{" "}
-                {this.period_end_date(
-                  period.nb_days,
-                  this.period_start_date(start_date, periods_array, index)
-                )}
+                <img className="calendar" src="/assets/images/calendar.svg" />
+                {this.period_start_date(start_date, periods_array, index)} - {this.period_end_date(
+                period.nb_days,
+                this.period_start_date(start_date, periods_array, index)
+              )}
               </p>
             </Col>
           </Row>
         </div>
       }
       key={index}
+      style={customPanelStyle}
     >
       <Table
         pagination={false}
         columns={columns}
-        dataSource={data}
+        dataSource={session.exercises}
         size="middle"
       />
       <Row className="period_btns">
         <Col>
-          <Button
-            className="results_btn"
-            type="primary"
-            onClick={this.showModal}
-          >
-            See Results
-          </Button>
-          <Button className="edit_btn" type="primary">
-            Edit Period
-          </Button>
+          <Button className="results_btn" type="primary" onClick={this.showModal}>See Results</Button>
+          {/*<Button className="edit_btn" type="primary">Edit Period</Button>*/}
         </Col>
       </Row>
       <Modal
@@ -206,14 +189,9 @@ class DisplayProgram extends React.Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" >
           <TabPane tab="Rep 1" key="1">
-            <Table
-              pagination={false}
-              columns={columns}
-              dataSource={data}
-              size="middle"
-            />
+
           </TabPane>
           <TabPane tab="Tab 2" key="2">
             Content of Tab Pane 2
@@ -222,6 +200,8 @@ class DisplayProgram extends React.Component {
             Content of Tab Pane 3
           </TabPane>
         </Tabs>
+
+
       </Modal>
     </Panel>
   );
@@ -238,25 +218,24 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <strong>Status:</strong> In Progress
+                <strong>Status:</strong> Not Started
               </p>
             </Col>
             <Col span={8}>
               <p className="margin0">
+                <img className="calendar" src="/assets/images/calendar.svg" />
                 {this.session_start_date(
                   program_start_date,
                   sessions_array,
                   index
-                )}{" "}
-                -{" "}
-                {this.session_end_date(
-                  session,
-                  this.session_start_date(
-                    program_start_date,
-                    sessions_array,
-                    index
-                  )
-                )}
+                )} - {this.session_end_date(
+                session,
+                this.session_start_date(
+                  program_start_date,
+                  sessions_array,
+                  index
+                )
+              )}
               </p>
             </Col>
           </Row>
@@ -264,9 +243,10 @@ class DisplayProgram extends React.Component {
       }
       key={index}
     >
-      <Collapse>
+      <Collapse bordered={false}>
         {session.periods.map((period, pindex) =>
           this.renderPeriod(
+            session,
             period,
             pindex,
             this.session_start_date(program_start_date, sessions_array, index),
@@ -277,11 +257,9 @@ class DisplayProgram extends React.Component {
     </Panel>
   );
 
-  renderProgram = (program, isCustomerProgram) => (
+  renderProgram = program => (
     <div>
-      <h1 className="program_name">
-        {isCustomerProgram ? program.program.name : program.name}
-      </h1>
+      <h1 className="program_name">{program.program.name}</h1>
 
       <Collapse>
         {program.sessions.map((session, index) =>
@@ -293,15 +271,45 @@ class DisplayProgram extends React.Component {
           )
         )}
       </Collapse>
+      <Row className="period_btns">
+        <Col offset={7} span={10}>
+          <Button
+            onClick={() => this.setState({ displayAddSession: true })}
+            className="results_btn"
+            type="primary"
+            block
+          >
+            <Icon type="plus" /> Add session
+          </Button>
+        </Col>
+      </Row>
     </div>
   );
 
   render() {
-    const { program, editable, isCustomerProgram } = this.props;
+    const {
+      program,
+      editable,
+      isCustomerProgram,
+      onSubmitNewSession
+    } = this.props;
+    const { displayAddSession } = this.state;
 
     return (
       <div>
-        {program ? this.renderProgram(program, isCustomerProgram) : <Spinner />}
+        {program ? (
+          <div>
+            {this.renderProgram(program, isCustomerProgram)}
+            <NewSessionModal
+              displayAddSession={displayAddSession}
+              onSubmitNewSession={onSubmitNewSession}
+              sessions={program.sessions || program.program.sessions}
+              onCancel={() => this.setState({ displayAddSession: false })}
+            />
+          </div>
+        ) : (
+          <Spinner />
+        )}
       </div>
     );
   }

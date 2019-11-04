@@ -95,7 +95,7 @@ export const patchOne = (resource, id, data) => {
       body: JSON.stringify(data)
     });
 
-    if (response.status === 201) {
+    if (response.status === 200) {
       resolve(response.json());
     } else {
       reject(response.error());

@@ -15,16 +15,29 @@ import {
 } from "antd";
 import "./CoachProgram.css";
 
+import * as apiServices from "../../apiServices";
+
 class NewSessionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       newSession: {
-        periods: [{}]
+        periods: [{}],
+        exercises: [{}]
       },
-      index: this.props.sessions.length
+      exercises: [],
+      index: 0
     };
   }
+
+  componentDidMount = async () => {
+    try {
+      const exercises = await apiServices.get("exercises", "");
+      this.setState({ exercises });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   handleChangeSession = (name, value) => {
     this.setState({
@@ -35,12 +48,12 @@ class NewSessionModal extends React.Component {
     });
   };
 
-  handleChangeSessionProgram = (index, name, value) => {
+  handleChangeSessionPeriods = (index, name, value) => {
     console.log(index);
     const { periods } = this.state.newSession;
     periods[index] = {
       ...this.state.newSession.periods[index],
-      name: value
+      [name]: value
     };
     this.setState({
       newSession: {
@@ -79,9 +92,53 @@ class NewSessionModal extends React.Component {
     });
   };
 
+  handleChangeSessionExercises = (index, name, value) => {
+    console.log(index);
+    const { exercises } = this.state.newSession;
+    exercises[index] = {
+      ...this.state.newSession.exercises[index],
+      [name]: value
+    };
+    this.setState({
+      newSession: {
+        ...this.state.newSession,
+        exercises
+      }
+    });
+  };
+
+  addExercise = () => {
+    let { exercises } = this.state.newSession;
+    if (exercises) {
+      exercises.push({});
+    } else {
+      exercises = [{}];
+    }
+    console.log(exercises);
+    this.setState({
+      newSession: {
+        ...this.state.newSession,
+        exercises
+      }
+    });
+  };
+
+  deleteExercise = i => {
+    const { exercises } = this.state.newSession;
+    exercises.splice(i, 1);
+
+    console.log(i, exercises);
+    this.setState({
+      newSession: {
+        ...this.state.newSession,
+        exercises
+      }
+    });
+  };
+
   render() {
     const { displayAddSession, form, sessions } = this.props;
-    const { newSession, index } = this.state;
+    const { newSession, index, exercises } = this.state;
     return (
       <div>
         <Modal
@@ -96,20 +153,20 @@ class NewSessionModal extends React.Component {
             <Button
               key="submit"
               type="primary"
-              onClick={() => this.props.onSubmitNewSession(newSession)}
+              onClick={() => this.props.onSubmitNewSession(newSession, index)}
             >
               Add session
             </Button>
           ]}
         >
-          <Form>
-            <Row gutter={16}>
-              <Col span={12}>
+          <Form style={{ padding: "20px" }}>
+            <Row type="flex" justify="space-between" align="middle">
+              <Col span={11}>
                 <Form.Item label="Name">
                   {form.getFieldDecorator("name", {
                     rules: [
                       {
-                        required: true,
+                        required: false,
                         message: "Please enter the session name"
                       }
                     ]
@@ -123,7 +180,7 @@ class NewSessionModal extends React.Component {
                   )}
                 </Form.Item>
               </Col>
-              <Col span={12}>
+              <Col span={11}>
                 <Form.Item label="Position">
                   {form.getFieldDecorator("position", {
                     rules: [
@@ -149,13 +206,40 @@ class NewSessionModal extends React.Component {
                 </Form.Item>
               </Col>
             </Row>
-            <Row gutter={16}>
+            <Row type="flex" justify="space-between" align="middle">
+              <Col span={24}>
+                <Form.Item label="Description">
+                  {form.getFieldDecorator("description", {
+                    rules: [
+                      {
+                        required: false,
+                        message: "Please enter the session description"
+                      }
+                    ]
+                  })(
+                    <Input.TextArea
+                      name="description"
+                      onChange={e =>
+                        this.handleChangeSession(e.target.name, e.target.value)
+                      }
+                    />
+                  )}
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Row>
+                <h3>Periods</h3>
+                <Button icon="plus" onClick={this.addPeriod}>
+                  Add period
+                </Button>
+              </Row>
               {newSession.periods
                 ? newSession.periods.map((period, i) => (
-                    <div>
-                      <Col span={10}>
+                    <Row type="flex" justify="space-between" align="middle">
+                      <Col span={9}>
                         <Form.Item label="Number of days" key={i}>
-                          {form.getFieldDecorator("nb_days" + i, {
+                          {form.getFieldDecorator(`nb_days${i}`, {
                             rules: [
                               {
                                 required: true,
@@ -164,9 +248,9 @@ class NewSessionModal extends React.Component {
                             ]
                           })(
                             <Input
-                              name={"nb_days" + i}
+                              name={`nb_days${i}`}
                               onChange={e =>
-                                this.handleChangeSessionProgram(
+                                this.handleChangeSessionPeriods(
                                   i,
                                   "nb_days",
                                   e.target.value
@@ -176,9 +260,9 @@ class NewSessionModal extends React.Component {
                           )}
                         </Form.Item>
                       </Col>
-                      <Col span={10}>
+                      <Col span={9}>
                         <Form.Item label="Number of repetitions" key={i}>
-                          {form.getFieldDecorator("nb_repetitions" + i, {
+                          {form.getFieldDecorator(`nb_repetitions${i}`, {
                             rules: [
                               {
                                 required: true,
@@ -187,9 +271,9 @@ class NewSessionModal extends React.Component {
                             ]
                           })(
                             <Input
-                              name={"nb_repetitions" + i}
+                              name={`nb_repetitions${i}`}
                               onChange={e =>
-                                this.handleChangeSessionProgram(
+                                this.handleChangeSessionPeriods(
                                   i,
                                   "nb_repetitions",
                                   e.target.value
@@ -199,23 +283,117 @@ class NewSessionModal extends React.Component {
                           )}
                         </Form.Item>
                       </Col>
-                      <Col span={4}>
-                        <Row type="flex" align="middle">
-                          <Button
-                            shape="circle"
-                            icon="delete"
-                            type="danger"
-                            ghost
-                            onClick={() => this.deletePeriod(i)}
-                          />
-                        </Row>
+                      <Col span={2}>
+                        <Button
+                          shape="circle"
+                          icon="delete"
+                          type="danger"
+                          ghost
+                          onClick={() => this.deletePeriod(i)}
+                        />
                       </Col>
-                    </div>
+                    </Row>
                   ))
                 : null}
-              <Button icon="plus" onClick={this.addPeriod}>
-                Add period
+            </Row>
+            <Row>
+              <h3>Exercises</h3>
+              <Button icon="plus" onClick={this.addExercise}>
+                Add exercise
               </Button>
+              {newSession.exercises
+                ? newSession.exercises.map((exercise, i) => (
+                    <Row type="flex" justify="space-between" align="middle">
+                      <Col span={8}>
+                        <Form.Item label="Exercise" key={i}>
+                          {form.getFieldDecorator(`exercise${i}`, {
+                            rules: [
+                              {
+                                required: true,
+                                message: "This field is required"
+                              }
+                            ]
+                          })(
+                            <Select
+                              name={`exercise${i}`}
+                              onChange={value =>
+                                this.handleChangeSessionExercises(
+                                  i,
+                                  "exercise",
+                                  value
+                                )
+                              }
+                            >
+                              {exercises.map(exercise => (
+                                <Select.Option
+                                  value={exercise._id}
+                                  key={exercise._id}
+                                >
+                                  {exercise.name}
+                                </Select.Option>
+                              ))}
+                            </Select>
+                          )}
+                        </Form.Item>
+                      </Col>
+                      <Col span={5}>
+                        <Form.Item label="Reps" key={i}>
+                          {form.getFieldDecorator(`reps${i}`, {
+                            rules: [
+                              {
+                                required: true,
+                                message: "This field is required"
+                              }
+                            ]
+                          })(
+                            <Input
+                              name={`reps${i}`}
+                              onChange={e =>
+                                this.handleChangeSessionExercises(
+                                  i,
+                                  "reps",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          )}
+                        </Form.Item>
+                      </Col>
+                      <Col span={5}>
+                        <Form.Item label="Sets" key={i}>
+                          {form.getFieldDecorator(`sets${i}`, {
+                            rules: [
+                              {
+                                required: true,
+                                message: "This field is required"
+                              }
+                            ]
+                          })(
+                            <Input
+                              name={`sets${i}`}
+                              onChange={e =>
+                                this.handleChangeSessionExercises(
+                                  i,
+                                  "sets",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          )}
+                        </Form.Item>
+                      </Col>
+                      <Col span={2}>
+                        <Button
+                          shape="circle"
+                          icon="delete"
+                          type="danger"
+                          ghost
+                          onClick={() => this.deleteExercise(i)}
+                        />
+                      </Col>
+                    </Row>
+                  ))
+                : null}
             </Row>
           </Form>
         </Modal>
