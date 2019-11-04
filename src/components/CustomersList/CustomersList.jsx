@@ -92,7 +92,7 @@ class CustomersList extends React.Component {
     // const customerProgramUrl = "/CoachProgram?_id=" + row._id;
     const columns = [
       {
-        title: "Profile",
+        title: "Picture",
         width: 70,
         dataIndex: "img",
         render: (text, row, index) => (
