@@ -17,35 +17,30 @@
   margin-bottom: 2%;
 }
 
-.program_name{
+.program_name {
   margin-top: 4%;
 }
 
-.period_btns{
+.period_btns {
   margin-top: 2%;
   float: right;
   margin-bottom: 2%;
   width: 100%;
-
 }
-.edit_btn{
+.edit_btn {
   margin-right: 1%;
   margin-bottom: 1%;
   float: right;
 }
-.results_btn{
+.results_btn {
   margin-right: 1%;
   margin-bottom: 1%;
   float: right;
 }
 
-.calendar{
+.calendar {
   width: 20px;
   height: 20px;
   padding-bottom: 3px;
   margin-right: 1%;
-
 }
-
-
-

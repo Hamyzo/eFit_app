@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapse, Table, Row, Col, Button, Modal, Tabs } from "antd";
+import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 import NewSessionModal from "./NewSessionModal";
@@ -23,13 +23,12 @@ const columns = [
 ];
 
 const customPanelStyle = {
-  background: '#f7f7f7',
+  background: "#f7f7f7",
   borderRadius: 4,
   marginBottom: 10,
   border: 0,
-  overflow: 'hidden',
+  overflow: "hidden"
 };
-
 
 class DisplayProgram extends React.Component {
   constructor(props) {
@@ -42,25 +41,25 @@ class DisplayProgram extends React.Component {
 
   showModal = () => {
     this.setState({
-      visible: true,
+      visible: true
     });
   };
 
   onChange = checked => {
     console.log(`switch to ${checked}`);
   };
+
   handleOk = e => {
     this.setState({
-      visible: false,
+      visible: false
     });
   };
 
   handleCancel = e => {
     this.setState({
-      visible: false,
+      visible: false
     });
   };
-
 
   formatDate = rawDate => {
     const monthNames = [
@@ -135,8 +134,6 @@ class DisplayProgram extends React.Component {
     return this.formatDate(new_date);
   };
 
-
-
   renderPeriod = (session, period, index, start_date, periods_array) => (
     <Panel
       header={
@@ -144,25 +141,30 @@ class DisplayProgram extends React.Component {
           <Row>
             <Col span={8}>
               <p className="margin0">
-                <strong>
-                  Period
-                  {index + 1}
-                </strong>
+                <strong>Period {index + 1}</strong>
               </p>
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <strong><img className="calendar" src="/assets/images/update.svg" />Reps: </strong>
+                <strong>
+                  <img className="calendar" src="/assets/images/update.svg" />
+                  Reps:{" "}
+                </strong>
                 -/{period.nb_repetitions}
               </p>
             </Col>
             <Col span={8}>
               <p className="margin0">
                 <img className="calendar" src="/assets/images/calendar.svg" />
-                {this.period_start_date(start_date, periods_array, index)} - {this.period_end_date(
-                period.nb_days,
-                this.period_start_date(start_date, periods_array, index)
-              )}
+                {this.period_start_date(
+                  start_date,
+                  periods_array,
+                  index
+                )} -{" "}
+                {this.period_end_date(
+                  period.nb_days,
+                  this.period_start_date(start_date, periods_array, index)
+                )}
               </p>
             </Col>
           </Row>
@@ -179,8 +181,14 @@ class DisplayProgram extends React.Component {
       />
       <Row className="period_btns">
         <Col>
-          <Button className="results_btn" type="primary" onClick={this.showModal}>See Results</Button>
-          {/*<Button className="edit_btn" type="primary">Edit Period</Button>*/}
+          <Button
+            className="results_btn"
+            type="primary"
+            onClick={this.showModal}
+          >
+            See Results
+          </Button>
+          {/* <Button className="edit_btn" type="primary">Edit Period</Button> */}
         </Col>
       </Row>
       <Modal
@@ -189,10 +197,8 @@ class DisplayProgram extends React.Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <Tabs defaultActiveKey="1" >
-          <TabPane tab="Rep 1" key="1">
-
-          </TabPane>
+        <Tabs defaultActiveKey="1">
+          <TabPane tab="Rep 1" key="1" />
           <TabPane tab="Tab 2" key="2">
             Content of Tab Pane 2
           </TabPane>
@@ -200,8 +206,6 @@ class DisplayProgram extends React.Component {
             Content of Tab Pane 3
           </TabPane>
         </Tabs>
-
-
       </Modal>
     </Panel>
   );
@@ -228,14 +232,16 @@ class DisplayProgram extends React.Component {
                   program_start_date,
                   sessions_array,
                   index
-                )} - {this.session_end_date(
-                session,
-                this.session_start_date(
-                  program_start_date,
-                  sessions_array,
-                  index
-                )
-              )}
+                )}{" "}
+                -{" "}
+                {this.session_end_date(
+                  session,
+                  this.session_start_date(
+                    program_start_date,
+                    sessions_array,
+                    index
+                  )
+                )}
               </p>
             </Col>
           </Row>
