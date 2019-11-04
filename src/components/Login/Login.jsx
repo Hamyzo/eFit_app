@@ -1,16 +1,21 @@
 import React from "react";
 import { Result, Button, Card } from "antd";
 import "./Login.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
   handleClick = (userType, isLoggedIn) => {
     localStorage.setItem("userType", userType);
     localStorage.setItem("isLoggedIn", isLoggedIn);
+    this.props.history.push({
+      pathname: "/",
+      state: { user: { authenticated: true } }
+    });
   };
 
   render() {
@@ -34,7 +39,7 @@ class Login extends React.Component {
             style={{ marginLeft: "30px" }}
             onClick={() => this.handleClick("Customer", true)}
           >
-            <NavLink to={"/dashboard"}> I am a Customer</NavLink>
+            I am a Customer
           </Button>
         </Card>
       </div>

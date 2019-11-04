@@ -22,7 +22,6 @@ class CoachProgram extends React.Component {
           ? this.props.match.params.customerProgramId
           : "5da1f67ccf53670572677651",
         "populate=program"
-
       );
       console.log("Program", program);
       this.setState({ program });
@@ -52,7 +51,6 @@ class CoachProgram extends React.Component {
       <DisplayProgram
         program={program}
         editable={true}
-        isCustomerProgram={true}
         onSubmitNewSession={this.handleSubmitNewSession}
       />
     );
