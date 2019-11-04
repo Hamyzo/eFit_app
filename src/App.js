@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 
 import { Layout, notification } from "antd";
-import {HashRouter, Route} from "react-router-dom";
+import {HashRouter, Redirect, Route} from "react-router-dom";
 import windowSize from "react-window-size";
 
 import Sider from "./components/Global/Sider";
@@ -22,22 +22,43 @@ import CustomerMessaging from "./components/CustomerMessaging/CustomerMessaging"
 import CustomerAppointments from "./components/CustomerAppointments/CustomerAppointments";
 import CustomerNotifications from "./components/CustomerNotifications/CustomerNotifications";
 import Program from "./components/CoachProgram/Program";
-
+import Login from "./components/Login/Login";
 
 const { Content } = Layout;
 
-// eslint-disable-next-line react/prefer-stateless-function
+/* const PrivateRoute = ({ isLoggedIn, ...props }) => (
+    isLoggedIn
+        ? <Route { ...props } />
+        : <Redirect to="/login" />
+);
+*/
+
 class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false
+    };
+  }
+
+  componentDidMount() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    this.setState({ isLoggedIn });
+  }
   render() {
     const { windowWidth } = this.props;
+    const { isLoggedIn } = this.state;
     return (
       <HashRouter>
         <Layout style={{ minHeight: "100vh" }}>
-          {windowWidth < 576 ? null : <Sider />}
+          {windowWidth < 576 || !isLoggedIn ? null : <Sider />}
           <Layout>
-            <Header />
+            {isLoggedIn ? <Header /> : null }
             <Content style={{ margin: "64px 10px 64px 10px" }}>
-              <Route exact path="/" component={CustomerDashboard} />
+              {/* <PrivateRoute isLoggedIn={ isLoggedIn } path="/" component={CustomerDashboard} /> */}
+              <Route exact path="/" component={Login} />
+              <Route exact path="/dashboard" component={CustomerDashboard} />
               <Route
                 path="/coachProgram/:customerProgramId"
                 component={CoachProgram}
