@@ -33,13 +33,7 @@ class Program extends React.Component {
   render() {
     const { program } = this.state;
 
-    return (
-      <DisplayProgram
-        program={program}
-        editable={true}
-        isCustomerProgram={false}
-      />
-    );
+    return <DisplayProgram program={program} editable={true} />;
   }
 }
 

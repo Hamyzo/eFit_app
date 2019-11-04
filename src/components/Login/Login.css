@@ -1,0 +1,37 @@
+.ant-layout {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #666;
+    /* background: linear-gradient(to right, #F9AD6A 0%, #F9AD6A 50%); */
+    transition: all 0.3s;
+}
+#login .formLogin {
+    border-radius: 10px;
+    margin: auto;
+    padding: 30px;
+    width: 420px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0 20px 30px rgba(0, 0, 0, .2);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, .2);
+    background-color: #fff;
+}
+
+ #login .logo-login {
+     text-align: center;
+ }
+
+#login .logo-login img {
+    margin: 0 auto;
+    text-align: center;
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+}
+
+ .btn-lg {
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    height:50px;
+}

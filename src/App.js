@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 
 import { Layout, notification } from "antd";
-import {HashRouter, Route} from "react-router-dom";
+import { HashRouter, Redirect, Route } from "react-router-dom";
 import windowSize from "react-window-size";
 
 import Sider from "./components/Global/Sider";
@@ -22,35 +22,60 @@ import CustomerMessaging from "./components/CustomerMessaging/CustomerMessaging"
 import CustomerAppointments from "./components/CustomerAppointments/CustomerAppointments";
 import CustomerNotifications from "./components/CustomerNotifications/CustomerNotifications";
 import Program from "./components/CoachProgram/Program";
+import Login from "./components/Login/Login";
+
 
 const { Content } = Layout;
 
-// eslint-disable-next-line react/prefer-stateless-function
+const PrivateRoute = ({ isLoggedIn, path, component }) => (
+  isLoggedIn
+    ? <Route path={path} component={component} />
+    : <Redirect to="/login" />
+);
+
+
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: localStorage.getItem("isLoggedIn") === "true"
+    };
+  }
+
+  /* componentDidMount() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    this.setState({ isLoggedIn });
+  } */
+
   render() {
     const { windowWidth } = this.props;
+    const { isLoggedIn } = this.state;
+    console.log("isLoggedIn", isLoggedIn);
     return (
       <HashRouter>
         <Layout style={{ minHeight: "100vh" }}>
-          {windowWidth < 576 ? null : <Sider />}
+          {windowWidth < 576 || !isLoggedIn ? null : <Sider />}
           <Layout>
-            <Header />
+            {isLoggedIn ? <Header /> : null }
             <Content style={{ margin: "64px 10px 64px 10px" }}>
-              <Route exact path="/" component={CustomerDashboard} />
-              <Route
+              <PrivateRoute isLoggedIn={isLoggedIn} path="/" component={CustomerDashboard} />
+              <Route exact path="/login" component={Login} />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
                 path="/coachProgram/:customerProgramId"
                 component={CoachProgram}
               />
-              <Route
-                  path="/program/:programId"
-                  component={Program}
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/program/:programId"
+                component={Program}
               />
-              <Route path="/customersList" component={CustomersList} />
-              <Route path="/customerInfoStepper" component={CustomerInfoStepper} />
-              <Route path="/myProgram" component={Repetition} />
-              <Route path="/appointments" component={CustomerAppointments} />
-              <Route path="/messages" component={CustomerMessaging} />
-              <Route path="/notifications" component={CustomerNotifications} />
+              <PrivateRoute isLoggedIn={isLoggedIn} path="/customersList" component={CustomersList} />
+              <PrivateRoute isLoggedIn={isLoggedIn} path="/customerInfoStepper" component={CustomerInfoStepper} />
+              <PrivateRoute isLoggedIn={isLoggedIn} path="/myProgram" component={Repetition} />
+              <PrivateRoute isLoggedIn={isLoggedIn} path="/appointments" component={CustomerAppointments} />
+              <PrivateRoute isLoggedIn={isLoggedIn} path="/messages" component={CustomerMessaging} />
+              <PrivateRoute isLoggedIn={isLoggedIn} path="/notifications" component={CustomerNotifications} />
             </Content>
             {windowWidth < 576 ? <MobileFooter /> : null}
           </Layout>
