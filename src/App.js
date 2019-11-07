@@ -29,7 +29,7 @@ const { Content } = Layout;
 
 const PrivateRoute = ({ isLoggedIn, path, component }) => (
   isLoggedIn
-    ? <Route path={path} component={component} />
+    ? <Route exact path={path} component={component} />
     : <Redirect to="/login" />
 );
 
@@ -38,7 +38,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: localStorage.getItem("isLoggedIn") === "true"
+      isLoggedIn: props.location ? props.location.state.isLoggedIn : localStorage.getItem("isLoggedIn") === "true"
     };
   }
 
@@ -59,6 +59,7 @@ class App extends React.Component {
             {isLoggedIn ? <Header /> : null }
             <Content style={{ margin: "64px 10px 64px 10px" }}>
               <PrivateRoute isLoggedIn={isLoggedIn} path="/" component={CustomerDashboard} />
+              <Route path="/dashboard" component={CustomerDashboard} />
               <Route exact path="/login" component={Login} />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}

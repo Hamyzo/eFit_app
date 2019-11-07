@@ -117,8 +117,8 @@ class CustomersList extends React.Component {
         width: 100,
         render: (text, row, index) => (
           <span>
-            <a href="mailto: {row.email}">
-              <Icon type="mail" /> {row.email}
+            <a>
+              <Icon type="mail" /> Send a message
             </a>
           </span>
         )

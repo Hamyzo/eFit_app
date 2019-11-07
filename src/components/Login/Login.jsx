@@ -13,8 +13,8 @@ class Login extends React.Component {
     localStorage.setItem("userType", userType);
     localStorage.setItem("isLoggedIn", isLoggedIn);
     this.props.history.push({
-      pathname: "/",
-      state: { user: { authenticated: true } }
+      pathname: "/dashboard",
+      state: { isLoggedIn: true }
     });
   };
 
