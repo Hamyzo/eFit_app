@@ -29,7 +29,7 @@ const { Content } = Layout;
 
 const PrivateRoute = ({ isLoggedIn, path, component }) => (
   isLoggedIn
-    ? <Route path={path} component={component} />
+    ? <Route exact path={path} component={component} />
     : <Redirect to="/login" />
 );
 
