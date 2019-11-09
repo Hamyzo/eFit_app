@@ -22,6 +22,17 @@ const columns = [
   }
 ];
 
+const columns_results = [
+  {
+    title: "Exercise",
+    dataIndex: "exercise.name"
+  },
+  {
+    title: "Performance",
+    dataIndex: "performance"
+  }
+];
+
 const customPanelStyle = {
   background: "#f7f7f7",
   borderRadius: 4,
@@ -29,6 +40,7 @@ const customPanelStyle = {
   border: 0,
   overflow: "hidden"
 };
+
 
 class DisplayProgram extends React.Component {
   constructor(props) {
@@ -55,8 +67,20 @@ class DisplayProgram extends React.Component {
     });
   };
 
+  showSessionModal = (selectedSession, index) => {
+    this.setState({
+      selectedSession: selectedSession || {
+        periods: [{}],
+        exercises: [{}]
+      },
+      index,
+      originalIndex: index,
+      isNewSession: !selectedSession,
+      displaySessionModal: true
+    });
+  };
+
   handleChangeSessionPeriods = (index, name, value) => {
-    console.log(index);
     const { periods } = this.state.selectedSession;
     periods[index] = {
       ...this.state.selectedSession.periods[index],
@@ -77,7 +101,7 @@ class DisplayProgram extends React.Component {
     } else {
       periods = [{}];
     }
-    console.log(periods);
+
     this.setState({
       selectedSession: {
         ...this.state.selectedSession,
@@ -90,7 +114,7 @@ class DisplayProgram extends React.Component {
     const { periods } = this.state.selectedSession;
     periods.splice(i, 1);
 
-    console.log(i, periods);
+
     this.setState({
       selectedSession: {
         ...this.state.selectedSession,
@@ -121,7 +145,6 @@ class DisplayProgram extends React.Component {
     } else {
       exercises = [{}];
     }
-    console.log(exercises);
     this.setState({
       selectedSession: {
         ...this.state.selectedSession,
@@ -134,7 +157,7 @@ class DisplayProgram extends React.Component {
     const { exercises } = this.state.selectedSession;
     exercises.splice(i, 1);
 
-    console.log(i, exercises);
+
     this.setState({
       selectedSession: {
         ...this.state.selectedSession,
@@ -291,7 +314,7 @@ class DisplayProgram extends React.Component {
         <Col offset={6} span={12}>
           <Button
             className="results_btn"
-            type="primary"
+
             onClick={this.showResultsModal} block
           >
             See Results
@@ -304,18 +327,34 @@ class DisplayProgram extends React.Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <Tabs defaultActiveKey="1">
-          <TabPane tab="Rep 1" key="1" />
-          <TabPane tab="Tab 2" key="2">
-            Content of Tab Pane 2
-          </TabPane>
-          <TabPane tab="Tab 3" key="3">
-            Content of Tab Pane 3
-          </TabPane>
+        <Tabs defaultActiveKey="0">
+          {period.results.map((rep, r_index) =>
+              this.renderRep(
+                rep,
+                r_index
+              )
+            )}
         </Tabs>
       </Modal>
     </Panel>
   );
+
+  renderRep = (period, index) => (
+
+    <TabPane tab={"Rep" + (index + 1)} key={index}>
+      <Table
+        pagination={false}
+        columns={columns_results}
+        dataSource={period}
+        size="small"
+        bordered={false}
+      />
+      <br />
+      {console.log(period)}
+    </TabPane>
+  );
+
+
 
   renderSession = (session, index, program_start_date, sessions_array) => (
     <Panel
@@ -447,12 +486,12 @@ class DisplayProgram extends React.Component {
       originalIndex
     } = this.state;
 
-    console.log(selectedSession);
+
     return (
       <div>
         {program ? (
           <div>
-            {this.renderBanner(program.customer)}
+            {/*this.renderBanner(program.customer)*/}
             {this.renderProgram(program)}
             <SessionModal
               displaySessionModal={displaySessionModal}
