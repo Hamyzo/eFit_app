@@ -1,14 +1,15 @@
 import React from "react";
 import * as apiServices from "../../apiServices";
 import DisplayProgram from "./DisplayProgram";
+import CustomerProgress from "./CustomerProgress";
 import { Row, Col, Avatar } from "antd";
-import SessionModal from "./SessionModal";
 import Spinner from "../Global/Spinner";
 class CoachProgram extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      program: null
+      program: null,
+
     };
   }
 
@@ -22,24 +23,24 @@ class CoachProgram extends React.Component {
       const program = await apiServices.getOne(
         "customerPrograms",
         match ? match.params.customerProgramId : "5da1f67ccf53670572677651",
-        "populate=program,customer"
+        "populate=program,customer,focus_sessions"
       );
       console.log("Program", program);
       this.setState({ program });
     } catch (e) {
-      console.log(e);
     }
   };
 
+
   handleSubmitSession = async (session, index, originalIndex, isNewSession) => {
-    console.log(`session ${index}`, session);
+
     try {
       const { program } = this.state;
       if (!isNewSession) {
         program.sessions.splice(originalIndex, 1);
       }
       program.sessions.splice(index, 0, session);
-      console.log(program.sessions);
+
       await apiServices.patchOne("customerPrograms", program._id, {
         sessions: program.sessions
       });
@@ -70,10 +71,14 @@ class CoachProgram extends React.Component {
 
   render() {
     const { program } = this.state;
+
     return (
       <div>
         {program ? (
-          <div>{this.renderBanner(program.customer)}</div>
+          <div>{this.renderBanner(program.customer)}
+
+          </div>
+
         ) : (
           <Spinner />
         )}
@@ -86,6 +91,9 @@ class CoachProgram extends React.Component {
               isCustomerProgram
               onSubmitSession={this.handleSubmitSession}
             />
+          </Col>
+          <Col>
+            <CustomerProgress />
           </Col>
         </Row>
       </div>
