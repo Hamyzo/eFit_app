@@ -20,7 +20,7 @@ class CoachProgram extends React.Component {
       const program = await apiServices.getOne(
         "customerPrograms",
         match ? match.params.customerProgramId : "5da1f67ccf53670572677651",
-        "populate=program"
+        "populate=program,customer"
       );
       console.log("Program", program);
       this.setState({ program });

@@ -1,6 +1,6 @@
 import React from "react";
 import * as PropTypes from "prop-types";
-import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon } from "antd";
+import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon, Avatar } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 import SessionModal from "./SessionModal";
@@ -299,11 +299,11 @@ class DisplayProgram extends React.Component {
         size="middle"
       />
       <Row className="period_btns">
-        <Col>
+        <Col offset={6} span={12}>
           <Button
             className="results_btn"
             type="primary"
-            onClick={this.showResultsModal}
+            onClick={this.showResultsModal} block
           >
             See Results
           </Button>
@@ -363,17 +363,7 @@ class DisplayProgram extends React.Component {
       }
       key={index}
     >
-      <Row>
-        <Col span={24}>
-          <Button
-            className="edit_btn"
-            type="primary"
-            onClick={() => this.showSessionModal(session, index)}
-          >
-            Edit Session
-          </Button>
-        </Col>
-      </Row>
+
       <Collapse bordered={false}>
         {session.periods.map((period, pindex) =>
           this.renderPeriod(
@@ -385,6 +375,28 @@ class DisplayProgram extends React.Component {
           )
         )}
       </Collapse>
+
+      <Row>
+        <Col offset={8} span={4}>
+          <Button
+            className="results_btn"
+            onClick={() => this.showSessionModal(session, index)}
+            block
+          >
+            Edit Session
+          </Button>
+        </Col>
+        <Col span={4}>
+          <Button
+            className="delete_session_btn"
+            type="danger"
+            onClick={() => this.showSessionModal(session, index)}
+            block
+          >
+            Delete Session
+          </Button>
+        </Col>
+      </Row>
     </Panel>
   );
 
@@ -417,6 +429,21 @@ class DisplayProgram extends React.Component {
     </div>
   );
 
+  renderBanner = customer => (
+    <div className="customer_banner">
+      <Row>
+        <Col span={2}><Avatar src={customer.img} size={64}/></Col>
+        <Col span={4}>
+          <h1>{customer.first_name} {customer.last_name}</h1>
+          <p>Last workout: dd/mm</p>
+        </Col>
+        <Col offset={4} span={4}>
+          <p> Currently on: Session 2, Period 1</p>
+        </Col>
+      </Row>
+    </div>
+  );
+
   render() {
     const { program, onSubmitSession } = this.props;
     const {
@@ -432,6 +459,7 @@ class DisplayProgram extends React.Component {
       <div>
         {program ? (
           <div>
+            {program.customer ? this.renderBanner(program.customer) : null}
             {this.renderProgram(program)}
             <SessionModal
               displaySessionModal={displaySessionModal}
