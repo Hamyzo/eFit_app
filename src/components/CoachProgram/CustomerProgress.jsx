@@ -1,5 +1,15 @@
 import React from "react";
-import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon, Avatar } from "antd";
+import {
+  Collapse,
+  Table,
+  Row,
+  Col,
+  Button,
+  Modal,
+  Tabs,
+  Icon,
+  Avatar
+} from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 
@@ -28,7 +38,6 @@ class CustomerProgress extends React.Component {
       isNewSession,
       originalIndex
     } = this.state;
-
 
     return (
       <div>

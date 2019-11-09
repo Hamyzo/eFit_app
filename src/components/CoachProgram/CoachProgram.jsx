@@ -52,9 +52,13 @@ class CoachProgram extends React.Component {
   renderBanner = customer => (
     <div className="customer_banner">
       <Row>
-        <Col span={2}><Avatar src={customer.img} size={64}/></Col>
+        <Col span={2}>
+          <Avatar src={customer.img} size={64} />
+        </Col>
         <Col span={4}>
-          <h1>{customer.first_name} {customer.last_name}</h1>
+          <h1>
+            {customer.first_name} {customer.last_name}
+          </h1>
           <p>Last workout: dd/mm</p>
         </Col>
         <Col offset={4} span={4}>
@@ -67,23 +71,19 @@ class CoachProgram extends React.Component {
   render() {
     const { program } = this.state;
     return (
-
       <div>
-
-          {program ? (
-            <div>
-              {this.renderBanner(program.customer)}
-            </div>
-          ) : (
-            <Spinner />
-          )}
+        {program ? (
+          <div>{this.renderBanner(program.customer)}</div>
+        ) : (
+          <Spinner />
+        )}
 
         <Row>
           <Col span={15}>
             <DisplayProgram
               program={program}
-              editable={true}
-              isCustomerProgram={true}
+              editable
+              isCustomerProgram
               onSubmitSession={this.handleSubmitSession}
             />
           </Col>
