@@ -9,7 +9,6 @@ class CoachProgram extends React.Component {
     super(props);
     this.state = {
       program: null,
-
     };
   }
 
@@ -75,10 +74,7 @@ class CoachProgram extends React.Component {
     return (
       <div>
         {program ? (
-          <div>{this.renderBanner(program.customer)}
-
-          </div>
-
+          <div>{this.renderBanner(program.customer)}</div>
         ) : (
           <Spinner />
         )}
