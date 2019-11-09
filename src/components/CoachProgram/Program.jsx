@@ -14,13 +14,12 @@ class Program extends React.Component {
     this.getProgram();
   };
 
-  getProgram = async _ => {
+  getProgram = async () => {
+    const { match } = this.props;
     try {
       const program = await apiServices.getOne(
         "programs",
-        this.props.match
-          ? this.props.match.params.programId
-          : "5da1f67ccf53670572677651",
+        match ? match.params.programId : "5da1f67ccf53670572677651",
         "populate=program"
       );
       console.log("Program", program);
@@ -33,7 +32,7 @@ class Program extends React.Component {
   render() {
     const { program } = this.state;
 
-    return <DisplayProgram program={program} editable={true} />;
+    return <DisplayProgram program={program} editable />;
   }
 }
 

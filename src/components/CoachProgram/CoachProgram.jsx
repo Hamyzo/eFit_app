@@ -14,13 +14,12 @@ class CoachProgram extends React.Component {
     this.getProgram();
   };
 
-  getProgram = async _ => {
+  getProgram = async () => {
     try {
+      const { match } = this.props;
       const program = await apiServices.getOne(
         "customerPrograms",
-        this.props.match
-          ? this.props.match.params.customerProgramId
-          : "5da1f67ccf53670572677651",
+        match ? match.params.customerProgramId : "5da1f67ccf53670572677651",
         "populate=program"
       );
       console.log("Program", program);
@@ -54,8 +53,8 @@ class CoachProgram extends React.Component {
     return (
       <DisplayProgram
         program={program}
-        editable={true}
-        isCustomerProgram={true}
+        editable
+        isCustomerProgram
         onSubmitSession={this.handleSubmitSession}
       />
     );
