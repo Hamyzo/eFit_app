@@ -34,7 +34,6 @@ class CustomerProgress extends React.Component {
       <div>
         {program ? (
           <div>
-            {/*this.renderBanner(program.customer)*/}
             {this.renderProgram(program)}
             <SessionModal
               displaySessionModal={displaySessionModal}
