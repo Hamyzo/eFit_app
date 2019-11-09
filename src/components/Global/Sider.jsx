@@ -1,10 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { Layout, Menu, Icon, Badge } from "antd";
+import { Layout, Menu, Icon } from "antd";
 
 const { Sider } = Layout;
-const { SubMenu } = Menu;
 
 class SiderComponent extends React.Component {
   constructor(props) {
@@ -15,32 +14,34 @@ class SiderComponent extends React.Component {
     };
   }
 
-  onCollapse = collapsed => {
-    this.setState({ collapsed });
-    localStorage.setItem("collapse_state", collapsed);
-  };
-
   componentDidMount() {
     const collapsed = localStorage.getItem("collapse_state") === "true";
     const userType = localStorage.getItem("userType");
     this.setState({ collapsed, userType });
   }
 
+  onCollapse = collapsed => {
+    this.setState({ collapsed });
+    localStorage.setItem("collapse_state", collapsed);
+  };
+
   render() {
     const { collapsed, userType } = this.state;
-    const { index, handleClick } = this.props;
+    const { index } = this.props;
     return (
-      <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-        <div className="logoContainer">
-          <div className="logo" />
-          {setTimeout(
-            () =>
-              collapsed ? null : <span className="appName">eFit APP</span>,
-            100
-          )}
-        </div>
+      <Sider
+        style={{ marginTop: "60px" }}
+        collapsible
+        collapsed={collapsed}
+        onCollapse={this.onCollapse}
+      >
         {userType === "Coach" ? (
-          <Menu theme="dark" defaultSelectedKeys={[index]} mode="inline">
+          <Menu
+            style={{ marginTop: "10px" }}
+            theme="dark"
+            defaultSelectedKeys={[index]}
+            mode="inline"
+          >
             <Menu.Item key="1">
               <NavLink to="/customerInfoStepper">
                 <Icon type="user" />

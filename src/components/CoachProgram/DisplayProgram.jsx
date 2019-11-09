@@ -1,5 +1,15 @@
 import React from "react";
-import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon, Avatar } from "antd";
+import {
+  Collapse,
+  Table,
+  Row,
+  Col,
+  Button,
+  Modal,
+  Tabs,
+  Icon,
+  Avatar
+} from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 import SessionModal from "./SessionModal";
@@ -41,7 +51,6 @@ const customPanelStyle = {
   overflow: "hidden"
 };
 
-
 class DisplayProgram extends React.Component {
   constructor(props) {
     super(props);
@@ -81,6 +90,7 @@ class DisplayProgram extends React.Component {
   };
 
   handleChangeSessionPeriods = (index, name, value) => {
+    console.log(index);
     const { periods } = this.state.selectedSession;
     periods[index] = {
       ...this.state.selectedSession.periods[index],
@@ -314,8 +324,8 @@ class DisplayProgram extends React.Component {
         <Col offset={6} span={12}>
           <Button
             className="results_btn"
-
-            onClick={this.showResultsModal} block
+            onClick={this.showResultsModal}
+            block
           >
             See Results
           </Button>
@@ -461,20 +471,6 @@ class DisplayProgram extends React.Component {
     </div>
   );
 
-  renderBanner = customer => (
-    <div className="customer_banner">
-      <Row>
-        <Col span={2}><Avatar src={customer.img} size={64}/></Col>
-        <Col span={4}>
-          <h1>{customer.first_name} {customer.last_name}</h1>
-          <p>Last workout: dd/mm</p>
-        </Col>
-        <Col offset={4} span={4}>
-          <p> Currently on: Session 2, Period 1</p>
-        </Col>
-      </Row>
-    </div>
-  );
 
   render() {
     const { program, editable, onSubmitSession } = this.props;
@@ -491,7 +487,7 @@ class DisplayProgram extends React.Component {
       <div>
         {program ? (
           <div>
-            {/*this.renderBanner(program.customer)*/}
+
             {this.renderProgram(program)}
             <SessionModal
               displaySessionModal={displaySessionModal}

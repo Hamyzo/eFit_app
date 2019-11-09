@@ -1,18 +1,5 @@
 import React from "react";
-import {
-  Collapse,
-  Table,
-  Row,
-  Col,
-  Button,
-  Icon,
-  Popover,
-  Spin,
-  Modal,
-  Input,
-  Form,
-  Select
-} from "antd";
+import { Row, Col, Button, Modal, Input, Form, Select } from "antd";
 import "./CoachProgram.css";
 
 import * as apiServices from "../../apiServices";
@@ -21,12 +8,7 @@ class SessionModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSession: {
-        periods: [{}],
-        exercises: [{}]
-      },
-      exercises: [],
-      index: 0
+      exercises: []
     };
   }
 
@@ -46,7 +28,17 @@ class SessionModal extends React.Component {
       sessions,
       selectedSession,
       index,
-      isNewSession
+      isNewSession,
+      onSubmitSession,
+      onCancel,
+      onChangeSession,
+      onChangeIndex,
+      onAddPeriod,
+      onChangeSessionPeriods,
+      onDeletePeriod,
+      onAddExercise,
+      onChangeSessionExercises,
+      onDeleteExercise
     } = this.props;
     const { exercises } = this.state;
     console.log("modal", selectedSession);
@@ -54,19 +46,20 @@ class SessionModal extends React.Component {
       <div>
         <Modal
           visible={displaySessionModal}
-          onOk={() => this.props.onSubmitSession(selectedSession, index)}
-          onCancel={this.props.onCancel}
+          onOk={() => onSubmitSession(selectedSession, index)}
+          onCancel={onCancel}
           title={isNewSession ? "Add a new session" : "Edit session"}
+          width={700}
           footer={[
-            <Button key="back" onClick={this.props.onCancel}>
+            <Button key="back" onClick={onCancel}>
               Return
             </Button>,
             <Button
               key="submit"
               type="primary"
               onClick={() => {
-                this.props.onSubmitSession(selectedSession, index);
-                this.props.onCancel();
+                onSubmitSession(selectedSession, index);
+                onCancel();
               }}
             >
               Submit
@@ -75,13 +68,13 @@ class SessionModal extends React.Component {
         >
           <Form style={{ padding: "20px" }}>
             <Row type="flex" justify="space-between" align="middle">
-              <Col span={11}>
+              <Col span={15}>
                 <Form.Item label="Name">
                   {form.getFieldDecorator("name", {
                     initialValue: selectedSession.name,
                     rules: [
                       {
-                        required: false,
+                        required: true,
                         message: "Please enter the selectedSession name"
                       }
                     ]
@@ -89,16 +82,13 @@ class SessionModal extends React.Component {
                     <Input
                       name="name"
                       onChange={e =>
-                        this.props.onChangeSession(
-                          e.target.name,
-                          e.target.value
-                        )
+                        onChangeSession(e.target.name, e.target.value)
                       }
                     />
                   )}
                 </Form.Item>
               </Col>
-              <Col span={11}>
+              <Col span={7}>
                 <Form.Item label="Position">
                   {form.getFieldDecorator("position", {
                     initialValue: index,
@@ -112,14 +102,18 @@ class SessionModal extends React.Component {
                   })(
                     <Select
                       name="position"
-                      onChange={value => this.props.onChangeIndex(value)}
+                      onChange={value => onChangeIndex(value)}
                     >
-                      {sessions.map((selectedSession, i) => (
-                        <Select.Option value={i}>{i + 1}</Select.Option>
+                      {sessions.map((session, i) => (
+                        <Select.Option value={i} key={i}>
+                          {i + 1}
+                        </Select.Option>
                       ))}
-                      <Select.Option value={sessions.length}>
-                        last
-                      </Select.Option>
+                      {isNewSession ? (
+                        <Select.Option value={sessions.length}>
+                          last
+                        </Select.Option>
+                      ) : null}
                     </Select>
                   )}
                 </Form.Item>
@@ -140,10 +134,7 @@ class SessionModal extends React.Component {
                     <Input.TextArea
                       name="description"
                       onChange={e =>
-                        this.props.onChangeSession(
-                          e.target.name,
-                          e.target.value
-                        )
+                        onChangeSession(e.target.name, e.target.value)
                       }
                     />
                   )}
@@ -153,12 +144,13 @@ class SessionModal extends React.Component {
             <Row>
               <Row>
                 <h3>Periods</h3>
-                <Button icon="plus" onClick={this.props.onAddPeriod}>
+                <Button icon="plus" onClick={onAddPeriod}>
                   Add period
                 </Button>
               </Row>
-              {selectedSession.periods
-                ? selectedSession.periods.map((period, i) => (
+              {selectedSession.periods ? (
+                <Row>
+                  {selectedSession.periods.map((period, i) => (
                     <Row type="flex" justify="space-between" align="middle">
                       <Col span={9}>
                         <Form.Item label="Number of days" key={i}>
@@ -174,7 +166,7 @@ class SessionModal extends React.Component {
                             <Input
                               name={`nb_days${i}`}
                               onChange={e =>
-                                this.props.onChangeSessionPeriods(
+                                onChangeSessionPeriods(
                                   i,
                                   "nb_days",
                                   e.target.value
@@ -198,7 +190,7 @@ class SessionModal extends React.Component {
                             <Input
                               name={`nb_repetitions${i}`}
                               onChange={e =>
-                                this.props.onChangeSessionPeriods(
+                                onChangeSessionPeriods(
                                   i,
                                   "nb_repetitions",
                                   e.target.value
@@ -214,23 +206,29 @@ class SessionModal extends React.Component {
                           icon="delete"
                           type="danger"
                           ghost
-                          onClick={() => this.props.onDeletePeriod(i)}
+                          onClick={() => onDeletePeriod(i)}
                         />
                       </Col>
                     </Row>
-                  ))
-                : null}
+                  ))}
+                </Row>
+              ) : null}
             </Row>
             <Row>
               <h3>Exercises</h3>
-              <Button icon="plus" onClick={this.props.onAddExercise}>
+              <Button icon="plus" onClick={onAddExercise}>
                 Add exercise
               </Button>
               {selectedSession.exercises
                 ? selectedSession.exercises.map((exercise, i) => (
-                    <Row type="flex" justify="space-between" align="middle">
+                    <Row
+                      key={exercise._id}
+                      type="flex"
+                      justify="space-between"
+                      align="middle"
+                    >
                       <Col span={8}>
-                        <Form.Item label="Exercise" key={i}>
+                        <Form.Item label="Exercise" key={exercise._id}>
                           {form.getFieldDecorator(`exercise${i}`, {
                             initialValue: exercise.exercise
                               ? exercise.exercise._id || exercise.exercise
@@ -245,11 +243,7 @@ class SessionModal extends React.Component {
                             <Select
                               name={`exercise${i}`}
                               onChange={value =>
-                                this.props.onChangeSessionExercises(
-                                  i,
-                                  "exercise",
-                                  value
-                                )
+                                onChangeSessionExercises(i, "exercise", value)
                               }
                             >
                               {exercises.map(exercise => (
@@ -262,7 +256,7 @@ class SessionModal extends React.Component {
                         </Form.Item>
                       </Col>
                       <Col span={5}>
-                        <Form.Item label="Reps" key={i}>
+                        <Form.Item label="Reps" key={exercise._id}>
                           {form.getFieldDecorator(`reps${i}`, {
                             initialValue: exercise.reps,
                             rules: [
@@ -275,7 +269,7 @@ class SessionModal extends React.Component {
                             <Input
                               name={`reps${i}`}
                               onChange={e =>
-                                this.props.onChangeSessionExercises(
+                                onChangeSessionExercises(
                                   i,
                                   "reps",
                                   e.target.value
@@ -286,7 +280,7 @@ class SessionModal extends React.Component {
                         </Form.Item>
                       </Col>
                       <Col span={5}>
-                        <Form.Item label="Sets" key={i}>
+                        <Form.Item label="Sets" key={exercise._id}>
                           {form.getFieldDecorator(`sets${i}`, {
                             initialValue: exercise.reps,
                             rules: [
@@ -299,7 +293,7 @@ class SessionModal extends React.Component {
                             <Input
                               name={`sets${i}`}
                               onChange={e =>
-                                this.props.onChangeSessionExercises(
+                                onChangeSessionExercises(
                                   i,
                                   "sets",
                                   e.target.value
@@ -315,7 +309,7 @@ class SessionModal extends React.Component {
                           icon="delete"
                           type="danger"
                           ghost
-                          onClick={() => this.props.onDeleteExercise(i)}
+                          onClick={() => onDeleteExercise(i)}
                         />
                       </Col>
                     </Row>
