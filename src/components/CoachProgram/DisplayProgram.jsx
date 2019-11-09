@@ -200,6 +200,7 @@ class DisplayProgram extends React.Component {
     });
   };
 
+
   formatDate = rawDate => {
     const monthNames = [
       "Jan",
@@ -269,6 +270,37 @@ class DisplayProgram extends React.Component {
     return this.formatDate(newDate);
   };
 
+  completedReps = (results) => {
+    if (results == null){
+      return 0;
+    }
+    else {
+      return results.length;
+    }
+  };
+
+  sessionStatus = (periods) => {
+    var totalReps = 0;
+    var completedRep = 0;
+    for(var i = 0; i < periods.length; i++ ){
+      totalReps = totalReps + periods[i].nb_repetitions;
+      completedRep = completedRep + this.completedReps(periods[i].results);
+    }
+    return this.status(completedRep, totalReps);
+  }
+
+  status = (completedReps, numReps) => {
+    if(completedReps == numReps){
+      return ("Completed");
+    }
+    else if (completedReps == 0){
+      return("Not Started");
+    }
+    else{
+      return("In progress");
+    }
+  }
+
   renderPeriod = (session, period, index, startDate, periodsArray) => <Panel
     header={
       <div className="margin0">
@@ -288,7 +320,7 @@ class DisplayProgram extends React.Component {
                 />
                 Reps:{" "}
               </strong>
-              -/{period.nb_repetitions}
+              {this.completedReps(period.results)}/{period.nb_repetitions}
             </p>
           </Col>
           <Col span={8}>
@@ -345,7 +377,7 @@ class DisplayProgram extends React.Component {
       if (results == null || results.length == 0) {
         return (
           <Button className="results_btn" disabled={true} onClick={this.showResultsModal} block>
-            No Results Available Yet
+            No Results Available
           </Button>
 
         )}
@@ -382,7 +414,7 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <strong>Status:</strong> Not Started
+                <strong>Status:</strong> {this.sessionStatus(session.periods)}
               </p>
             </Col>
             <Col span={8}>
@@ -405,7 +437,7 @@ class DisplayProgram extends React.Component {
       }
       key={index}
     >
-      <Collapse bordered={false}>
+      <Collapse defaultActiveKey={['0']} bordered={false}>
         {session.periods.map((period, pindex) =>
           this.renderPeriod(
             session,
@@ -445,7 +477,7 @@ class DisplayProgram extends React.Component {
     <div>
       <h1 className="program_name">{program.name || program.program.name}</h1>
 
-      <Collapse>
+      <Collapse defaultActiveKey={['0']}>
         {program.sessions.map((session, index) =>
           this.renderSession(
             session,

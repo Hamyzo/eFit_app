@@ -2,6 +2,7 @@ import React from "react";
 import {
   Row,
   Col,
+
 } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
@@ -28,8 +29,33 @@ class CustomerProgress extends React.Component {
 
     return (
       <div>
-
+        <h1 className="progressTitle"> Progress </h1>
+      <div className="progressColumn">
+        <Row>
+          <Col span={10} offset={1}>
+            <div className="dicksonDiv">
+              <img
+                alt=""
+                className="heartAndDickson"
+                src="/assets/images/muscle (2).svg"
+              />
+              <h3>Dickson Index</h3>
+            </div>
+          </Col>
+          <Col span={10} offset={1}>
+              <div className="heartDiv">
+                <img
+                  alt=""
+                  className="heartAndDickson"
+                src="/assets/images/heartbeat.svg"
+              />
+              <h3>Resting Heart Rate</h3>
+            </div>
+          </Col>
+        </Row>
       </div>
+      </div>
+
     );
   }
 }

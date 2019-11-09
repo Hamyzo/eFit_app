@@ -88,7 +88,7 @@ class CoachProgram extends React.Component {
               onSubmitSession={this.handleSubmitSession}
             />
           </Col>
-          <Col>
+          <Col span={8}>
             <CustomerProgress />
           </Col>
         </Row>
