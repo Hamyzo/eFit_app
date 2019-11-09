@@ -396,72 +396,74 @@ class CustomersList extends React.Component {
               }
               key="1"
             >
-              <div className="customer_banner">
-                <Form
-                  layout="inline"
-                  className="components-table-demo-control-bar"
-                  style={{ marginBottom: 16 }}
-                >
-                  <Form.Item label="Bordered">
-                    <Switch
-                      checked={state.bordered}
-                      onChange={this.handleToggle("bordered")}
-                    />
-                  </Form.Item>
-                  <Form.Item label="Column Header">
-                    <Switch
-                      checked={!!state.showHeader}
-                      onChange={this.handleHeaderChange}
-                    />
-                  </Form.Item>
+              <Row>
+                <div className="customer_banner">
+                  <Form
+                    layout="inline"
+                    className="components-table-demo-control-bar"
+                    style={{ marginBottom: 16 }}
+                  >
+                    <Form.Item label="Bordered">
+                      <Switch
+                        checked={state.bordered}
+                        onChange={this.handleToggle("bordered")}
+                      />
+                    </Form.Item>
+                    <Form.Item label="Column Header">
+                      <Switch
+                        checked={!!state.showHeader}
+                        onChange={this.handleHeaderChange}
+                      />
+                    </Form.Item>
 
-                  <Form.Item label="Fixed Header">
-                    <Switch
-                      checked={!!state.scroll}
-                      onChange={this.handleScollChange}
-                    />
-                  </Form.Item>
-                  <Form.Item label="Has Data">
-                    <Switch
-                      checked={!!state.hasData}
-                      onChange={this.handleDataChange}
-                    />
-                  </Form.Item>
+                    <Form.Item label="Fixed Header">
+                      <Switch
+                        checked={!!state.scroll}
+                        onChange={this.handleScollChange}
+                      />
+                    </Form.Item>
+                    <Form.Item label="Has Data">
+                      <Switch
+                        checked={!!state.hasData}
+                        onChange={this.handleDataChange}
+                      />
+                    </Form.Item>
 
-                  <Form.Item label="Size">
-                    <Radio.Group
-                      value={state.size}
-                      onChange={this.handleSizeChange}
-                    >
-                      <Radio.Button value="default">Default</Radio.Button>
-                      <Radio.Button value="middle">Middle</Radio.Button>
-                      <Radio.Button value="small">Small</Radio.Button>
-                    </Radio.Group>
-                  </Form.Item>
-                  <Form.Item label="Table Layout">
-                    <Radio.Group
-                      value={state.tableLayout}
-                      onChange={this.handleTableLayoutChange}
-                    >
-                      <Radio.Button value={undefined}>Unset</Radio.Button>
-                      <Radio.Button value="fixed">Fixed</Radio.Button>
-                    </Radio.Group>
-                  </Form.Item>
-                  <Form.Item label="Pagination">
-                    <Radio.Group
-                      value={
-                        state.pagination ? state.pagination.position : "none"
-                      }
-                      onChange={this.handlePaginationChange}
-                    >
-                      <Radio.Button value="top">Top</Radio.Button>
-                      <Radio.Button value="bottom">Bottom</Radio.Button>
-                      <Radio.Button value="both">Both</Radio.Button>
-                      <Radio.Button value="none">None</Radio.Button>
-                    </Radio.Group>
-                  </Form.Item>
-                </Form>
-              </div>
+                    <Form.Item label="Size">
+                      <Radio.Group
+                        value={state.size}
+                        onChange={this.handleSizeChange}
+                      >
+                        <Radio.Button value="default">Default</Radio.Button>
+                        <Radio.Button value="middle">Middle</Radio.Button>
+                        <Radio.Button value="small">Small</Radio.Button>
+                      </Radio.Group>
+                    </Form.Item>
+                    <Form.Item label="Table Layout">
+                      <Radio.Group
+                        value={state.tableLayout}
+                        onChange={this.handleTableLayoutChange}
+                      >
+                        <Radio.Button value={undefined}>Unset</Radio.Button>
+                        <Radio.Button value="fixed">Fixed</Radio.Button>
+                      </Radio.Group>
+                    </Form.Item>
+                    <Form.Item label="Pagination">
+                      <Radio.Group
+                        value={
+                          state.pagination ? state.pagination.position : "none"
+                        }
+                        onChange={this.handlePaginationChange}
+                      >
+                        <Radio.Button value="top">Top</Radio.Button>
+                        <Radio.Button value="bottom">Bottom</Radio.Button>
+                        <Radio.Button value="both">Both</Radio.Button>
+                        <Radio.Button value="none">None</Radio.Button>
+                      </Radio.Group>
+                    </Form.Item>
+                  </Form>
+                </div>
+              </Row>
               <Table
                 loading={!customersWithProgramData}
                 columns={columns}
