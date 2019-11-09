@@ -82,8 +82,8 @@ class CoachProgram extends React.Component {
           <Col span={15}>
             <DisplayProgram
               program={program}
-              editable={true}
-              isCustomerProgram={true}
+              editable
+              isCustomerProgram
               onSubmitSession={this.handleSubmitSession}
             />
           </Col>
