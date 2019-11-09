@@ -38,7 +38,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: localStorage.getItem("isLoggedIn") === "true"
+      isLoggedIn: props.location ? props.location.state.isLoggedIn : localStorage.getItem("isLoggedIn") === "true"
     };
   }
 
@@ -59,6 +59,7 @@ class App extends React.Component {
             {windowWidth < 576 || !isLoggedIn ? null : <Sider />}
             <Content style={{ margin: "64px 10px 64px 10px" }}>
               <PrivateRoute isLoggedIn={isLoggedIn} path="/" component={CustomerDashboard} />
+              <Route path="/dashboard" component={CustomerDashboard} />
               <Route exact path="/login" component={Login} />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
