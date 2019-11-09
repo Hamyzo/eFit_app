@@ -78,7 +78,7 @@ class DisplayProgram extends React.Component {
   };
 
   handleChangeSessionPeriods = (index, name, value) => {
-    console.log(index);
+
     const { selectedSession } = this.state;
     const { periods } = selectedSession;
     periods[index] = {
@@ -122,7 +122,7 @@ class DisplayProgram extends React.Component {
   };
 
   handleChangeSessionExercises = (index, name, value) => {
-    console.log(index);
+
     const { selectedSession } = this.state;
     const { exercises } = selectedSession;
     exercises[index] = {
@@ -269,74 +269,93 @@ class DisplayProgram extends React.Component {
     return this.formatDate(newDate);
   };
 
-  renderPeriod = (session, period, index, startDate, periodsArray) => (
-    <Panel
-      header={
-        <div className="margin0">
-          <Row>
-            <Col span={8}>
-              <p className="margin0">
-                <strong>Period {index + 1}</strong>
-              </p>
-            </Col>
-            <Col span={8}>
-              <p className="margin0">
-                <strong>
-                  <img
-                    alt=""
-                    className="calendar"
-                    src="/assets/images/update.svg"
-                  />
-                  Reps:{" "}
-                </strong>
-                -/{period.nb_repetitions}
-              </p>
-            </Col>
-            <Col span={8}>
-              <p className="margin0">
+  renderPeriod = (session, period, index, startDate, periodsArray) => <Panel
+    header={
+      <div className="margin0">
+        <Row>
+          <Col span={8}>
+            <p className="margin0">
+              <strong>Period {index + 1}</strong>
+            </p>
+          </Col>
+          <Col span={8}>
+            <p className="margin0">
+              <strong>
                 <img
                   alt=""
                   className="calendar"
-                  src="/assets/images/calendar.svg"
+                  src="/assets/images/update.svg"
                 />
-                {this.periodStartDate(startDate, periodsArray, index)} -{" "}
-                {this.periodEndDate(
-                  period.nb_days,
-                  this.periodStartDate(startDate, periodsArray, index)
-                )}
-              </p>
-            </Col>
-          </Row>
-        </div>
-      }
-      key={index}
-      style={customPanelStyle}
+                Reps:{" "}
+              </strong>
+              -/{period.nb_repetitions}
+            </p>
+          </Col>
+          <Col span={8}>
+            <p className="margin0">
+              <img
+                alt=""
+                className="calendar"
+                src="/assets/images/calendar.svg"
+              />
+              {this.periodStartDate(startDate, periodsArray, index)} -{" "}
+              {this.periodEndDate(
+                period.nb_days,
+                this.periodStartDate(startDate, periodsArray, index)
+              )}
+            </p>
+          </Col>
+        </Row>
+      </div>
+    }
+    key={index}
+    style={customPanelStyle}
+  >
+    <Table
+      pagination={false}
+      columns={columns}
+      dataSource={session.exercises}
+      size="middle"
+    />
+    <Row className="period_btns">
+      <Col offset={6} span={12}>
+
+        {
+          this.renderResultsButton(period.results)
+        }
+
+      </Col>
+    </Row>
+    <Modal
+      title="Period Results"
+      visible={this.state.visible}
+      onOk={this.handleOk}
+      onCancel={this.handleCancel}
     >
-      <Table
-        pagination={false}
-        columns={columns}
-        dataSource={session.exercises}
-        size="middle"
-      />
-      <Row className="period_btns">
-        <Col offset={6} span={12}>
+      {period.results ? (<Tabs defaultActiveKey="0">
+        {period.results.map((rep, rIndex) => this.renderRep(rep, rIndex))}
+      </Tabs>) : (
+        <p>No Results Available</p>
+      )}
+    </Modal>
+  </Panel>;
+
+  renderResultsButton = (results) => {
+
+      if (results == null || results.length == 0) {
+        return (
+          <Button className="results_btn" disabled={true} onClick={this.showResultsModal} block>
+            No Results Available Yet
+          </Button>
+
+        )}
+      else {
+        return (
           <Button className="results_btn" onClick={this.showResultsModal} block>
             See Results
           </Button>
-        </Col>
-      </Row>
-      <Modal
-        title="Period Results"
-        visible={this.state.visible}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-      >
-        <Tabs defaultActiveKey="0">
-          {period.results.map((rep, rIndex) => this.renderRep(rep, rIndex))}
-        </Tabs>
-      </Modal>
-    </Panel>
-  );
+        )}
+  } ;
 
   renderRep = (period, index) => (
     <TabPane tab={`Rep${index + 1}`} key={index}>
@@ -348,7 +367,6 @@ class DisplayProgram extends React.Component {
         bordered={false}
       />
       <br />
-      {console.log(period)}
     </TabPane>
   );
 
