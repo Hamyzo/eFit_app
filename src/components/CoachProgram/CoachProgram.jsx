@@ -8,7 +8,7 @@ class CoachProgram extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      program: null,
+      program: null
     };
   }
 
@@ -26,13 +26,10 @@ class CoachProgram extends React.Component {
       );
       console.log("Program", program);
       this.setState({ program });
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
-
   handleSubmitSession = async (session, index, originalIndex, isNewSession) => {
-
     try {
       const { program } = this.state;
       if (!isNewSession) {

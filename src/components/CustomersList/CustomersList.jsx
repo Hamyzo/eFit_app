@@ -466,9 +466,13 @@ class CustomersList extends React.Component {
               </Row>
               <Table
                 loading={!customersWithProgramData}
-                columns={columns}
-                dataSource={customersWithProgramData}
+                columns={columns.map(item => ({
+                  ...item,
+                  ellipsis: state.ellipsis
+                }))}
+                dataSource={state.hasData ? customersWithProgramData : null}
                 className="table"
+                {...this.state}
               />
               {visible ? (
                 <Modal

@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Row,
-  Col,
-} from "antd";
+import { Row, Col } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 
@@ -26,11 +23,7 @@ class CustomerProgress extends React.Component {
     //const { program, editable, onSubmitSession } = this.props;
     //const {    } = this.state;
 
-    return (
-      <div>
-
-      </div>
-    );
+    return <div></div>;
   }
 }
 
