@@ -14,8 +14,7 @@ import {
   Input,
   Switch,
   Radio,
-  Form,
-  Divider
+  Form
 } from "antd";
 import { Link, NavLink } from "react-router-dom";
 import * as apiServices from "../../apiServices";
@@ -41,7 +40,6 @@ class CustomersList extends React.Component {
       pagination,
       size: "default",
       showHeader,
-      rowSelection: {},
       scroll: undefined,
       hasData: true,
       tableLayout: undefined,

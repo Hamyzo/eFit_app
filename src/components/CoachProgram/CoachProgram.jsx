@@ -1,7 +1,9 @@
 import React from "react";
 import * as apiServices from "../../apiServices";
 import DisplayProgram from "./DisplayProgram";
-
+import { Row, Col, Avatar } from "antd";
+import SessionModal from "./SessionModal";
+import Spinner from "../Global/Spinner";
 class CoachProgram extends React.Component {
   constructor(props) {
     super(props);
@@ -14,13 +16,12 @@ class CoachProgram extends React.Component {
     this.getProgram();
   };
 
-  getProgram = async _ => {
+  getProgram = async () => {
     try {
+      const { match } = this.props;
       const program = await apiServices.getOne(
         "customerPrograms",
-        this.props.match
-          ? this.props.match.params.customerProgramId
-          : "5da1f67ccf53670572677651",
+        match ? match.params.customerProgramId : "5da1f67ccf53670572677651",
         "populate=program,customer"
       );
       console.log("Program", program);
@@ -48,16 +49,46 @@ class CoachProgram extends React.Component {
     }
   };
 
+  renderBanner = customer => (
+    <div className="customer_banner">
+      <Row>
+        <Col span={2}>
+          <Avatar src={customer.img} size={64} />
+        </Col>
+        <Col span={4}>
+          <h1>
+            {customer.first_name} {customer.last_name}
+          </h1>
+          <p>Last workout: dd/mm</p>
+        </Col>
+        <Col offset={4} span={4}>
+          <p> Currently on: Session 2, Period 1</p>
+        </Col>
+      </Row>
+    </div>
+  );
+
   render() {
     const { program } = this.state;
-
     return (
-      <DisplayProgram
-        program={program}
-        editable={true}
-        isCustomerProgram={true}
-        onSubmitSession={this.handleSubmitSession}
-      />
+      <div>
+        {program ? (
+          <div>{this.renderBanner(program.customer)}</div>
+        ) : (
+          <Spinner />
+        )}
+
+        <Row>
+          <Col span={15}>
+            <DisplayProgram
+              program={program}
+              editable
+              isCustomerProgram
+              onSubmitSession={this.handleSubmitSession}
+            />
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

@@ -46,7 +46,7 @@ class App extends React.Component {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     this.setState({ isLoggedIn });
   } */
-
+  
   render() {
     const { windowWidth } = this.props;
     const { isLoggedIn } = this.state;
@@ -54,9 +54,9 @@ class App extends React.Component {
     return (
       <HashRouter>
         <Layout style={{ minHeight: "100vh" }}>
-          {windowWidth < 576 || !isLoggedIn ? null : <Sider />}
+          {isLoggedIn ? <Header /> : null }
           <Layout>
-            {isLoggedIn ? <Header /> : null }
+            {windowWidth < 576 || !isLoggedIn ? null : <Sider />}
             <Content style={{ margin: "64px 10px 64px 10px" }}>
               <PrivateRoute isLoggedIn={isLoggedIn} path="/" component={CustomerDashboard} />
               <Route path="/dashboard" component={CustomerDashboard} />
