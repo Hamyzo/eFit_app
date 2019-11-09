@@ -1,5 +1,15 @@
 import React from "react";
-import { Collapse, Table, Row, Col, Button, Modal, Tabs, Icon, Avatar } from "antd";
+import {
+  Collapse,
+  Table,
+  Row,
+  Col,
+  Button,
+  Modal,
+  Tabs,
+  Icon,
+  Avatar
+} from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 import SessionModal from "./SessionModal";
@@ -292,7 +302,8 @@ class DisplayProgram extends React.Component {
           <Button
             className="results_btn"
             type="primary"
-            onClick={this.showResultsModal} block
+            onClick={this.showResultsModal}
+            block
           >
             See Results
           </Button>
@@ -356,7 +367,6 @@ class DisplayProgram extends React.Component {
       }
       key={index}
     >
-
       <Collapse bordered={false}>
         {session.periods.map((period, pindex) =>
           this.renderPeriod(
@@ -425,9 +435,13 @@ class DisplayProgram extends React.Component {
   renderBanner = customer => (
     <div className="customer_banner">
       <Row>
-        <Col span={2}><Avatar src={customer.img} size={64}/></Col>
+        <Col span={2}>
+          <Avatar src={customer.img} size={64} />
+        </Col>
         <Col span={4}>
-          <h1>{customer.first_name} {customer.last_name}</h1>
+          <h1>
+            {customer.first_name} {customer.last_name}
+          </h1>
           <p>Last workout: dd/mm</p>
         </Col>
         <Col offset={4} span={4}>
@@ -452,7 +466,7 @@ class DisplayProgram extends React.Component {
       <div>
         {program ? (
           <div>
-            {this.renderBanner(program.customer)}
+            {program.customer ? this.renderBanner(program.customer) : null}
             {this.renderProgram(program)}
             <SessionModal
               displaySessionModal={displaySessionModal}
