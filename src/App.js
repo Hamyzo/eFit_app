@@ -24,21 +24,22 @@ import CustomerNotifications from "./components/CustomerNotifications/CustomerNo
 import Program from "./components/CoachProgram/Program";
 import Login from "./components/Login/Login";
 
-
 const { Content } = Layout;
 
-const PrivateRoute = ({ isLoggedIn, path, component }) => (
-  isLoggedIn
-    ? <Route exact path={path} component={component} />
-    : <Redirect to="/login" />
-);
-
+const PrivateRoute = ({ isLoggedIn, path, component }) =>
+  isLoggedIn ? (
+    <Route exact path={path} component={component} />
+  ) : (
+    <Redirect to="/login" />
+  );
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: props.location ? props.location.state.isLoggedIn : localStorage.getItem("isLoggedIn") === "true"
+      isLoggedIn: props.location
+        ? props.location.state.isLoggedIn
+        : localStorage.getItem("isLoggedIn") === "true"
     };
   }
 
@@ -46,7 +47,7 @@ class App extends React.Component {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     this.setState({ isLoggedIn });
   } */
-  
+
   render() {
     const { windowWidth } = this.props;
     const { isLoggedIn } = this.state;
@@ -54,11 +55,15 @@ class App extends React.Component {
     return (
       <HashRouter>
         <Layout style={{ minHeight: "100vh" }}>
-          {isLoggedIn ? <Header /> : null }
+          {isLoggedIn ? <Header /> : null}
           <Layout>
             {windowWidth < 576 || !isLoggedIn ? null : <Sider />}
             <Content style={{ margin: "64px 10px 64px 10px" }}>
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/" component={CustomerDashboard} />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/"
+                component={CustomerDashboard}
+              />
               <Route path="/dashboard" component={CustomerDashboard} />
               <Route exact path="/login" component={Login} />
               <PrivateRoute
@@ -71,12 +76,36 @@ class App extends React.Component {
                 path="/program/:programId"
                 component={Program}
               />
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/customersList" component={CustomersList} />
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/customerInfoStepper" component={CustomerInfoStepper} />
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/myProgram" component={Repetition} />
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/appointments" component={CustomerAppointments} />
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/messages" component={CustomerMessaging} />
-              <PrivateRoute isLoggedIn={isLoggedIn} path="/notifications" component={CustomerNotifications} />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/customersList"
+                component={CustomersList}
+              />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/customerInfoStepper"
+                component={CustomerInfoStepper}
+              />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/myProgram"
+                component={Repetition}
+              />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/appointments"
+                component={CustomerAppointments}
+              />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/messages"
+                component={CustomerMessaging}
+              />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/notifications"
+                component={CustomerNotifications}
+              />
             </Content>
             {windowWidth < 576 ? <MobileFooter /> : null}
           </Layout>
