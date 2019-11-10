@@ -2,31 +2,41 @@ import React from "react";
 import {
   Row,
   Col,
-
+  Table
 } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 
+
+const columns = [
+  {
+    title: "Exercise",
+    dataIndex: "exercise.name"
+  },
+  {
+    title: "Sets",
+    dataIndex: "sets"
+  },
+  {
+    title: "% Progress",
+    dataIndex: "reps"
+  }
+];
+
+
 class CustomerProgress extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      visible: false,
-      displaySessionModal: false,
-      selectedSession: {
-        periods: [{}],
-        exercises: [{}]
-      },
-      isNewSession: false,
-      index: 0,
-      originalIndex: 0
-    };
   }
 
-  render() {
-    //const { program, editable, onSubmitSession } = this.props;
-    //const {    } = this.state;
+  lastIndex = (focusSessions) => {
+    return focusSessions[focusSessions.length].dickson_index;
+  };
 
+  render() {
+    const { program } = this.props;
+    //const {    } = this.state;
+    console.log("!!!!!" + program)
     return (
       <div>
         <h1 className="progressTitle"> Progress </h1>
@@ -40,6 +50,7 @@ class CustomerProgress extends React.Component {
                 src="/assets/images/muscle (2).svg"
               />
               <h3>Dickson Index</h3>
+
             </div>
           </Col>
           <Col span={10} offset={1}>
@@ -53,7 +64,17 @@ class CustomerProgress extends React.Component {
             </div>
           </Col>
         </Row>
+        <Row>
+          <Table
+            pagination={false}
+            columns={columns}
+            dataSource={""}
+            size="small"
+            bordered={false}
+          />
+        </Row>
       </div>
+        
       </div>
 
     );
