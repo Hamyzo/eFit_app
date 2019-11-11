@@ -86,11 +86,7 @@ class CoachProgram extends React.Component {
             />
           </Col>
           <Col span={8}>
-            <CustomerProgress
-              program={program}
-              editable
-              isCustomerProgram
-            />
+            <CustomerProgress program={program} editable isCustomerProgram />
           </Col>
         </Row>
       </div>
