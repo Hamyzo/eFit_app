@@ -104,18 +104,10 @@ class Repetition extends React.Component {
     }, 500);
   };
 
-  handleEasyBtn = () => {
-    this.setState({ btnEasyLoading: true });
-    this.handleBtn();
-  };
-
-  handleProperBtn = () => {
-    this.setState({ btnProperLoading: true });
-    this.handleBtn();
-  };
-
-  handleDiffiBtn = () => {
-    this.setState({ btnDiffiLoading: true });
+  handleResultsBtn = (resultLoading, value) => {
+    let { results } = this.state;
+    results.push(value);
+    this.setState({ [resultLoading]: true, results });
     this.handleBtn();
   };
 
@@ -174,7 +166,7 @@ class Repetition extends React.Component {
             <Row>
               <Col span={8} align="center">
                 <Button
-                  onClick={() => this.handleEasyBtn()}
+                  onClick={() => this.handleResultsBtn("btnEasyLoading", 1)}
                   className="feedbackBtn"
                   loading={this.state.btnEasyLoading}
                 >
@@ -188,7 +180,7 @@ class Repetition extends React.Component {
               </Col>
               <Col span={8} align="center">
                 <Button
-                  onClick={() => this.handleProperBtn()}
+                  onClick={() => this.handleResultsBtn("btnProperLoading", 0)}
                   className="feedbackBtn"
                   loading={this.state.btnProperLoading}
                 >
@@ -198,7 +190,7 @@ class Repetition extends React.Component {
               </Col>
               <Col span={8} align="center">
                 <Button
-                  onClick={() => this.handleDiffiBtn()}
+                  onClick={() => this.handleResultsBtn("btnDiffiLoading", -1)}
                   className="feedbackBtn"
                   loading={this.state.btnDiffiLoading}
                 >
