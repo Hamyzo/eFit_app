@@ -3,6 +3,8 @@ import { Card, Button, Steps, Modal, Icon, Result, Col, Row } from "antd";
 import "./Repetition.css";
 
 import RepetitionDone from "./RepetitionDone";
+import * as apiServices from "../../apiServices";
+import Spinner from "../Global/Spinner";
 
 const { Meta } = Card;
 
@@ -66,6 +68,7 @@ class Repetition extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      program: null,
       startCardShow: 1,
       currentStep: 0,
 
@@ -76,6 +79,23 @@ class Repetition extends React.Component {
     };
     // this.startOnClick = this.startOnClick.bind(this);
   }
+
+  componentDidMount = async () => {
+    this.getProgram();
+  };
+
+  getProgram = async () => {
+    try {
+      const { match } = this.props;
+      const program = await apiServices.getOne(
+        "customerPrograms",
+        "5dbee421ec899a4934917bf7",
+        "populate=program,customer,focus_sessions"
+      );
+      console.log("Program", program);
+      this.setState({ program });
+    } catch (e) {}
+  };
 
   startOnClick = () => {
     this.setState({ startCardShow: -1 });
@@ -120,31 +140,69 @@ class Repetition extends React.Component {
     this.setState({ startCardShow: 0 });
   };
 
+  completedReps = results => {
+    if (results == null) {
+      return 0;
+    } else {
+      return results.length;
+    }
+  };
+
+  sessionStatus = periods => {
+    var totalReps = 0;
+    var completedRep = 0;
+    for (var i = 0; i < periods.length; i++) {
+      totalReps = totalReps + periods[i].nb_repetitions;
+      completedRep = completedRep + this.completedReps(periods[i].results);
+    }
+    return this.status(completedRep, totalReps);
+  };
+
+  status = (completedReps, numReps) => {
+    if (completedReps == numReps) {
+      return "Completed";
+    } else if (completedReps == 0) {
+      return "Not Started";
+    } else {
+      return "In progress";
+    }
+  };
+
   render = () => {
-    const { startCardShow } = this.state;
+    const { startCardShow, program } = this.state;
+    console.log(program);
+
     const startCard = (
       <Row className="top-row">
-        <Col span={24}>
-          <Card
-            className="wrapper"
-            id="card"
-            style={{}}
-            cover={<img alt="run" src="/assets/images/run.jpg" />}
-          >
-            <Meta
-              title="Strong and Energetic"
-              description="This program will help you get stronger than Super Man."
-              style={{ marginTop: "2%" }}
-            />
-            <Button
-              block
-              className="btn-start"
-              onClick={() => this.startOnClick()}
-            >
-              START
-            </Button>
-          </Card>
-        </Col>
+        {program ? (
+          program.sessions.map((session, index) =>
+            this.sessionStatus(session.periods) === "In progress" ? (
+              <Col key={index} span={24}>
+                <Card
+                  className="wrapper"
+                  id="card"
+                  style={{}}
+                  cover={<img alt="run" src="/assets/images/run.jpg" />}
+                >
+                  <Meta
+                    title={session.name}
+                    description={session.description}
+                    style={{ marginTop: "2%" }}
+                  />
+                  <Button
+                    block
+                    className="btn-start"
+                    onClick={() => this.startOnClick()}
+                  >
+                    START
+                  </Button>
+                </Card>
+              </Col>
+            ) : null
+          )
+        ) : (
+          <Spinner />
+        )}
       </Row>
     );
 

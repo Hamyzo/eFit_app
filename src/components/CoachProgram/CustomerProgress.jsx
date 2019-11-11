@@ -53,7 +53,6 @@ class CustomerProgress extends React.Component {
                   className="heartAndDickson"
                   src="/assets/images/heartbeat.svg"
                 />
-
                 <h3>Resting Heart Rate</h3>
               </div>
             </Col>
