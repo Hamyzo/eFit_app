@@ -13,6 +13,7 @@ import {
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 import SessionModal from "./SessionModal";
+import * as programScripts from "../../utils/programScripts";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -267,34 +268,6 @@ class DisplayProgram extends React.Component {
     return this.formatDate(newDate);
   };
 
-  completedReps = results => {
-    if (results == null) {
-      return 0;
-    } else {
-      return results.length;
-    }
-  };
-
-  sessionStatus = periods => {
-    var totalReps = 0;
-    var completedRep = 0;
-    for (var i = 0; i < periods.length; i++) {
-      totalReps = totalReps + periods[i].nb_repetitions;
-      completedRep = completedRep + this.completedReps(periods[i].results);
-    }
-    return this.status(completedRep, totalReps);
-  };
-
-  status = (completedReps, numReps) => {
-    if (completedReps == numReps) {
-      return "Completed";
-    } else if (completedReps == 0) {
-      return "Not Started";
-    } else {
-      return "In progress";
-    }
-  };
-
   renderPeriod = (session, period, index, startDate, periodsArray) => (
     <Panel
       header={
@@ -315,7 +288,8 @@ class DisplayProgram extends React.Component {
                   />
                   Reps:{" "}
                 </strong>
-                {this.completedReps(period.results)}/{period.nb_repetitions}
+                {programScripts.completedReps(period.results)}/
+                {period.nb_repetitions}
               </p>
             </Col>
             <Col span={8}>
@@ -412,7 +386,8 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <strong>Status:</strong> {this.sessionStatus(session.periods)}
+                <strong>Status:</strong>{" "}
+                {programScripts.sessionStatus(session.periods).status}
               </p>
             </Col>
             <Col span={8}>

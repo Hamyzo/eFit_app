@@ -4,6 +4,7 @@ import "./Repetition.css";
 
 import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
+import * as programScripts from "../../utils/programScripts";
 import Spinner from "../Global/Spinner";
 
 const { Meta } = Card;
@@ -45,7 +46,7 @@ class Repetition extends React.Component {
       let currentSession = null;
       let currentPeriod = null;
       program.sessions.forEach(session => {
-        const sessionStatus = this.sessionStatus(session.periods);
+        const sessionStatus = programScripts.sessionStatus(session.periods);
         if (sessionStatus.status === "In progress") {
           currentSession = session;
           currentPeriod = sessionStatus.currentPeriod;
@@ -115,50 +116,9 @@ class Repetition extends React.Component {
     this.setState({ startCardShow: 0 });
   };
 
-  completedReps = results => {
-    if (results === null) {
-      return 0;
-    }
-    return results.length;
-  };
-
-  status = (completedReps, numReps) => {
-    if (completedReps === numReps) {
-      return "Completed";
-    }
-    if (completedReps === 0) {
-      return "Not Started";
-    }
-    return "In progress";
-  };
-
-  sessionStatus = periods => {
-    let totalReps = 0;
-    let completedRep = 0;
-    let currentPeriod = 1;
-    periods.forEach((period, i) => {
-      totalReps += period.nb_repetitions;
-      const currentReps = this.completedReps(period.results);
-      completedRep += currentReps;
-      if (currentReps !== 0) {
-        currentPeriod = i + 1;
-      }
-    });
-    return { status: this.status(completedRep, totalReps), currentPeriod };
-  };
-
-  render = () => {
-    const {
-      startCardShow,
-      program,
-      currentSession,
-      currentPeriod,
-      exercises,
-      currentStep
-    } = this.state;
-    console.log(program);
-
-    const startCard = (
+  renderStartCard = () => {
+    const { program, currentSession, currentPeriod } = this.state;
+    return (
       <Row className="top-row">
         {program ? (
           <Col span={24}>
@@ -187,16 +147,22 @@ class Repetition extends React.Component {
         )}
       </Row>
     );
+  };
 
-    const { modalVisible } = this.state;
-    // const modalWidth = "300px";
-    const modalTitle = "How was this exercise?";
-
-    const stepDiv = (
+  renderStepDiv = () => {
+    const {
+      modalVisible,
+      btnEasyLoading,
+      btnProperLoading,
+      btnDiffiLoading,
+      currentStep,
+      exercises
+    } = this.state;
+    return (
       <div className="wrapper" id="stepDiv">
         <Modal
           className="feedback-modal"
-          title={modalTitle}
+          title={"How was this exercise?"}
           visible={modalVisible}
           closable={false}
           maskClosable={false}
@@ -208,7 +174,7 @@ class Repetition extends React.Component {
                 <Button
                   onClick={() => this.handleResultsBtn("btnEasyLoading", 1)}
                   className="feedbackBtn"
-                  loading={this.state.btnEasyLoading}
+                  loading={btnEasyLoading}
                 >
                   <Icon
                     type="check-circle"
@@ -222,7 +188,7 @@ class Repetition extends React.Component {
                 <Button
                   onClick={() => this.handleResultsBtn("btnProperLoading", 0)}
                   className="feedbackBtn"
-                  loading={this.state.btnProperLoading}
+                  loading={btnProperLoading}
                 >
                   <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
                   Proper
@@ -232,7 +198,7 @@ class Repetition extends React.Component {
                 <Button
                   onClick={() => this.handleResultsBtn("btnDiffiLoading", -1)}
                   className="feedbackBtn"
-                  loading={this.state.btnDiffiLoading}
+                  loading={btnDiffiLoading}
                 >
                   <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
                   Hard
@@ -241,13 +207,11 @@ class Repetition extends React.Component {
             </Row>
           </div>
         </Modal>
-
-        <Steps current={this.state.currentStep}>
+        <Steps current={currentStep}>
           {exercises.map(exercise => (
             <Step key={exercise.exercise._id} title={exercise.exercise.name} />
           ))}
         </Steps>
-
         <Row className="top-row" style={{ marginTop: "-4%" }}>
           <Col>
             <div>
@@ -263,9 +227,8 @@ class Repetition extends React.Component {
                 <hr />
                 <p>{exercises[currentStep].exercise.description}</p>
               </div>
-
               <div className="steps-action">
-                {this.state.currentStep > 0 && (
+                {currentStep > 0 && (
                   <Button
                     style={{ marginLeft: 8 }}
                     onClick={() => this.prevStep()}
@@ -293,18 +256,21 @@ class Repetition extends React.Component {
         </Row>
       </div>
     );
+  };
 
-    const repetitionDone = <RepetitionDone />;
+  render = () => {
+    const { startCardShow } = this.state;
+    // const modalWidth = "300px";
 
     if (startCardShow === 1) {
-      return startCard;
+      return this.renderStartCard();
     }
     if (startCardShow === -1) {
       // else ： hide startCard
-      return stepDiv;
+      return this.renderStepDiv();
     }
     if (startCardShow === 0) {
-      return repetitionDone;
+      return <RepetitionDone />;
     }
     return null;
   };
