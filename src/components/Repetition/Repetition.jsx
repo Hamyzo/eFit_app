@@ -10,60 +10,6 @@ const { Meta } = Card;
 
 const { Step } = Steps;
 
-const steps = [
-  {
-    title: "Run for 45 minutes",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="/assets/images/running.jpg"
-      />
-    )
-  },
-  {
-    title: "Crunches",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="http://www.mariadicroce.com/wp-content/uploads/2015/02/workout-at-home.jpg"
-      />
-    )
-  },
-  {
-    title: "Weird Abs Workout",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="https://d50b62f6164e0c4a0279-11570554cb5edae3285603e6ab25c978.ssl.cf5.rackcdn.com/html_body_blocks/images/000/005/515/original/working_out_at_home_1024x1024_enf0625e2c742e37a36e857417ca769d0f.jpg?1508904721"
-      />
-    )
-  },
-  {
-    title: "Yoga",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="http://www.yaduki.com/ss/wp-content/uploads/2018/01/Yoga-Indoors-Downward-Facing-Dog-Pose-532343318_1258x838.jpeg"
-      />
-    )
-  },
-  {
-    title: "More Yoga",
-    description: "",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="https://s3-ap-northeast-1.amazonaws.com/bhive-jp/media/yogaroom/article/4821/shutterstock_713195971.jpg"
-      />
-    )
-  }
-];
-
 class Repetition extends React.Component {
   constructor(props) {
     super(props);
@@ -71,11 +17,14 @@ class Repetition extends React.Component {
       program: null,
       startCardShow: 1,
       currentStep: 0,
-
+      currentSession: null,
+      currentPeriod: null,
       modalVisible: false,
       btnEasyLoading: false,
       btnProperLoading: false,
-      btnDiffiLoading: false
+      btnDiffiLoading: false,
+      results: [],
+      exercises: []
     };
     // this.startOnClick = this.startOnClick.bind(this);
   }
@@ -89,12 +38,28 @@ class Repetition extends React.Component {
       const { match } = this.props;
       const program = await apiServices.getOne(
         "customerPrograms",
-        "5dbee421ec899a4934917bf7",
+        "5dbedf3ebc5fad3463b3e019",
         "populate=program,customer,focus_sessions"
       );
       console.log("Program", program);
-      this.setState({ program });
-    } catch (e) {}
+      let currentSession = null;
+      let currentPeriod = null;
+      program.sessions.forEach(session => {
+        const sessionStatus = this.sessionStatus(session.periods);
+        if (sessionStatus.status === "In progress") {
+          currentSession = session;
+          currentPeriod = sessionStatus.currentPeriod;
+        }
+      });
+      this.setState({
+        program,
+        currentSession,
+        currentPeriod,
+        exercises: currentSession.exercises
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   startOnClick = () => {
@@ -125,8 +90,17 @@ class Repetition extends React.Component {
   };
 
   handleResultsBtn = (resultLoading, value) => {
-    let { results } = this.state;
-    results.push(value);
+    const { results, currentPeriod, currentSession, currentStep } = this.state;
+    let newResult = {};
+    console.log(currentStep);
+    if (!currentSession.exercises[currentStep].reps) {
+      newResult.time = 111;
+    }
+    results.push({
+      ...newResult,
+      exercise: currentSession.exercises[currentStep],
+      peformance: value
+    });
     this.setState({ [resultLoading]: true, results });
     this.handleBtn();
   };
@@ -137,69 +111,77 @@ class Repetition extends React.Component {
   };
 
   handleDoneBtn = () => {
+    console.log(this.state.results);
     this.setState({ startCardShow: 0 });
   };
 
   completedReps = results => {
-    if (results == null) {
+    if (results === null) {
       return 0;
-    } else {
-      return results.length;
     }
-  };
-
-  sessionStatus = periods => {
-    var totalReps = 0;
-    var completedRep = 0;
-    for (var i = 0; i < periods.length; i++) {
-      totalReps = totalReps + periods[i].nb_repetitions;
-      completedRep = completedRep + this.completedReps(periods[i].results);
-    }
-    return this.status(completedRep, totalReps);
+    return results.length;
   };
 
   status = (completedReps, numReps) => {
-    if (completedReps == numReps) {
+    if (completedReps === numReps) {
       return "Completed";
-    } else if (completedReps == 0) {
-      return "Not Started";
-    } else {
-      return "In progress";
     }
+    if (completedReps === 0) {
+      return "Not Started";
+    }
+    return "In progress";
+  };
+
+  sessionStatus = periods => {
+    let totalReps = 0;
+    let completedRep = 0;
+    let currentPeriod = 1;
+    periods.forEach((period, i) => {
+      totalReps += period.nb_repetitions;
+      const currentReps = this.completedReps(period.results);
+      completedRep += currentReps;
+      if (currentReps !== 0) {
+        currentPeriod = i + 1;
+      }
+    });
+    return { status: this.status(completedRep, totalReps), currentPeriod };
   };
 
   render = () => {
-    const { startCardShow, program } = this.state;
+    const {
+      startCardShow,
+      program,
+      currentSession,
+      currentPeriod,
+      exercises,
+      currentStep
+    } = this.state;
     console.log(program);
 
     const startCard = (
       <Row className="top-row">
         {program ? (
-          program.sessions.map((session, index) =>
-            this.sessionStatus(session.periods) === "In progress" ? (
-              <Col key={index} span={24}>
-                <Card
-                  className="wrapper"
-                  id="card"
-                  style={{}}
-                  cover={<img alt="run" src="/assets/images/run.jpg" />}
-                >
-                  <Meta
-                    title={session.name}
-                    description={session.description}
-                    style={{ marginTop: "2%" }}
-                  />
-                  <Button
-                    block
-                    className="btn-start"
-                    onClick={() => this.startOnClick()}
-                  >
-                    START
-                  </Button>
-                </Card>
-              </Col>
-            ) : null
-          )
+          <Col span={24}>
+            <Card
+              className="wrapper"
+              id="card"
+              style={{}}
+              cover={<img alt="run" src="/assets/images/run.jpg" />}
+            >
+              <Meta
+                title={currentSession.name}
+                description={currentSession.description}
+                style={{ marginTop: "2%" }}
+              />
+              <Button
+                block
+                className="btn-start"
+                onClick={() => this.startOnClick()}
+              >
+                START REPETITION {currentPeriod}
+              </Button>
+            </Card>
+          </Col>
         ) : (
           <Spinner />
         )}
@@ -261,8 +243,8 @@ class Repetition extends React.Component {
         </Modal>
 
         <Steps current={this.state.currentStep}>
-          {steps.map(item => (
-            <Step key={item.title} title="" />
+          {exercises.map(exercise => (
+            <Step key={exercise.exercise._id} title={exercise.exercise.name} />
           ))}
         </Steps>
 
@@ -270,15 +252,16 @@ class Repetition extends React.Component {
           <Col>
             <div>
               <div className="steps-content">
-                {steps[this.state.currentStep].content}
+                <img
+                  className="step-img"
+                  alt="Loading"
+                  src={exercises[currentStep].exercise.img}
+                />
                 <br />
                 <br />
-                <h1>{steps[this.state.currentStep].title}</h1>
+                <h1>{exercises[currentStep].exercise.name}</h1>
                 <hr />
-                <p>
-                  Just let these leaves jump off the brush All kinds of happy
-                  little splashes. Isn't that fantastic?
-                </p>
+                <p>{exercises[currentStep].exercise.description}</p>
               </div>
 
               <div className="steps-action">
@@ -290,12 +273,12 @@ class Repetition extends React.Component {
                     Previous
                   </Button>
                 )}
-                {this.state.currentStep < steps.length - 1 && (
+                {currentStep < exercises.length - 1 && (
                   <Button type="primary" onClick={() => this.showResultModal()}>
                     Done, Next!
                   </Button>
                 )}
-                {this.state.currentStep === steps.length - 1 && (
+                {currentStep === exercises.length - 1 && (
                   <Button
                     type="primary"
                     // onClick={() => message.success("Processing complete!")}
