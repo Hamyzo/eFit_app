@@ -3,6 +3,8 @@ import { Card, Button, Steps, Modal, Icon, Result, Col, Row } from "antd";
 import "./Repetition.css";
 
 import RepetitionDone from "./RepetitionDone";
+import * as apiServices from "../../apiServices";
+import Spinner from "../Global/Spinner";
 
 const { Meta } = Card;
 
@@ -66,6 +68,7 @@ class Repetition extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      program: null,
       startCardShow: 1,
       currentStep: 0,
 
@@ -76,6 +79,23 @@ class Repetition extends React.Component {
     };
     // this.startOnClick = this.startOnClick.bind(this);
   }
+
+  componentDidMount = async () => {
+    this.getProgram();
+  };
+
+  getProgram = async () => {
+    try {
+      const { match } = this.props;
+      const program = await apiServices.getOne(
+        "customerPrograms",
+        "5dbedf3ebc5fad3463b3e019",
+        "populate=program,customer,focus_sessions"
+      );
+      console.log("Program", program);
+      this.setState({ program });
+    } catch (e) {}
+  };
 
   startOnClick = () => {
     this.setState({ startCardShow: -1 });
@@ -129,30 +149,38 @@ class Repetition extends React.Component {
   };
 
   render = () => {
-    const { startCardShow } = this.state;
+    const { startCardShow, program } = this.state;
+    console.log(program);
+
     const startCard = (
       <Row className="top-row">
-        <Col span={24}>
-          <Card
-            className="wrapper"
-            id="card"
-            style={{}}
-            cover={<img alt="run" src="/assets/images/run.jpg" />}
-          >
-            <Meta
-              title="Strong and Energetic"
-              description="This program will help you get stronger than Super Man."
-              style={{ marginTop: "2%" }}
-            />
-            <Button
-              block
-              className="btn-start"
-              onClick={() => this.startOnClick()}
-            >
-              START
-            </Button>
-          </Card>
-        </Col>
+        {program ? (
+          program.sessions.map((session, index) => (
+            <Col key={index} span={24}>
+              <Card
+                className="wrapper"
+                id="card"
+                style={{}}
+                cover={<img alt="run" src="/assets/images/run.jpg" />}
+              >
+                <Meta
+                  title={session[0].name}
+                  description={session[0].description}
+                  style={{ marginTop: "2%" }}
+                />
+                <Button
+                  block
+                  className="btn-start"
+                  onClick={() => this.startOnClick()}
+                >
+                  START
+                </Button>
+              </Card>
+            </Col>
+          ))
+        ) : (
+          <Spinner />
+        )}
       </Row>
     );
 
