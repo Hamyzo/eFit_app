@@ -19,8 +19,7 @@
     "react-scripts": "^3.2.0",
     "react-window-size": "^1.2.2",
     "read-more-react": "^1.0.9",
-    "reqwest": "^2.0.5",
-    "webpack": "^4.41.2"
+    "reqwest": "^2.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
