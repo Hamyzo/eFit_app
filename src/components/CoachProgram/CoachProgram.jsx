@@ -24,7 +24,7 @@ class CoachProgram extends React.Component {
         match ? match.params.customerProgramId : "5da1f67ccf53670572677651",
         "populate=program,customer,focus_sessions"
       );
-      console.log("Program", program);
+      console.log("Program:", program);
       this.setState({ program });
     } catch (e) {}
   };
@@ -85,8 +85,12 @@ class CoachProgram extends React.Component {
               onSubmitSession={this.handleSubmitSession}
             />
           </Col>
-          <Col>
-            <CustomerProgress />
+          <Col span={8}>
+            <CustomerProgress
+              program={program}
+              editable
+              isCustomerProgram
+            />
           </Col>
         </Row>
       </div>
