@@ -29,32 +29,18 @@ class CustomerProgress extends React.Component {
     super(props);
   }
 
-  lastIndex = (focusSessions) => {
+  lastMeasure = (focusSessions, measure) => {
     var i = focusSessions.length - 1;
-    return focusSessions[i].dickson_index;
+    return focusSessions[i][measure];
   };
 
-  lastRHR = (focusSessions) => {
-    var i = focusSessions.length - 1;
-    console.log(focusSessions)
-    return focusSessions[i].rest_heart_rate;
-  }
 
-  dicksonIndexProgress = (focusSessions) => {
+  measureProgress = (focusSessions, measure) => {
     if (focusSessions.length == 0 || focusSessions.length == 1 || focusSessions == null){
       return "--";
     }
     else {
-      return this.dicksonIndexProgressCalculator(focusSessions);
-    }
-  }
-
-  RHRProgress = (focusSessions) => {
-    if (focusSessions.length == 0 || focusSessions.length == 1 || focusSessions == null){
-      return "--";
-    }
-    else {
-      return this.RHRProgressCalculator(focusSessions);
+      return this.progressCalculator(focusSessions, measure);
     }
   }
 
@@ -72,46 +58,33 @@ class CustomerProgress extends React.Component {
   }
 
 
-  dicksonIndexProgressCalculator = focusSessions => {
+  progressCalculator = (focusSessions, measure) => {
     var focusSessionsWithResults = this.removeFocusSessionsNotDone(focusSessions);
     var x = focusSessionsWithResults.length - 2;
     var y = focusSessionsWithResults.length - 1;
-    var changePercentage = this.percentageDifference(parseFloat(focusSessionsWithResults[y].dickson_index), parseFloat(focusSessionsWithResults[x].dickson_index));
-    return (changePercentage.toFixed(1));
-  }
-
-  RHRProgressCalculator = focusSessions => {
-    var focusSessionsWithResults = this.removeFocusSessionsNotDone(focusSessions);
-    var x = focusSessionsWithResults.length - 2;
-    var y = focusSessionsWithResults.length - 1;
-    var changePercentage = this.percentageDifference(parseFloat(focusSessionsWithResults[y].rest_heart_rate), parseFloat(focusSessionsWithResults[x].rest_heart_rate));
+    var changePercentage = this.percentageDifference(parseFloat(focusSessionsWithResults[y][measure]), parseFloat(focusSessionsWithResults[x][measure]));
     if(focusSessions[0].results[0].reps == null){console.log("TRUE")};
     return (changePercentage.toFixed(1));
 
   }
 
-  exerciseProgressCalculator = (focusSessions, ex_index) => {
-    var focusSessionsWithResults = this.removeFocusSessionsNotDone(focusSessions);
-    var x = focusSessionsWithResults.length - 2;
-    var y = focusSessionsWithResults.length - 1;
-    var changePercentage = 0;
-    if(focusSessions[y].results[ex_index].reps == null){
-      changePercentage = this.percentageDifference(parseInt(focusSessionsWithResults[y].results[ex_index].time),
-        parseInt(focusSessionsWithResults[x].results[ex_index].time));
-    }
-    else {
-      changePercentage = this.percentageDifference(parseInt(focusSessionsWithResults[y].results[ex_index].reps),
-        parseInt(focusSessionsWithResults[x].results[ex_index].reps));
-    }
-    return (changePercentage);}
 
     resultsRow = (result, previous_res, exercise, i) => {
-      console.log(result)
       return(
         <Row>
           <Col span={8}>{exercise.name}</Col>
           <Col span={8}>{result.reps || result.time} / {previous_res.reps || previous_res.time}</Col>
           <Col>{this.percentageDifference(this.timeOrReps(result), this.timeOrReps(previous_res)).toFixed(1)}</Col>
+        </Row>
+      )
+    }
+
+    resultsFirstFocusSessionRow = (result, exercise) => {
+      return(
+        <Row>
+          <Col span={8}>{exercise.name}</Col>
+          <Col span={8}>{result.reps || result.time}</Col>
+          <Col> -- </Col>
         </Row>
       )
     }
@@ -123,6 +96,12 @@ class CustomerProgress extends React.Component {
 
 
     resultsTable = focusSessions => {
+    if(focusSessions == null || (focusSessions.length == 1 && focusSessions[0].results == null)){
+      return("No Results Available")
+    }
+    else if (focusSessions.length == 1 && focusSessions[0].results != null){
+      return(focusSessions[0].results.map((result, i) => this.resultsFirstFocusSessionRow(result, focusSessions[0].exercises[i], i)));
+    }
       var focusSessionsWithResults = this.removeFocusSessionsNotDone(focusSessions);
       var y = focusSessionsWithResults.length - 1;
       var x = focusSessionsWithResults.length - 2;
@@ -152,8 +131,8 @@ class CustomerProgress extends React.Component {
               <h3>Dickson Index</h3>
               {program ? (
                 <div>
-                  <Row>{this.lastIndex(program.focus_sessions)}</Row>
-                  <Row>{this.dicksonIndexProgress(program.focus_sessions)}%</Row>
+                  <Row>{this.lastMeasure(program.focus_sessions, "dickson_index")}</Row>
+                  <Row>{this.measureProgress(program.focus_sessions, "dickson_index")}%</Row>
                 </div>
 
               ) : (
@@ -171,8 +150,8 @@ class CustomerProgress extends React.Component {
               <h3>Resting Heart Rate</h3>
                 {program ? (
                   <div>
-                    <Row>{this.lastRHR(program.focus_sessions)}</Row>
-                    <Row>{this.RHRProgress(program.focus_sessions)}%</Row>
+                    <Row>{this.lastMeasure(program.focus_sessions, "rest_heart_rate")}</Row>
+                    <Row>{this.measureProgress(program.focus_sessions, "rest_heart_rate")}%</Row>
                   </div>
                 ) : (
                   <div>...</div>

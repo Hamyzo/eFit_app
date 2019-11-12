@@ -65,6 +65,22 @@ class CoachProgram extends React.Component {
     </div>
   );
 
+  renderCustomerProgress = program => {
+    if(program.focus_sessions == null || program.focus_sessions.length == 0){
+     return ("");
+    }
+
+      else {
+      return(<CustomerProgress
+          program={program}
+          editable
+          isCustomerProgram
+        />);
+    }
+
+  }
+
+
   render() {
     const { program } = this.state;
 
@@ -83,11 +99,7 @@ class CoachProgram extends React.Component {
                 />
               </Col>
               <Col span={8}>
-                <CustomerProgress
-                  program={program}
-                  editable
-                  isCustomerProgram
-                />
+                {this.renderCustomerProgress(program)}
               </Col>
             </Row>
           </div>
