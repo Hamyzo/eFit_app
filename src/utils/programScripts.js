@@ -6,7 +6,7 @@ export const completedReps = results => {
 };
 
 export const status = (numCompletedReps, numReps) => {
-  if (numCompletedReps === numReps) {
+  if (numCompletedReps >= numReps) {
     return "Completed";
   }
   if (numCompletedReps === 0) {
@@ -18,20 +18,23 @@ export const status = (numCompletedReps, numReps) => {
 export const sessionStatus = periods => {
   let totalReps = 0;
   let numCompletedReps = 0;
-  let currentPeriod = 1;
+  let latestPeriod = 1;
+  let latestRepetition = 1;
   let currentPeriodInfo = null;
   periods.forEach((period, i) => {
     totalReps += period.nb_repetitions;
     const currentReps = completedReps(period.results);
     numCompletedReps += currentReps;
     if (currentReps !== 0) {
-      currentPeriod = i + 1;
+      latestPeriod = i + 1;
+      latestRepetition = currentReps + 1;
       currentPeriodInfo = period;
     }
   });
   return {
     status: status(numCompletedReps, totalReps),
-    currentPeriod,
+    latestPeriod,
+    latestRepetition,
     currentPeriodInfo
   };
 };

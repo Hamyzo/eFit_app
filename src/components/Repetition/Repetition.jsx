@@ -8,9 +8,11 @@ import {
   Col,
   Row,
   Avatar,
-  Tabs
+  Tabs,
+  Icon,
+  Timeline
 } from "antd";
-import { Icon } from "react-fa";
+import { Icon as FaIcon } from "react-fa";
 import "./Repetition.css";
 import windowSize from "react-window-size";
 
@@ -33,6 +35,7 @@ class Repetition extends React.Component {
       currentSession: null,
       sessionIndex: null,
       currentPeriod: null,
+      currentRepetition: null,
       currentPeriodInfo: null,
       modalVisible: false,
       btnEasyLoading: false,
@@ -59,6 +62,8 @@ class Repetition extends React.Component {
       console.log("Program", program);
       let currentSession = null;
       let currentPeriod = null;
+      let currentRepetition = null;
+      let previousStatus = "Completed";
       let currentPeriodInfo = null;
       let sessionIndex = null;
       program.sessions.forEach((session, index) => {
@@ -66,8 +71,16 @@ class Repetition extends React.Component {
         if (sessionStatus.status === "In progress") {
           currentSession = session;
           sessionIndex = index + 1;
-          currentPeriod = sessionStatus.currentPeriod;
+          currentPeriod = sessionStatus.latestPeriod;
           currentPeriodInfo = sessionStatus.currentPeriodInfo;
+          currentRepetition = sessionStatus.latestRepetition;
+        } else if (
+          sessionStatus.status === "Not Started" &&
+          previousStatus === "Completed"
+        ) {
+          currentSession = session;
+          currentPeriod = 1;
+          currentRepetition = 1;
         }
       });
       this.setState({
@@ -76,6 +89,7 @@ class Repetition extends React.Component {
         currentPeriod,
         currentPeriodInfo,
         sessionIndex,
+        currentRepetition,
         exercises: currentSession.exercises
       });
     } catch (e) {
@@ -111,29 +125,42 @@ class Repetition extends React.Component {
   };
 
   handleResultsBtn = (resultLoading, value) => {
-    const { results, currentPeriod, currentSession, currentStep } = this.state;
-    let newResult = {};
+    const { results, currentSession, currentStep } = this.state;
+    const newResult = {};
     console.log(currentStep);
     if (!currentSession.exercises[currentStep].reps) {
       newResult.time = 111;
     }
     results.push({
       ...newResult,
-      exercise: currentSession.exercises[currentStep],
-      peformance: value
+      exercise: currentSession.exercises[currentStep].exercise,
+      performance: value
     });
     this.setState({ [resultLoading]: true, results });
-    this.handleBtn();
+    if (currentStep === currentSession.exercises.length - 1) {
+      this.handleRepititionEnd();
+      this.setState({ startCardShow: 0 });
+    } else {
+      this.handleBtn();
+    }
   };
 
-  prevStep = () => {
-    const current = this.state.currentStep - 1;
-    this.setState({ currentStep: current });
-  };
-
-  handleDoneBtn = () => {
-    console.log(this.state.results);
-    this.setState({ startCardShow: 0 });
+  handleRepititionEnd = async () => {
+    try {
+      const { results, program, currentSession, currentPeriod } = this.state;
+      console.log("results: ", results);
+      program.sessions[program.sessions.indexOf(currentSession)].periods[
+        currentPeriod - 1
+      ].results.push(results);
+      console.log(program);
+      await apiServices.patchOne(
+        "customerPrograms",
+        "5dbedf3ebc5fad3463b3e019",
+        { sessions: program.sessions }
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   renderStartCard = () => {
@@ -142,6 +169,7 @@ class Repetition extends React.Component {
       currentSession,
       sessionIndex,
       currentPeriod,
+      currentRepetition,
       currentPeriodInfo,
       exercises
     } = this.state;
@@ -167,7 +195,7 @@ class Repetition extends React.Component {
                     <Row>
                       <Col span={12} align="center">
                         <Col span={2} align="left" offset={2}>
-                          <Icon
+                          <FaIcon
                             style={{ fontSize: "24px", color: "#43978d" }}
                             name="clock-o"
                           />
@@ -178,7 +206,7 @@ class Repetition extends React.Component {
                       </Col>
                       <Col span={12} align="center">
                         <Col span={2} align="left" offset={2}>
-                          <Icon
+                          <FaIcon
                             style={{ fontSize: "24px", color: "#43978d" }}
                             name="signal"
                           />
@@ -206,7 +234,7 @@ class Repetition extends React.Component {
                         className="btn-start"
                         onClick={() => this.startOnClick()}
                       >
-                        START REPETITION {currentPeriod}
+                        START REPETITION {currentRepetition}
                       </Button>
                     </Row>
                   </TabPane>
@@ -220,10 +248,7 @@ class Repetition extends React.Component {
                         Period {currentPeriod}
                       </Col>
                       <Col span={8} align="center">
-                        Repetition{" "}
-                        {programScripts.completedReps(
-                          currentPeriodInfo.results
-                        )}
+                        Repetition {currentRepetition}
                       </Col>
                     </Row>
                     <Row className="container mbRepetition">
@@ -308,48 +333,49 @@ class Repetition extends React.Component {
           maskClosable={false}
           footer={null}
         >
-          <div className="modal-content">
-            <Row>
-              <Col span={8} align="center">
-                <Button
-                  onClick={() => this.handleResultsBtn("btnEasyLoading", 1)}
-                  className="feedbackBtn"
-                  loading={btnEasyLoading}
-                >
-                  <Icon
-                    type="check-circle"
-                    theme="twoTone"
-                    twoToneColor="#81E5D9"
-                  />
-                  Easy
-                </Button>
-              </Col>
-              <Col span={8} align="center">
-                <Button
-                  onClick={() => this.handleResultsBtn("btnProperLoading", 0)}
-                  className="feedbackBtn"
-                  loading={btnProperLoading}
-                >
-                  <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
-                  Proper
-                </Button>
-              </Col>
-              <Col span={8} align="center">
-                <Button
-                  onClick={() => this.handleResultsBtn("btnDiffiLoading", -1)}
-                  className="feedbackBtn"
-                  loading={btnDiffiLoading}
-                >
-                  <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
-                  Hard
-                </Button>
-              </Col>
-            </Row>
-          </div>
+          <Row className="modal-content">
+            <Col span={8} align="center">
+              <Button
+                onClick={() => this.handleResultsBtn("btnEasyLoading", 1)}
+                className="feedbackBtn"
+                loading={btnEasyLoading}
+              >
+                <Icon
+                  type="check-circle"
+                  theme="twoTone"
+                  twoToneColor="#81E5D9"
+                />
+                Easy
+              </Button>
+            </Col>
+            <Col span={8} align="center">
+              <Button
+                onClick={() => this.handleResultsBtn("btnProperLoading", 0)}
+                className="feedbackBtn"
+                loading={btnProperLoading}
+              >
+                <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
+                Proper
+              </Button>
+            </Col>
+            <Col span={8} align="center">
+              <Button
+                onClick={() => this.handleResultsBtn("btnDiffiLoading", -1)}
+                className="feedbackBtn"
+                loading={btnDiffiLoading}
+              >
+                <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
+                Hard
+              </Button>
+            </Col>
+          </Row>
         </Modal>
         <Steps current={currentStep}>
-          {exercises.map(exercise => (
-            <Step key={exercise.exercise._id} title={exercise.exercise.name} />
+          {exercises.map((exercise, i) => (
+            <Step
+              key={exercise.exercise._id}
+              title={i === currentStep ? exercise.exercise.name : ""}
+            />
           ))}
         </Steps>
         <Row className="top-row" style={{ marginTop: "-4%" }}>
@@ -363,19 +389,37 @@ class Repetition extends React.Component {
                 />
                 <br />
                 <br />
-                <h1>{exercises[currentStep].exercise.name}</h1>
+                <Row>
+                  <Col span={12} align="left">
+                    <h1>{exercises[currentStep].exercise.name}</h1>
+                  </Col>
+                  <Col span={12} align="right">
+                    <h1>
+                      {exercises[currentStep].reps} X{" "}
+                      {exercises[currentStep].sets}
+                    </h1>
+                  </Col>
+                </Row>
                 <hr />
-                <p>{exercises[currentStep].exercise.description}</p>
+                <Row className="container mtRepetition">
+                  {exercises[currentStep].exercise.steps ? (
+                    <Col>
+                      <h4>Steps</h4>
+                      <Timeline>
+                        {exercises[currentStep].exercise.steps.map(step => (
+                          <Timeline.Item key={step}>{step}</Timeline.Item>
+                        ))}
+                      </Timeline>
+                    </Col>
+                  ) : (
+                    <Col>
+                      <h4>Description</h4>
+                      <p>{exercises[currentStep].exercise.description}</p>
+                    </Col>
+                  )}
+                </Row>
               </div>
               <div className="steps-action">
-                {currentStep > 0 && (
-                  <Button
-                    style={{ marginLeft: 8 }}
-                    onClick={() => this.prevStep()}
-                  >
-                    Previous
-                  </Button>
-                )}
                 {currentStep < exercises.length - 1 && (
                   <Button type="primary" onClick={() => this.showResultModal()}>
                     Done, Next!
@@ -385,7 +429,7 @@ class Repetition extends React.Component {
                   <Button
                     type="primary"
                     // onClick={() => message.success("Processing complete!")}
-                    onClick={() => this.handleDoneBtn()}
+                    onClick={() => this.showResultModal()}
                   >
                     Done
                   </Button>
@@ -408,7 +452,6 @@ class Repetition extends React.Component {
     if (startCardShow === -1) {
       // else ： hide startCard
       return this.renderStepDiv();
-      // return this.renderRepetitionExerciseList();
     }
     if (startCardShow === 0) {
       return <RepetitionDone />;
