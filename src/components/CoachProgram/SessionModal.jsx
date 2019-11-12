@@ -282,7 +282,7 @@ class SessionModal extends React.Component {
                       <Col span={5}>
                         <Form.Item label="Sets" key={exercise._id}>
                           {form.getFieldDecorator(`sets${i}`, {
-                            initialValue: exercise.reps,
+                            initialValue: exercise.sets,
                             rules: [
                               {
                                 required: true,
