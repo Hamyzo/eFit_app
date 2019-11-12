@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { Icon } from "react-fa";
 import "./Repetition.css";
+import windowSize from "react-window-size";
 
 import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
@@ -144,6 +145,7 @@ class Repetition extends React.Component {
       currentPeriodInfo,
       exercises
     } = this.state;
+    const { windowWidth } = this.props;
     console.log(currentSession);
     return (
       <div>
@@ -209,7 +211,7 @@ class Repetition extends React.Component {
                     </Row>
                   </TabPane>
                   <TabPane tab="STATISTICS" key="2">
-                    <Row className="container mbRepetition">
+                    <Row className="container">
                       <h4>Current Status</h4>
                       <Col span={8} align="center">
                         Session {sessionIndex}
@@ -223,6 +225,15 @@ class Repetition extends React.Component {
                           currentPeriodInfo.results
                         )}
                       </Col>
+                    </Row>
+                    <Row className="container mbRepetition">
+                      <Button
+                        block
+                        className="btn-start"
+                        onClick={() => this.startOnClick()}
+                      >
+                        START REPETITION {currentPeriod}
+                      </Button>
                     </Row>
                   </TabPane>
                 </Tabs>
