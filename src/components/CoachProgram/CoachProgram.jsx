@@ -71,28 +71,29 @@ class CoachProgram extends React.Component {
     return (
       <div>
         {program ? (
-          <div>{this.renderBanner(program.customer)}</div>
+          <div>
+            {this.renderBanner(program.customer)}
+            <Row>
+              <Col span={15}>
+                <DisplayProgram
+                  program={program}
+                  editable
+                  isCustomerProgram
+                  onSubmitSession={this.handleSubmitSession}
+                />
+              </Col>
+              <Col span={8}>
+                <CustomerProgress
+                  program={program}
+                  editable
+                  isCustomerProgram
+                />
+              </Col>
+            </Row>
+          </div>
         ) : (
           <Spinner />
         )}
-
-        <Row>
-          <Col span={15}>
-            <DisplayProgram
-              program={program}
-              editable
-              isCustomerProgram
-              onSubmitSession={this.handleSubmitSession}
-            />
-          </Col>
-          <Col span={8}>
-            <CustomerProgress
-              program={program}
-              editable
-              isCustomerProgram
-            />
-          </Col>
-        </Row>
       </div>
     );
   }

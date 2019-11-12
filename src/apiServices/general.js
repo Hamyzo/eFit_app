@@ -98,6 +98,7 @@ export const patchOne = (resource, id, data) => {
     if (response.status === 200) {
       resolve(response.json());
     } else {
+      console.log(response);
       reject(response.error());
     }
   });

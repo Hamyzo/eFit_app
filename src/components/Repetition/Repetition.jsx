@@ -1,81 +1,100 @@
 import React from "react";
-import { Card, Button, Steps, Modal, Icon, Result, Col, Row } from "antd";
+import {
+  Card,
+  Button,
+  Steps,
+  Modal,
+  Result,
+  Col,
+  Row,
+  Avatar,
+  Tabs,
+  Icon,
+  Timeline
+} from "antd";
+import { Icon as FaIcon } from "react-fa";
 import "./Repetition.css";
 
 import RepetitionDone from "./RepetitionDone";
+import * as apiServices from "../../apiServices";
+import * as programScripts from "../../utils/programScripts";
+import Spinner from "../Global/Spinner";
 
 const { Meta } = Card;
-
+const { TabPane } = Tabs;
 const { Step } = Steps;
-
-const steps = [
-  {
-    title: "Run for 45 minutes",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="/assets/images/running.jpg"
-      />
-    )
-  },
-  {
-    title: "Crunches",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="http://www.mariadicroce.com/wp-content/uploads/2015/02/workout-at-home.jpg"
-      />
-    )
-  },
-  {
-    title: "Weird Abs Workout",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="https://d50b62f6164e0c4a0279-11570554cb5edae3285603e6ab25c978.ssl.cf5.rackcdn.com/html_body_blocks/images/000/005/515/original/working_out_at_home_1024x1024_enf0625e2c742e37a36e857417ca769d0f.jpg?1508904721"
-      />
-    )
-  },
-  {
-    title: "Yoga",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="http://www.yaduki.com/ss/wp-content/uploads/2018/01/Yoga-Indoors-Downward-Facing-Dog-Pose-532343318_1258x838.jpeg"
-      />
-    )
-  },
-  {
-    title: "More Yoga",
-    description: "",
-    content: (
-      <img
-        className="step-img"
-        alt="Loading"
-        src="https://s3-ap-northeast-1.amazonaws.com/bhive-jp/media/yogaroom/article/4821/shutterstock_713195971.jpg"
-      />
-    )
-  }
-];
 
 class Repetition extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      program: null,
       startCardShow: 1,
       currentStep: 0,
-
+      currentSession: null,
+      sessionIndex: null,
+      currentPeriod: null,
+      currentRepetition: null,
+      currentPeriodInfo: null,
       modalVisible: false,
       btnEasyLoading: false,
       btnProperLoading: false,
-      btnDiffiLoading: false
+      btnDiffiLoading: false,
+      results: [],
+      exercises: []
     };
     // this.startOnClick = this.startOnClick.bind(this);
   }
+
+  componentDidMount = async () => {
+    this.getProgram();
+  };
+
+  getProgram = async () => {
+    try {
+      const { match } = this.props;
+      const program = await apiServices.getOne(
+        "customerPrograms",
+        "5dbedf3ebc5fad3463b3e019",
+        "populate=program,customer,focus_sessions"
+      );
+      console.log("Program", program);
+      let currentSession = null;
+      let currentPeriod = null;
+      let currentRepetition = null;
+      let previousStatus = "Completed";
+      let currentPeriodInfo = null;
+      let sessionIndex = null;
+      program.sessions.forEach((session, index) => {
+        const sessionStatus = programScripts.sessionStatus(session.periods);
+        if (sessionStatus.status === "In progress") {
+          currentSession = session;
+          sessionIndex = index + 1;
+          currentPeriod = sessionStatus.latestPeriod;
+          currentPeriodInfo = sessionStatus.currentPeriodInfo;
+          currentRepetition = sessionStatus.latestRepetition;
+        } else if (
+          sessionStatus.status === "Not Started" &&
+          previousStatus === "Completed"
+        ) {
+          currentSession = session;
+          currentPeriod = 1;
+          currentRepetition = 1;
+        }
+      });
+      this.setState({
+        program,
+        currentSession,
+        currentPeriod,
+        currentPeriodInfo,
+        sessionIndex,
+        currentRepetition,
+        exercises: currentSession.exercises
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   startOnClick = () => {
     this.setState({ startCardShow: -1 });
@@ -104,152 +123,302 @@ class Repetition extends React.Component {
     }, 500);
   };
 
-  handleEasyBtn = () => {
-    this.setState({ btnEasyLoading: true });
-    this.handleBtn();
+  handleResultsBtn = (resultLoading, value) => {
+    const { results, currentSession, currentStep } = this.state;
+    const newResult = {};
+    console.log(currentStep);
+    if (!currentSession.exercises[currentStep].reps) {
+      newResult.time = 111;
+    }
+    results.push({
+      ...newResult,
+      exercise: currentSession.exercises[currentStep].exercise,
+      performance: value
+    });
+    this.setState({ [resultLoading]: true, results });
+    if (currentStep === currentSession.exercises.length - 1) {
+      this.handleRepititionEnd();
+      this.setState({ startCardShow: 0 });
+    } else {
+      this.handleBtn();
+    }
   };
 
-  handleProperBtn = () => {
-    this.setState({ btnProperLoading: true });
-    this.handleBtn();
+  handleRepititionEnd = async () => {
+    try {
+      const { results, program, currentSession, currentPeriod } = this.state;
+      console.log("results: ", results);
+      program.sessions[program.sessions.indexOf(currentSession)].periods[
+        currentPeriod - 1
+      ].results.push(results);
+      console.log(program);
+      await apiServices.patchOne(
+        "customerPrograms",
+        "5dbedf3ebc5fad3463b3e019",
+        { sessions: program.sessions }
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  handleDiffiBtn = () => {
-    this.setState({ btnDiffiLoading: true });
-    this.handleBtn();
-  };
+  renderStartCard = () => {
+    const {
+      program,
+      currentSession,
+      sessionIndex,
+      currentPeriod,
+      currentRepetition,
+      currentPeriodInfo,
+      exercises
+    } = this.state;
+    console.log(currentSession);
+    return (
+      <div>
+        <Row className="top-row">
+          {program ? (
+            <Col span={24}>
+              <div className="repetitionWrapper">
+                <img
+                  alt="run"
+                  height="150px"
+                  width="100%"
+                  src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
+                />
+                <h1 className="centered">{currentPeriodInfo.nb_days} days</h1>
+                <h1 className="bottom-left">{currentSession.name}</h1>
 
-  prevStep = () => {
-    const current = this.state.currentStep - 1;
-    this.setState({ currentStep: current });
-  };
+                <Tabs defaultActiveKey="1">
+                  <TabPane tab="DETAILS" key="1">
+                    <Row>
+                      <Col span={12} align="center">
+                        <Col span={2} align="left" offset={2}>
+                          <FaIcon
+                            style={{ fontSize: "24px", color: "#43978d" }}
+                            name="clock-o"
+                          />
+                        </Col>
+                        <Col span={10}>
+                          <h4>{currentPeriodInfo.nb_days} days</h4>
+                        </Col>
+                      </Col>
+                      <Col span={12} align="center">
+                        <Col span={2} align="left" offset={2}>
+                          <FaIcon
+                            style={{ fontSize: "24px", color: "#43978d" }}
+                            name="signal"
+                          />
+                        </Col>
+                        <Col span={10} offset={2}>
+                          <h4>Beginner</h4>
+                        </Col>
+                      </Col>
+                    </Row>
+                    <Row className="container mtRepetition">
+                      <h4>Description</h4>
+                      <p>{currentSession.description}</p>
+                    </Row>
+                    <Row className="container mtRepetition">
+                      <h4>Goal</h4>
+                      <p>Loss weight</p>
+                    </Row>
+                    <Row className="container mtRepetition">
+                      <h4>Equipment</h4>
+                      <p>Dumbbell, Cardio, Pulley</p>
+                    </Row>{" "}
+                    <Row className="container mbRepetition">
+                      <Button
+                        block
+                        className="btn-start"
+                        onClick={() => this.startOnClick()}
+                      >
+                        START REPETITION {currentRepetition}
+                      </Button>
+                    </Row>
+                  </TabPane>
+                  <TabPane tab="STATISTICS" key="2">
+                    <Row className="container mbRepetition">
+                      <h4>Current Status</h4>
+                      <Col span={8} align="center">
+                        Session {sessionIndex}
+                      </Col>
+                      <Col span={8} align="center">
+                        Period {currentPeriod}
+                      </Col>
+                      <Col span={8} align="center">
+                        Repetition {currentRepetition}
+                      </Col>
+                    </Row>
+                  </TabPane>
+                </Tabs>
+              </div>
+              <div
+                className="exerciseList marginTopRepetition"
+                id="exerciseList"
+              >
+                {exercises.map(exercise => (
+                  <Card bordered={false}>
+                    <Meta
+                      avatar={<Avatar size={55} src={exercise.exercise.img} />}
+                      title={
+                        <h4 style={{ fontSize: "15px", marginTop: "5px" }}>
+                          {exercise.exercise.name}{" "}
+                        </h4>
+                      }
+                      description={
+                        <p style={{ marginTop: "-10px" }}>
+                          {exercise.sets + " X " + exercise.reps}{" "}
+                        </p>
+                      }
+                    />
+                  </Card>
+                ))}
+              </div>
 
-  handleDoneBtn = () => {
-    this.setState({ startCardShow: 0 });
-  };
-
-  render = () => {
-    const { startCardShow } = this.state;
-    const startCard = (
-      <Row className="top-row">
-        <Col span={24}>
-          <Card
-            className="wrapper"
-            id="card"
-            style={{}}
-            cover={<img alt="run" src="/assets/images/run.jpg" />}
-          >
-            <Meta
-              title="Strong and Energetic"
-              description="This program will help you get stronger than Super Man."
-              style={{ marginTop: "2%" }}
-            />
-            <Button
-              block
-              className="btn-start"
-              onClick={() => this.startOnClick()}
-            >
-              START
-            </Button>
-          </Card>
-        </Col>
-      </Row>
+              {/*}  <Card
+                className="wrapper"
+                id="card"
+                style={{}}
+                cover={<img alt="run" src="/assets/images/run.jpg" />}
+              >
+                <Meta
+                  title={currentSession.name}
+                  description={currentSession.description}
+                  style={{ marginTop: "2%" }}
+                />
+                <Button
+                  block
+                  className="btn-start"
+                  onClick={() => this.startOnClick()}
+                >
+                  START REPETITION {currentPeriod}
+                </Button>
+              </Card> */}
+            </Col>
+          ) : (
+            <Spinner />
+          )}
+        </Row>
+      </div>
     );
+  };
 
-    const { modalVisible } = this.state;
-    // const modalWidth = "300px";
-    const modalTitle = "How was this exercise?";
-
-    const stepDiv = (
+  renderStepDiv = () => {
+    const {
+      modalVisible,
+      btnEasyLoading,
+      btnProperLoading,
+      btnDiffiLoading,
+      currentStep,
+      exercises
+    } = this.state;
+    return (
       <div className="wrapper" id="stepDiv">
         <Modal
           className="feedback-modal"
-          title={modalTitle}
+          title={"How was this exercise?"}
           visible={modalVisible}
           closable={false}
           maskClosable={false}
           footer={null}
         >
-          <div className="modal-content">
-            <Row>
-              <Col span={8} align="center">
-                <Button
-                  onClick={() => this.handleEasyBtn()}
-                  className="feedbackBtn"
-                  loading={this.state.btnEasyLoading}
-                >
-                  <Icon
-                    type="check-circle"
-                    theme="twoTone"
-                    twoToneColor="#81E5D9"
-                  />
-                  Easy
-                </Button>
-              </Col>
-              <Col span={8} align="center">
-                <Button
-                  onClick={() => this.handleProperBtn()}
-                  className="feedbackBtn"
-                  loading={this.state.btnProperLoading}
-                >
-                  <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
-                  Proper
-                </Button>
-              </Col>
-              <Col span={8} align="center">
-                <Button
-                  onClick={() => this.handleDiffiBtn()}
-                  className="feedbackBtn"
-                  loading={this.state.btnDiffiLoading}
-                >
-                  <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
-                  Hard
-                </Button>
-              </Col>
-            </Row>
-          </div>
+          <Row className="modal-content">
+            <Col span={8} align="center">
+              <Button
+                onClick={() => this.handleResultsBtn("btnEasyLoading", 1)}
+                className="feedbackBtn"
+                loading={btnEasyLoading}
+              >
+                <Icon
+                  type="check-circle"
+                  theme="twoTone"
+                  twoToneColor="#81E5D9"
+                />
+                Easy
+              </Button>
+            </Col>
+            <Col span={8} align="center">
+              <Button
+                onClick={() => this.handleResultsBtn("btnProperLoading", 0)}
+                className="feedbackBtn"
+                loading={btnProperLoading}
+              >
+                <Icon type="heart" theme="twoTone" twoToneColor="#F199CB" />{" "}
+                Proper
+              </Button>
+            </Col>
+            <Col span={8} align="center">
+              <Button
+                onClick={() => this.handleResultsBtn("btnDiffiLoading", -1)}
+                className="feedbackBtn"
+                loading={btnDiffiLoading}
+              >
+                <Icon type="rocket" theme="twoTone" twoToneColor="#8E2E37" />
+                Hard
+              </Button>
+            </Col>
+          </Row>
         </Modal>
-
-        <Steps current={this.state.currentStep}>
-          {steps.map(item => (
-            <Step key={item.title} title="" />
+        <Steps current={currentStep}>
+          {exercises.map((exercise, i) => (
+            <Step
+              key={exercise.exercise._id}
+              title={i === currentStep ? exercise.exercise.name : ""}
+            />
           ))}
         </Steps>
-
         <Row className="top-row" style={{ marginTop: "-4%" }}>
           <Col>
             <div>
               <div className="steps-content">
-                {steps[this.state.currentStep].content}
+                <img
+                  className="step-img"
+                  alt="Loading"
+                  src={exercises[currentStep].exercise.img}
+                />
                 <br />
                 <br />
-                <h1>{steps[this.state.currentStep].title}</h1>
+                <Row>
+                  <Col span={12} align="left">
+                    <h1>{exercises[currentStep].exercise.name}</h1>
+                  </Col>
+                  <Col span={12} align="right">
+                    <h1>
+                      {exercises[currentStep].reps} X{" "}
+                      {exercises[currentStep].sets}
+                    </h1>
+                  </Col>
+                </Row>
                 <hr />
-                <p>
-                  Just let these leaves jump off the brush All kinds of happy
-                  little splashes. Isn't that fantastic?
-                </p>
+                <Row className="container mtRepetition">
+                  {exercises[currentStep].exercise.steps ? (
+                    <Col>
+                      <h4>Steps</h4>
+                      <Timeline>
+                        {exercises[currentStep].exercise.steps.map(step => (
+                          <Timeline.Item key={step}>{step}</Timeline.Item>
+                        ))}
+                      </Timeline>
+                    </Col>
+                  ) : (
+                    <Col>
+                      <h4>Description</h4>
+                      <p>{exercises[currentStep].exercise.description}</p>
+                    </Col>
+                  )}
+                </Row>
               </div>
-
               <div className="steps-action">
-                {this.state.currentStep > 0 && (
-                  <Button
-                    style={{ marginLeft: 8 }}
-                    onClick={() => this.prevStep()}
-                  >
-                    Previous
-                  </Button>
-                )}
-                {this.state.currentStep < steps.length - 1 && (
+                {currentStep < exercises.length - 1 && (
                   <Button type="primary" onClick={() => this.showResultModal()}>
                     Done, Next!
                   </Button>
                 )}
-                {this.state.currentStep === steps.length - 1 && (
+                {currentStep === exercises.length - 1 && (
                   <Button
                     type="primary"
                     // onClick={() => message.success("Processing complete!")}
-                    onClick={() => this.handleDoneBtn()}
+                    onClick={() => this.showResultModal()}
                   >
                     Done
                   </Button>
@@ -260,18 +429,21 @@ class Repetition extends React.Component {
         </Row>
       </div>
     );
+  };
 
-    const repetitionDone = <RepetitionDone />;
+  render = () => {
+    const { startCardShow } = this.state;
+    // const modalWidth = "300px";
 
     if (startCardShow === 1) {
-      return startCard;
+      return this.renderStartCard();
     }
     if (startCardShow === -1) {
       // else ： hide startCard
-      return stepDiv;
+      return this.renderStepDiv();
     }
     if (startCardShow === 0) {
-      return repetitionDone;
+      return <RepetitionDone />;
     }
     return null;
   };
