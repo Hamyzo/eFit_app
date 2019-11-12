@@ -209,7 +209,7 @@ class Repetition extends React.Component {
                     </Row>
                   </TabPane>
                   <TabPane tab="STATISTICS" key="2">
-                    <Row className="container">
+                    <Row className="container mbRepetition">
                       <h4>Current Status</h4>
                       <Col span={8} align="center">
                         Session {sessionIndex}
@@ -218,7 +218,6 @@ class Repetition extends React.Component {
                         Period {currentPeriod}
                       </Col>
                       <Col span={8} align="center">
-                        Repetition{" "}
                         {programScripts.completedReps(
                           currentPeriodInfo.results
                         )}
