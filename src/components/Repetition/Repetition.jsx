@@ -218,6 +218,7 @@ class Repetition extends React.Component {
                         Period {currentPeriod}
                       </Col>
                       <Col span={8} align="center">
+                        Repetition{" "}
                         {programScripts.completedReps(
                           currentPeriodInfo.results
                         )}
