@@ -50,16 +50,22 @@ class CoachProgram extends React.Component {
     <div className="customer_banner">
       <Row>
         <Col span={2}>
-          <Avatar src={customer.img} size={64} />
+          <Avatar className="profilePic" src={customer.img} size={108} />
         </Col>
         <Col span={4}>
-          <h1>
+          <h1 className="customerName">
             {customer.first_name} {customer.last_name}
           </h1>
-          <p>Last workout: dd/mm</p>
         </Col>
-        <Col offset={4} span={4}>
-          <p> Currently on: Session 2, Period 1</p>
+        <Col className="lastWorkoutCol" span={4}>
+          <div className="lastWorkoutDiv">
+            <img
+            alt=""
+            className="lastWorkout"
+            src="/assets/images/calendarcolor.svg"/>
+            <p className="lastWorkoutp">Last workout: 12/11</p>
+            <p className="lastWorkoutDivp">(2 days ago)</p>
+          </div>
         </Col>
       </Row>
     </div>

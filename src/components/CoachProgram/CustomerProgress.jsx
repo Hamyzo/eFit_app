@@ -11,15 +11,41 @@ import Spinner from "../Global/Spinner";
 const columns = [
   {
     title: "Exercise",
-    dataIndex: "exercise.name"
+    dataIndex: "exercise"
   },
   {
-    title: "Sets",
-    dataIndex: "sets"
+    title: "Reps/Time",
+    dataIndex: "reps"
   },
   {
     title: "% Progress",
-    dataIndex: "reps"
+    dataIndex: "progress",
+    render: text => {if (parseFloat(text) < 0.0){
+      return(
+        <div>
+          <img
+            alt=""
+            className="down-up"
+            src="/assets/images/sort-down.svg"
+          />
+          {parseFloat(text)}%
+        </div>)
+    }
+    else if (parseFloat(text) == 0.0 || text == "--"){
+      return("")
+    }
+    else{
+      return(
+        <div>
+        <img
+          alt=""
+          className="down-up"
+          src="/assets/images/sort-up.svg"
+        />
+          {parseFloat(text)}%
+        </div>
+      )
+    }}
   }
 ];
 
@@ -71,23 +97,27 @@ class CustomerProgress extends React.Component {
 
     resultsRow = (result, previous_res, exercise, i) => {
       return(
-        <Row>
-          <Col span={8}>{exercise.name}</Col>
-          <Col span={8}>{result.reps || result.time} / {previous_res.reps || previous_res.time}</Col>
-          <Col>{this.percentageDifference(this.timeOrReps(result), this.timeOrReps(previous_res)).toFixed(1)}</Col>
-        </Row>
+        {
+          key: i,
+          exercise: exercise.name,
+          reps: (result.reps || result.time),
+          progress: this.percentageDifference(this.timeOrReps(result), this.timeOrReps(previous_res)).toFixed(1)
+       }
       )
     }
 
-    resultsFirstFocusSessionRow = (result, exercise) => {
+    resultsFirstFocusSessionRow = (result, exercise, i) => {
       return(
-        <Row>
-          <Col span={8}>{exercise.name}</Col>
-          <Col span={8}>{result.reps || result.time}</Col>
-          <Col> -- </Col>
-        </Row>
+        {
+          key: i,
+          exercise: exercise.name,
+          reps: (result.reps || result.time),
+          progress: "--"
+        }
+
       )
     }
+
 
     timeOrReps = n => {
       var num = (n.reps || n.time);
@@ -163,12 +193,14 @@ class CustomerProgress extends React.Component {
           {program ? (
             <div>
               <h3>Last Session Results</h3>
-              <Row>
-                <Col span={8}><strong>Exercise</strong></Col>
-                <Col span={8}><strong>Time/Reps</strong></Col>
-                <Col></Col>
-              </Row>
-              {this.resultsTable(program.focus_sessions)}
+              <Table
+                className="resultsTable"
+                pagination={false}
+                columns={columns}
+                dataSource={this.resultsTable(program.focus_sessions)}
+                size="small"
+                bordered={false}
+              />
             </div>
           ) : (
             <Spinner />
