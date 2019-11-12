@@ -1,5 +1,16 @@
 import React from "react";
-import { Card, Button, Steps, Modal, Icon, Result, Col, Row } from "antd";
+import {
+  Card,
+  Button,
+  Steps,
+  Modal,
+  Result,
+  Col,
+  Row,
+  Avatar,
+  Tabs
+} from "antd";
+import { Icon } from "react-fa";
 import "./Repetition.css";
 
 import RepetitionDone from "./RepetitionDone";
@@ -8,7 +19,7 @@ import * as programScripts from "../../utils/programScripts";
 import Spinner from "../Global/Spinner";
 
 const { Meta } = Card;
-
+const { TabPane } = Tabs;
 const { Step } = Steps;
 
 class Repetition extends React.Component {
@@ -19,8 +30,10 @@ class Repetition extends React.Component {
       startCardShow: 1,
       currentStep: 0,
       currentSession: null,
+      sessionIndex: null,
       currentPeriod: null,
       currentRepetition: null,
+      currentPeriodInfo: null,
       modalVisible: false,
       btnEasyLoading: false,
       btnProperLoading: false,
@@ -48,11 +61,15 @@ class Repetition extends React.Component {
       let currentPeriod = null;
       let currentRepetition = null;
       let previousStatus = "Completed";
-      program.sessions.forEach(session => {
+      let currentPeriodInfo = null;
+      let sessionIndex = null;
+      program.sessions.forEach((session, index) => {
         const sessionStatus = programScripts.sessionStatus(session.periods);
         if (sessionStatus.status === "In progress") {
           currentSession = session;
+          sessionIndex = index + 1;
           currentPeriod = sessionStatus.latestPeriod;
+          currentPeriodInfo = sessionStatus.currentPeriodInfo;
           currentRepetition = sessionStatus.latestRepetition;
         } else if (
           sessionStatus.status === "Not Started" &&
@@ -67,6 +84,8 @@ class Repetition extends React.Component {
         program,
         currentSession,
         currentPeriod,
+        currentPeriodInfo,
+        sessionIndex,
         currentRepetition,
         exercises: currentSession.exercises
       });
@@ -145,59 +164,143 @@ class Repetition extends React.Component {
     const {
       program,
       currentSession,
+      sessionIndex,
       currentPeriod,
-      currentRepetition
+      currentRepetition,
+      currentPeriodInfo,
+      exercises
     } = this.state;
+    console.log(currentSession);
     return (
-      <Row className="top-row">
-        {program ? (
-          <Col span={24}>
-            <Card
-              className="wrapper"
-              id="card"
-              style={{}}
-              cover={<img alt="run" src="/assets/images/run.jpg" />}
-            >
-              <Meta
-                title={
-                  <div>
-                    <h2>
-                      {currentSession.name} (Session{" "}
-                      {program.sessions.indexOf(currentSession) + 1})
-                    </h2>
-                  </div>
-                }
-                description={
-                  <div>
-                    {currentSession.description}
-                    <br />
-                    <br />
-                    <p>
-                      <Icon
-                        type="info-circle"
-                        theme="twoTone"
-                        twoToneColor="#52c41a"
-                      />{" "}
-                      You are currently on period {currentPeriod}
-                    </p>
-                  </div>
-                }
-                style={{ marginTop: "2%", fontSize: "medium" }}
-              />
-              <Button
-                block
-                className="btn-start"
-                onClick={() => this.startOnClick()}
+      <div>
+        <Row className="top-row">
+          {program ? (
+            <Col span={24}>
+              <div className="repetitionWrapper">
+                <img
+                  alt="run"
+                  height="150px"
+                  width="100%"
+                  src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
+                />
+                <h1 className="centered">{currentPeriodInfo.nb_days} days</h1>
+                <h1 className="bottom-left">{currentSession.name}</h1>
+
+                <Tabs defaultActiveKey="1">
+                  <TabPane tab="DETAILS" key="1">
+                    <Row>
+                      <Col span={12} align="center">
+                        <Col span={2} align="left" offset={2}>
+                          <Icon
+                            style={{ fontSize: "24px", color: "#43978d" }}
+                            name="clock-o"
+                          />
+                        </Col>
+                        <Col span={10}>
+                          <h4>{currentPeriodInfo.nb_days} days</h4>
+                        </Col>
+                      </Col>
+                      <Col span={12} align="center">
+                        <Col span={2} align="left" offset={2}>
+                          <Icon
+                            style={{ fontSize: "24px", color: "#43978d" }}
+                            name="signal"
+                          />
+                        </Col>
+                        <Col span={10} offset={2}>
+                          <h4>Beginner</h4>
+                        </Col>
+                      </Col>
+                    </Row>
+                    <Row className="container mtRepetition">
+                      <h4>Description</h4>
+                      <p>{currentSession.description}</p>
+                    </Row>
+                    <Row className="container mtRepetition">
+                      <h4>Goal</h4>
+                      <p>Loss weight</p>
+                    </Row>
+                    <Row className="container mtRepetition">
+                      <h4>Equipment</h4>
+                      <p>Dumbbell, Cardio, Pulley</p>
+                    </Row>{" "}
+                    <Row className="container mbRepetition">
+                      <Button
+                        block
+                        className="btn-start"
+                        onClick={() => this.startOnClick()}
+                      >
+                        START REPETITION {currentPeriod}
+                      </Button>
+                    </Row>
+                  </TabPane>
+                  <TabPane tab="STATISTICS" key="2">
+                    <Row className="container mbRepetition">
+                      <h4>Current Status</h4>
+                      <Col span={8} align="center">
+                        Session {sessionIndex}
+                      </Col>
+                      <Col span={8} align="center">
+                        Period {currentPeriod}
+                      </Col>
+                      <Col span={8} align="center">
+                        Repetition{" "}
+                        {programScripts.completedReps(
+                          currentPeriodInfo.results
+                        )}
+                      </Col>
+                    </Row>
+                  </TabPane>
+                </Tabs>
+              </div>
+              <div
+                className="exerciseList marginTopRepetition"
+                id="exerciseList"
               >
-                START REPETITION {currentRepetition}/
-                {currentSession.periods[currentPeriod - 1].nb_repetitions}
-              </Button>
-            </Card>
-          </Col>
-        ) : (
-          <Spinner />
-        )}
-      </Row>
+                {exercises.map(exercise => (
+                  <Card bordered={false}>
+                    <Meta
+                      avatar={<Avatar size={55} src={exercise.exercise.img} />}
+                      title={
+                        <h4 style={{ fontSize: "15px", marginTop: "5px" }}>
+                          {exercise.exercise.name}{" "}
+                        </h4>
+                      }
+                      description={
+                        <p style={{ marginTop: "-10px" }}>
+                          {exercise.sets + " X " + exercise.reps}{" "}
+                        </p>
+                      }
+                    />
+                  </Card>
+                ))}
+              </div>
+
+              {/*}  <Card
+                className="wrapper"
+                id="card"
+                style={{}}
+                cover={<img alt="run" src="/assets/images/run.jpg" />}
+              >
+                <Meta
+                  title={currentSession.name}
+                  description={currentSession.description}
+                  style={{ marginTop: "2%" }}
+                />
+                <Button
+                  block
+                  className="btn-start"
+                  onClick={() => this.startOnClick()}
+                >
+                  START REPETITION {currentPeriod}
+                </Button>
+              </Card> */}
+            </Col>
+          ) : (
+            <Spinner />
+          )}
+        </Row>
+      </div>
     );
   };
 
