@@ -8,9 +8,11 @@ import {
   Col,
   Row,
   Avatar,
-  Tabs
+  Tabs,
+  Icon,
+  Timeline
 } from "antd";
-import { Icon } from "react-fa";
+import { Icon as FaIcon } from "react-fa";
 import "./Repetition.css";
 
 import RepetitionDone from "./RepetitionDone";
@@ -191,7 +193,7 @@ class Repetition extends React.Component {
                     <Row>
                       <Col span={12} align="center">
                         <Col span={2} align="left" offset={2}>
-                          <Icon
+                          <FaIcon
                             style={{ fontSize: "24px", color: "#43978d" }}
                             name="clock-o"
                           />
@@ -202,7 +204,7 @@ class Repetition extends React.Component {
                       </Col>
                       <Col span={12} align="center">
                         <Col span={2} align="left" offset={2}>
-                          <Icon
+                          <FaIcon
                             style={{ fontSize: "24px", color: "#43978d" }}
                             name="signal"
                           />
@@ -230,7 +232,7 @@ class Repetition extends React.Component {
                         className="btn-start"
                         onClick={() => this.startOnClick()}
                       >
-                        START REPETITION {currentPeriod}
+                        START REPETITION {currentRepetition}
                       </Button>
                     </Row>
                   </TabPane>
@@ -244,10 +246,7 @@ class Repetition extends React.Component {
                         Period {currentPeriod}
                       </Col>
                       <Col span={8} align="center">
-                        Repetition{" "}
-                        {programScripts.completedReps(
-                          currentPeriodInfo.results
-                        )}
+                        Repetition {currentRepetition}
                       </Col>
                     </Row>
                   </TabPane>
@@ -361,8 +360,11 @@ class Repetition extends React.Component {
           </Row>
         </Modal>
         <Steps current={currentStep}>
-          {exercises.map(exercise => (
-            <Step key={exercise.exercise._id} title={exercise.exercise.name} />
+          {exercises.map((exercise, i) => (
+            <Step
+              key={exercise.exercise._id}
+              title={i === currentStep ? exercise.exercise.name : ""}
+            />
           ))}
         </Steps>
         <Row className="top-row" style={{ marginTop: "-4%" }}>
@@ -376,19 +378,37 @@ class Repetition extends React.Component {
                 />
                 <br />
                 <br />
-                <h1>{exercises[currentStep].exercise.name}</h1>
+                <Row>
+                  <Col span={12} align="left">
+                    <h1>{exercises[currentStep].exercise.name}</h1>
+                  </Col>
+                  <Col span={12} align="right">
+                    <h1>
+                      {exercises[currentStep].reps} X{" "}
+                      {exercises[currentStep].sets}
+                    </h1>
+                  </Col>
+                </Row>
                 <hr />
-                <p>{exercises[currentStep].exercise.description}</p>
+                <Row className="container mtRepetition">
+                  {exercises[currentStep].exercise.steps ? (
+                    <Col>
+                      <h4>Steps</h4>
+                      <Timeline>
+                        {exercises[currentStep].exercise.steps.map(step => (
+                          <Timeline.Item key={step}>{step}</Timeline.Item>
+                        ))}
+                      </Timeline>
+                    </Col>
+                  ) : (
+                    <Col>
+                      <h4>Description</h4>
+                      <p>{exercises[currentStep].exercise.description}</p>
+                    </Col>
+                  )}
+                </Row>
               </div>
               <div className="steps-action">
-                {/* currentStep > 0 && (
-                  <Button
-                    style={{ marginLeft: 8 }}
-                    onClick={() => this.prevStep()}
-                  >
-                    Previous
-                  </Button>
-                ) */}
                 {currentStep < exercises.length - 1 && (
                   <Button type="primary" onClick={() => this.showResultModal()}>
                     Done, Next!

@@ -20,20 +20,21 @@ export const sessionStatus = periods => {
   let numCompletedReps = 0;
   let latestPeriod = 1;
   let latestRepetition = 1;
+  let currentPeriodInfo = null;
   periods.forEach((period, i) => {
     totalReps += period.nb_repetitions;
     const currentReps = completedReps(period.results);
     numCompletedReps += currentReps;
     if (currentReps !== 0) {
       latestPeriod = i + 1;
-      latestRepetition = currentReps;
+      latestRepetition = currentReps + 1;
+      currentPeriodInfo = period;
     }
   });
   return {
     status: status(numCompletedReps, totalReps),
     latestPeriod,
-    latestRepetition
+    latestRepetition,
+    currentPeriodInfo
   };
 };
-
-export const getNextRepetition = sessions => {};
