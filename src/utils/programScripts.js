@@ -19,13 +19,19 @@ export const sessionStatus = periods => {
   let totalReps = 0;
   let numCompletedReps = 0;
   let currentPeriod = 1;
+  let currentPeriodInfo = null;
   periods.forEach((period, i) => {
     totalReps += period.nb_repetitions;
     const currentReps = completedReps(period.results);
     numCompletedReps += currentReps;
     if (currentReps !== 0) {
       currentPeriod = i + 1;
+      currentPeriodInfo = period;
     }
   });
-  return { status: status(numCompletedReps, totalReps), currentPeriod };
+  return {
+    status: status(numCompletedReps, totalReps),
+    currentPeriod,
+    currentPeriodInfo
+  };
 };
