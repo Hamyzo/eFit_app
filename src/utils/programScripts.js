@@ -20,7 +20,7 @@ export const sessionStatus = periods => {
   let numCompletedReps = 0;
   let latestPeriod = 1;
   let latestRepetition = 1;
-  let currentPeriodInfo = null;
+  let currentPeriodInfo = periods[0];
   periods.forEach((period, i) => {
     totalReps += period.nb_repetitions;
     const currentReps = completedReps(period.results);

@@ -11,10 +11,12 @@ import {
   Tabs,
   Icon,
   Timeline,
+  Layout,
   Collapse
 } from "antd";
 import { Icon as FaIcon } from "react-fa";
 import "./Repetition.css";
+import windowSize from "react-window-size";
 
 import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
@@ -37,6 +39,7 @@ class Repetition extends React.Component {
       currentPeriod: null,
       currentRepetition: null,
       currentPeriodInfo: null,
+      totalReps: null,
       modalVisible: false,
       btnEasyLoading: false,
       btnProperLoading: false,
@@ -56,7 +59,7 @@ class Repetition extends React.Component {
       const { match } = this.props;
       const program = await apiServices.getOne(
         "customerPrograms",
-        "5dbedf3ebc5fad3463b3e019",
+        "5da1fff308104816e1bae7b7",
         "populate=program,customer,focus_sessions"
       );
       console.log("Program", program);
@@ -68,19 +71,17 @@ class Repetition extends React.Component {
       let sessionIndex = null;
       program.sessions.forEach((session, index) => {
         const sessionStatus = programScripts.sessionStatus(session.periods);
-        if (sessionStatus.status === "In progress") {
+        if (
+          sessionStatus.status === "In progress" ||
+          (sessionStatus.status === "Not Started" &&
+            previousStatus === "Completed")
+        ) {
           currentSession = session;
           sessionIndex = index + 1;
           currentPeriod = sessionStatus.latestPeriod;
           currentPeriodInfo = sessionStatus.currentPeriodInfo;
           currentRepetition = sessionStatus.latestRepetition;
-        } else if (
-          sessionStatus.status === "Not Started" &&
-          previousStatus === "Completed"
-        ) {
-          currentSession = session;
-          currentPeriod = 1;
-          currentRepetition = 1;
+          previousStatus = sessionStatus.status;
         }
       });
       this.setState({
@@ -173,6 +174,7 @@ class Repetition extends React.Component {
       currentPeriodInfo,
       exercises
     } = this.state;
+    const { windowWidth } = this.props;
     console.log(currentSession);
     return (
       <div>
@@ -182,12 +184,22 @@ class Repetition extends React.Component {
               <div className="repetitionWrapper">
                 <img
                   alt="run"
-                  height="150px"
+                  height={windowWidth < 576 ? "150px" : "200px"}
                   width="100%"
                   src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
                 />
-                <h1 className="centered">{currentPeriodInfo.nb_days} days</h1>
-                <h1 className="bottom-left">{currentSession.name}</h1>
+                <h1
+                  className={windowWidth < 576 ? "centeredMobile" : "centered"}
+                >
+                  {currentPeriodInfo.nb_days} days left
+                </h1>
+                <h1
+                  className={
+                    windowWidth < 576 ? "bottomLeftMobile" : "bottomLeft"
+                  }
+                >
+                  {currentSession.name}
+                </h1>
 
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="DETAILS" key="1">
@@ -199,8 +211,8 @@ class Repetition extends React.Component {
                             name="clock-o"
                           />
                         </Col>
-                        <Col span={10}>
-                          <h4>{currentPeriodInfo.nb_days} days</h4>
+                        <Col span={14}>
+                          <h4>{currentPeriodInfo.nb_days} days left</h4>
                         </Col>
                       </Col>
                       <Col span={12} align="center">
@@ -233,12 +245,13 @@ class Repetition extends React.Component {
                         className="btn-start"
                         onClick={() => this.startOnClick()}
                       >
-                        START REPETITION {currentRepetition}
+                        START REPETITION {currentRepetition} /{" "}
+                        {currentPeriodInfo.nb_repetitions}
                       </Button>
                     </Row>
                   </TabPane>
-                  <TabPane tab="STATISTICS" key="2">
-                    <Row className="container mbRepetition">
+                  <TabPane tab="PERFORMANCE" key="2">
+                    <Row className="container">
                       <h4>Current Status</h4>
                       <Col span={8} align="center">
                         Session {sessionIndex}
@@ -249,6 +262,16 @@ class Repetition extends React.Component {
                       <Col span={8} align="center">
                         Repetition {currentRepetition}
                       </Col>
+                    </Row>
+                    <Row className="container mbRepetition">
+                      <Button
+                        block
+                        className="btn-start"
+                        onClick={() => this.startOnClick()}
+                      >
+                        START REPETITION {currentRepetition} /{" "}
+                        {currentPeriodInfo.nb_repetitions}
+                      </Button>
                     </Row>
                   </TabPane>
                 </Tabs>
@@ -461,4 +484,4 @@ class Repetition extends React.Component {
   };
 }
 
-export default Repetition;
+export default windowSize(Repetition);
