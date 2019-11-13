@@ -485,6 +485,7 @@ class DisplayProgram extends React.Component {
       originalIndex
     } = this.state;
 
+    const var1 = this.state.index;
     return (
       <div>
         {program ? (
