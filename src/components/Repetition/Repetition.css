@@ -22,6 +22,29 @@
   background: white;
 }
 
+.bottomLeft {
+  position: absolute;
+  color: black;
+  font-weight: bold;
+  font-size: 25px;
+  top: 150px;
+  left: 16px;
+  z-index: 100;
+}
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  color: white;
+  font-weight: bolder;
+  font-size: 25px;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+}
+
+
 .container {
   padding-right: 15px;
   padding-left: 15px;
@@ -51,7 +74,7 @@
   -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 /* Bottom left text */
-.bottom-left {
+.bottomLeftMobile {
   position: absolute;
   color: black;
   font-weight: bold;
@@ -62,7 +85,7 @@
 }
 
 /* Centered text */
-.centered {
+.centeredMobile {
   position: absolute;
   top: 70px;
   left: 50%;
@@ -82,7 +105,6 @@
   width: 50%;
   text-align: center;
   margin: 0 0 0 0;
-  border-right: 1px solid lightgray;
 }
 
 .ant-col-12 {
