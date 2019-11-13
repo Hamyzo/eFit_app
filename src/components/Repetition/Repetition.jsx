@@ -21,11 +21,14 @@ import windowSize from "react-window-size";
 import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
 import * as programScripts from "../../utils/programScripts";
+import * as dateScripts from "../../utils/dateScripts";
 import Spinner from "../Global/Spinner";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Step } = Steps;
+
+const CUSTOMER_PROGRAM = "5da1f67ccf53670572677651";
 
 class Repetition extends React.Component {
   constructor(props) {
@@ -59,7 +62,7 @@ class Repetition extends React.Component {
       const { match } = this.props;
       const program = await apiServices.getOne(
         "customerPrograms",
-        "5da1fff308104816e1bae7b7",
+        CUSTOMER_PROGRAM,
         "populate=program,customer,focus_sessions"
       );
       console.log("Program", program);
@@ -152,13 +155,11 @@ class Repetition extends React.Component {
       console.log("results: ", results);
       program.sessions[program.sessions.indexOf(currentSession)].periods[
         currentPeriod - 1
-      ].results.push(results);
+      ].repetitions.push({ results, date: new Date() });
       console.log(program);
-      await apiServices.patchOne(
-        "customerPrograms",
-        "5dbedf3ebc5fad3463b3e019",
-        { sessions: program.sessions }
-      );
+      await apiServices.patchOne("customerPrograms", CUSTOMER_PROGRAM, {
+        sessions: program.sessions
+      });
     } catch (e) {
       console.log(e);
     }
@@ -191,7 +192,7 @@ class Repetition extends React.Component {
                 <h1
                   className={windowWidth < 576 ? "centeredMobile" : "centered"}
                 >
-                  {currentPeriodInfo.nb_days} days left
+                  {dateScripts.getRemainingDays(currentPeriodInfo)} days left
                 </h1>
                 <h1
                   className={

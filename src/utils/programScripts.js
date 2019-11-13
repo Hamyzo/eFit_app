@@ -1,8 +1,8 @@
-export const completedReps = results => {
-  if (results === null) {
+export const completedReps = repetitions => {
+  if (repetitions === null) {
     return 0;
   }
-  return results.length;
+  return repetitions.length;
 };
 
 export const status = (numCompletedReps, numReps) => {
@@ -21,11 +21,24 @@ export const sessionStatus = periods => {
   let latestPeriod = 1;
   let latestRepetition = 1;
   let currentPeriodInfo = periods[0];
+  let isStarted = false;
   periods.forEach((period, i) => {
     totalReps += period.nb_repetitions;
-    const currentReps = completedReps(period.results);
+    const currentReps = completedReps(period.repetitions);
     numCompletedReps += currentReps;
-    if (currentReps !== 0) {
+    console.log(
+      "Current Reps: " +
+        currentReps +
+        " current nb_reps: " +
+        period.nb_repetitions
+    );
+    if (
+      (currentReps > 0 && currentReps < period.nb_repetitions) ||
+      (currentReps === 0 && !isStarted)
+    ) {
+      if (!isStarted) {
+        isStarted = true;
+      }
       latestPeriod = i + 1;
       latestRepetition = currentReps + 1;
       currentPeriodInfo = period;
