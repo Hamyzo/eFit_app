@@ -19,6 +19,7 @@ import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
 import * as programScripts from "../../utils/programScripts";
 import Spinner from "../Global/Spinner";
+import CustomerFocusSession from "../CustomerFocusSession/CustomerFocusSession";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -99,6 +100,10 @@ class Repetition extends React.Component {
   startOnClick = () => {
     this.setState({ startCardShow: -1 });
   };
+
+  evaluationOnClick = () => {
+    this.setState({ startCardShow: 2});
+  }
 
   nextStep = () => {
     const current = this.state.currentStep + 1;
@@ -233,6 +238,15 @@ class Repetition extends React.Component {
                         onClick={() => this.startOnClick()}
                       >
                         START REPETITION {currentRepetition}
+                      </Button>
+                    </Row>
+                    <Row className="container mbRepetition">
+                      <Button
+                        block
+                        className="btn-start"
+                        onClick={() => this.evaluationOnClick()}
+                      >
+                        START EVALUATION
                       </Button>
                     </Row>
                   </TabPane>
@@ -437,6 +451,10 @@ class Repetition extends React.Component {
 
     if (startCardShow === 1) {
       return this.renderStartCard();
+    }
+    // start focus session (evaluation)
+    if (startCardShow === 2) {
+      return <CustomerFocusSession/>;
     }
     if (startCardShow === -1) {
       // else ： hide startCard
