@@ -42,7 +42,6 @@ class Repetition extends React.Component {
       currentPeriod: null,
       currentRepetition: null,
       currentPeriodInfo: null,
-      totalReps: null,
       modalVisible: false,
       btnEasyLoading: false,
       btnProperLoading: false,
@@ -87,6 +86,11 @@ class Repetition extends React.Component {
           previousStatus = sessionStatus.status;
         }
       });
+      let startCardShow = 1;
+      const { search } = this.props.location;
+      if (search && search.split("=")[1] === "true") {
+        startCardShow = -1;
+      }
       this.setState({
         program,
         currentSession,
@@ -94,7 +98,8 @@ class Repetition extends React.Component {
         currentPeriodInfo,
         sessionIndex,
         currentRepetition,
-        exercises: currentSession.exercises
+        exercises: currentSession.exercises,
+        startCardShow
       });
     } catch (e) {
       console.log(e);
@@ -213,7 +218,10 @@ class Repetition extends React.Component {
                           />
                         </Col>
                         <Col span={14}>
-                          <h4>{currentPeriodInfo.nb_days} days left</h4>
+                          <h4>
+                            {dateScripts.getRemainingDays(currentPeriodInfo)}{" "}
+                            days left
+                          </h4>
                         </Col>
                       </Col>
                       <Col span={12} align="center">
