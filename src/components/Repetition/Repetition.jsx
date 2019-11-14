@@ -23,6 +23,7 @@ import * as apiServices from "../../apiServices";
 import * as programScripts from "../../utils/programScripts";
 import * as dateScripts from "../../utils/dateScripts";
 import Spinner from "../Global/Spinner";
+import CustomerFocusSession from "../CustomerFocusSession/CustomerFocusSession";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -42,7 +43,6 @@ class Repetition extends React.Component {
       currentPeriod: null,
       currentRepetition: null,
       currentPeriodInfo: null,
-      totalReps: null,
       modalVisible: false,
       btnEasyLoading: false,
       btnProperLoading: false,
@@ -87,6 +87,11 @@ class Repetition extends React.Component {
           previousStatus = sessionStatus.status;
         }
       });
+      let startCardShow = 1;
+      const { search } = this.props.location;
+      if (search && search.split("=")[1] === "true") {
+        startCardShow = -1;
+      }
       this.setState({
         program,
         currentSession,
@@ -94,7 +99,8 @@ class Repetition extends React.Component {
         currentPeriodInfo,
         sessionIndex,
         currentRepetition,
-        exercises: currentSession.exercises
+        exercises: currentSession.exercises,
+        startCardShow
       });
     } catch (e) {
       console.log(e);
@@ -104,6 +110,10 @@ class Repetition extends React.Component {
   startOnClick = () => {
     this.setState({ startCardShow: -1 });
   };
+
+  evaluationOnClick = () => {
+    this.setState({ startCardShow: 2});
+  }
 
   nextStep = () => {
     const current = this.state.currentStep + 1;
@@ -213,7 +223,10 @@ class Repetition extends React.Component {
                           />
                         </Col>
                         <Col span={14}>
-                          <h4>{currentPeriodInfo.nb_days} days left</h4>
+                          <h4>
+                            {dateScripts.getRemainingDays(currentPeriodInfo)}{" "}
+                            days left
+                          </h4>
                         </Col>
                       </Col>
                       <Col span={12} align="center">
@@ -248,6 +261,15 @@ class Repetition extends React.Component {
                       >
                         START REPETITION {currentRepetition} /{" "}
                         {currentPeriodInfo.nb_repetitions}
+                      </Button>
+                    </Row>
+                    <Row className="container mbRepetition">
+                      <Button
+                        block
+                        className="btn-start"
+                        onClick={() => this.evaluationOnClick()}
+                      >
+                        START EVALUATION
                       </Button>
                     </Row>
                   </TabPane>
@@ -473,6 +495,10 @@ class Repetition extends React.Component {
 
     if (startCardShow === 1) {
       return this.renderStartCard();
+    }
+    // start focus session (evaluation)
+    if (startCardShow === 2) {
+      return <CustomerFocusSession/>;
     }
     if (startCardShow === -1) {
       // else ： hide startCard

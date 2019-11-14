@@ -122,6 +122,13 @@
   margin-left: 21%;
   margin-bottom: 17%;
 }
+.oneAvatar {
+  margin-top: 17%;
+  margin-left: 21%;
+  margin-bottom: 17%;
+  font-size: 20px;
+  font-weight: bold;
+}
 .water_progress {
   height: 20px;
   width: 20px;
