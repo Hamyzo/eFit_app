@@ -11,25 +11,19 @@ import {
   Tabs,
   Icon,
   Timeline,
-  Layout,
   Collapse
 } from "antd";
 import { Icon as FaIcon } from "react-fa";
 import "./Repetition.css";
-import windowSize from "react-window-size";
 
 import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
 import * as programScripts from "../../utils/programScripts";
-import * as dateScripts from "../../utils/dateScripts";
 import Spinner from "../Global/Spinner";
-import CustomerFocusSession from "../CustomerFocusSession/CustomerFocusSession";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Step } = Steps;
-
-const CUSTOMER_PROGRAM = "5da1f67ccf53670572677651";
 
 class Repetition extends React.Component {
   constructor(props) {
@@ -62,7 +56,7 @@ class Repetition extends React.Component {
       const { match } = this.props;
       const program = await apiServices.getOne(
         "customerPrograms",
-        CUSTOMER_PROGRAM,
+        "5dbedf3ebc5fad3463b3e019",
         "populate=program,customer,focus_sessions"
       );
       console.log("Program", program);
@@ -74,24 +68,21 @@ class Repetition extends React.Component {
       let sessionIndex = null;
       program.sessions.forEach((session, index) => {
         const sessionStatus = programScripts.sessionStatus(session.periods);
-        if (
-          sessionStatus.status === "In progress" ||
-          (sessionStatus.status === "Not Started" &&
-            previousStatus === "Completed")
-        ) {
+        if (sessionStatus.status === "In progress") {
           currentSession = session;
           sessionIndex = index + 1;
           currentPeriod = sessionStatus.latestPeriod;
           currentPeriodInfo = sessionStatus.currentPeriodInfo;
           currentRepetition = sessionStatus.latestRepetition;
-          previousStatus = sessionStatus.status;
+        } else if (
+          sessionStatus.status === "Not Started" &&
+          previousStatus === "Completed"
+        ) {
+          currentSession = session;
+          currentPeriod = 1;
+          currentRepetition = 1;
         }
       });
-      let startCardShow = 1;
-      const { search } = this.props.location;
-      if (search && search.split("=")[1] === "true") {
-        startCardShow = -1;
-      }
       this.setState({
         program,
         currentSession,
@@ -99,8 +90,7 @@ class Repetition extends React.Component {
         currentPeriodInfo,
         sessionIndex,
         currentRepetition,
-        exercises: currentSession.exercises,
-        startCardShow
+        exercises: currentSession.exercises
       });
     } catch (e) {
       console.log(e);
@@ -110,10 +100,6 @@ class Repetition extends React.Component {
   startOnClick = () => {
     this.setState({ startCardShow: -1 });
   };
-
-  evaluationOnClick = () => {
-    this.setState({ startCardShow: 2});
-  }
 
   nextStep = () => {
     const current = this.state.currentStep + 1;
@@ -165,192 +151,19 @@ class Repetition extends React.Component {
       console.log("results: ", results);
       program.sessions[program.sessions.indexOf(currentSession)].periods[
         currentPeriod - 1
-      ].repetitions.push({ results, date: new Date() });
+      ].results.push(results);
       console.log(program);
-      await apiServices.patchOne("customerPrograms", CUSTOMER_PROGRAM, {
-        sessions: program.sessions
-      });
+      await apiServices.patchOne(
+        "customerPrograms",
+        "5dbedf3ebc5fad3463b3e019",
+        { sessions: program.sessions }
+      );
     } catch (e) {
       console.log(e);
     }
   };
 
-  renderStartCard = () => {
-    const {
-      program,
-      currentSession,
-      sessionIndex,
-      currentPeriod,
-      currentRepetition,
-      currentPeriodInfo,
-      exercises
-    } = this.state;
-    const { windowWidth } = this.props;
-    console.log(currentSession);
-    return (
-      <div>
-        <Row className="top-row">
-          {program ? (
-            <Col span={24}>
-              <div className="repetitionWrapper">
-                <img
-                  alt="run"
-                  height={windowWidth < 576 ? "150px" : "200px"}
-                  width="100%"
-                  src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
-                />
-                <h1
-                  className={windowWidth < 576 ? "centeredMobile" : "centered"}
-                >
-                  {dateScripts.getRemainingDays(currentPeriodInfo)} days left
-                </h1>
-                <h1
-                  className={
-                    windowWidth < 576 ? "bottomLeftMobile" : "bottomLeft"
-                  }
-                >
-                  {currentSession.name}
-                </h1>
-
-                <Tabs defaultActiveKey="1">
-                  <TabPane tab="DETAILS" key="1">
-                    <Row>
-                      <Col span={12} align="center">
-                        <Col span={2} align="left" offset={2}>
-                          <FaIcon
-                            style={{ fontSize: "24px", color: "#43978d" }}
-                            name="clock-o"
-                          />
-                        </Col>
-                        <Col span={14}>
-                          <h4>
-                            {dateScripts.getRemainingDays(currentPeriodInfo)}{" "}
-                            days left
-                          </h4>
-                        </Col>
-                      </Col>
-                      <Col span={12} align="center">
-                        <Col span={2} align="left" offset={2}>
-                          <FaIcon
-                            style={{ fontSize: "24px", color: "#43978d" }}
-                            name="signal"
-                          />
-                        </Col>
-                        <Col span={10} offset={2}>
-                          <h4>Beginner</h4>
-                        </Col>
-                      </Col>
-                    </Row>
-                    <Row className="container mtRepetition">
-                      <h4>Description</h4>
-                      <p>{currentSession.description}</p>
-                    </Row>
-                    <Row className="container mtRepetition">
-                      <h4>Goal</h4>
-                      <p>Loss weight</p>
-                    </Row>
-                    <Row className="container mtRepetition">
-                      <h4>Equipment</h4>
-                      <p>Dumbbell, Cardio, Pulley</p>
-                    </Row>{" "}
-                    <Row className="container mbRepetition">
-                      <Button
-                        block
-                        className="btn-start"
-                        onClick={() => this.startOnClick()}
-                      >
-                        START REPETITION {currentRepetition} /{" "}
-                        {currentPeriodInfo.nb_repetitions}
-                      </Button>
-                    </Row>
-                    <Row className="container mbRepetition">
-                      <Button
-                        block
-                        className="btn-start"
-                        onClick={() => this.evaluationOnClick()}
-                      >
-                        START EVALUATION
-                      </Button>
-                    </Row>
-                  </TabPane>
-                  <TabPane tab="PERFORMANCE" key="2">
-                    <Row className="container">
-                      <h4>Current Status</h4>
-                      <Col span={8} align="center">
-                        Session {sessionIndex}
-                      </Col>
-                      <Col span={8} align="center">
-                        Period {currentPeriod}
-                      </Col>
-                      <Col span={8} align="center">
-                        Repetition {currentRepetition}
-                      </Col>
-                    </Row>
-                    <Row className="container mbRepetition">
-                      <Button
-                        block
-                        className="btn-start"
-                        onClick={() => this.startOnClick()}
-                      >
-                        START REPETITION {currentRepetition} /{" "}
-                        {currentPeriodInfo.nb_repetitions}
-                      </Button>
-                    </Row>
-                  </TabPane>
-                </Tabs>
-              </div>
-              <div
-                className="exerciseList marginTopRepetition"
-                id="exerciseList"
-              >
-                {exercises.map(exercise => (
-                  <Card bordered={false}>
-                    <Meta
-                      avatar={<Avatar size={55} src={exercise.exercise.img} />}
-                      title={
-                        <h4 style={{ fontSize: "15px", marginTop: "5px" }}>
-                          {exercise.exercise.name}{" "}
-                        </h4>
-                      }
-                      description={
-                        <p style={{ marginTop: "-10px" }}>
-                          {exercise.sets + " X " + exercise.reps}{" "}
-                        </p>
-                      }
-                    />
-                  </Card>
-                ))}
-              </div>
-
-              {/*}  <Card
-                className="wrapper"
-                id="card"
-                style={{}}
-                cover={<img alt="run" src="/assets/images/run.jpg" />}
-              >
-                <Meta
-                  title={currentSession.name}
-                  description={currentSession.description}
-                  style={{ marginTop: "2%" }}
-                />
-                <Button
-                  block
-                  className="btn-start"
-                  onClick={() => this.startOnClick()}
-                >
-                  START REPETITION {currentPeriod}
-                </Button>
-              </Card> */}
-            </Col>
-          ) : (
-            <Spinner />
-          )}
-        </Row>
-      </div>
-    );
-  };
-
-  renderStepDiv = () => {
+  render() {
     const {
       modalVisible,
       btnEasyLoading,
@@ -487,28 +300,7 @@ class Repetition extends React.Component {
         </Row>
       </div>
     );
-  };
-
-  render = () => {
-    const { startCardShow } = this.state;
-    // const modalWidth = "300px";
-
-    if (startCardShow === 1) {
-      return this.renderStartCard();
-    }
-    // start focus session (evaluation)
-    if (startCardShow === 2) {
-      return <CustomerFocusSession/>;
-    }
-    if (startCardShow === -1) {
-      // else ： hide startCard
-      return this.renderStepDiv();
-    }
-    if (startCardShow === 0) {
-      return <RepetitionDone />;
-    }
-    return null;
-  };
+  }
 }
 
-export default windowSize(Repetition);
+export default Repetition;
