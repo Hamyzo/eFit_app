@@ -421,7 +421,7 @@ class Repetition extends React.Component {
                         header={
                           <Row>
                             <Col span={22} align="center">
-                              <span className="sectionTitle">Steps</span>
+                              <span className="sectionTitle">HOW TO</span>
                             </Col>
                           </Row>
                         }
