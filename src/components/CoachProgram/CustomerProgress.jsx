@@ -83,6 +83,37 @@ class CustomerProgress extends React.Component {
     return ((n1 - n2)/((n1 + n2)/2)*100);
   }
 
+  progressArrow = progress => {
+    if (parseFloat(progress) < 0.0){
+      return(
+        <div>
+          <img
+            alt=""
+            className="down-up"
+            src="/assets/images/sort-down.svg"
+          />
+          {parseFloat(progress)}%
+        </div>)
+    }
+    else if (parseFloat(progress) == 0.0 || progress == "--"){
+    return(" ")
+    }
+    else{
+      return(
+        <div>
+          <img
+            alt=""
+            className="down-up"
+            src="/assets/images/sort-up.svg"
+          />
+          {parseFloat(progress)}%
+        </div>
+      )
+    }
+  }
+
+
+
 
   progressCalculator = (focusSessions, measure) => {
     var focusSessionsWithResults = this.removeFocusSessionsNotDone(focusSessions);
@@ -148,8 +179,9 @@ class CustomerProgress extends React.Component {
 
     return (
       <div>
-        <h1 className="progressTitle"> Progress </h1>
       <div className="progressColumn">
+        <h3 className="progressTitle">Last Focus Session Results</h3>
+
         <Row>
           <Col span={10} offset={1}>
             <div className="dicksonDiv">
@@ -158,16 +190,18 @@ class CustomerProgress extends React.Component {
                 className="heartAndDickson"
                 src="/assets/images/muscle (2).svg"
               />
-              <h3>Dickson Index</h3>
+
               {program ? (
                 <div>
-                  <Row>{this.lastMeasure(program.focus_sessions, "dickson_index")}</Row>
-                  <Row>{this.measureProgress(program.focus_sessions, "dickson_index")}%</Row>
+                  <div className="circle">{this.lastMeasure(program.focus_sessions, "dickson_index")}</div>
+                  <h3>Dickson Index</h3>
+                  {this.progressArrow(this.measureProgress(program.focus_sessions, "dickson_index"))}
                 </div>
 
               ) : (
                 <div>...</div>
               )}
+
             </div>
           </Col>
           <Col span={10} offset={1}>
@@ -177,22 +211,24 @@ class CustomerProgress extends React.Component {
                   className="heartAndDickson"
                 src="/assets/images/heartbeat.svg"
               />
-              <h3>Resting Heart Rate</h3>
+
                 {program ? (
                   <div>
-                    <Row>{this.lastMeasure(program.focus_sessions, "rest_heart_rate")}</Row>
-                    <Row>{this.measureProgress(program.focus_sessions, "rest_heart_rate")}%</Row>
+                    <div className="circle">{this.lastMeasure(program.focus_sessions, "rest_heart_rate")}</div>
+                    <h3>Resting Heart Rate</h3>
+                    <Row>{this.progressArrow(this.measureProgress(program.focus_sessions, "rest_heart_rate"))}</Row>
                   </div>
                 ) : (
                   <div>...</div>
                 )}
+
             </div>
           </Col>
         </Row>
         <Row>
           {program ? (
             <div>
-              <h3>Last Session Results</h3>
+
               <Table
                 className="resultsTable"
                 pagination={false}

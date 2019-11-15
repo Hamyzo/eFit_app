@@ -414,7 +414,7 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <img
+                {/*<img
                   alt=""
                   className="calendar"
                   src="/assets/images/calendar.svg"
@@ -424,7 +424,7 @@ class DisplayProgram extends React.Component {
                 {this.sessionEndDate(
                   session,
                   this.sessionStartDate(programStartDate, sessionsArray, index)
-                )}
+                )*/}
               </p>
             </Col>
           </Row>

@@ -2,7 +2,7 @@ import React from "react";
 import * as apiServices from "../../apiServices";
 import DisplayProgram from "./DisplayProgram";
 import CustomerProgress from "./CustomerProgress";
-import { Row, Col, Avatar } from "antd";
+import { Row, Col, Avatar, Icon, Statistic, Button } from "antd";
 import Spinner from "../Global/Spinner";
 class CoachProgram extends React.Component {
   constructor(props) {
@@ -57,15 +57,24 @@ class CoachProgram extends React.Component {
             {customer.first_name} {customer.last_name}
           </h1>
         </Col>
-        <Col className="lastWorkoutCol" span={4}>
+        <Col className="lastWorkoutCol" span={3}>
           <div className="lastWorkoutDiv">
-            <img
-            alt=""
-            className="lastWorkout"
-            src="/assets/images/calendarcolor.svg"/>
-            <p className="lastWorkoutp">Last workout: 12/11</p>
-            <p className="lastWorkoutDivp">(2 days ago)</p>
+            <Statistic title="Last Workout" value={"13 Nov"} prefix={<Icon type="clock-circle" />}/>
           </div>
+        </Col>
+        <Col className="lastWorkoutCol" span={3}>
+          <div className="lastWorkoutDiv">
+            <Statistic title="Next Appointment" value={"13 Nov"} prefix={<Icon type="calendar" />}/>
+          </div>
+        </Col>
+        <Col className="lastWorkoutCol" span={3}>
+          <div className="lastWorkoutDiv">
+            <Statistic title="Next Focus Session" value={"25 Nov"} prefix={<Icon type="calendar" />}/>
+          </div>
+        </Col>
+        <Col span={3}>
+          <Button  shape="circle" icon="message" />
+          <Button  shape="circle" icon="setting" />
         </Col>
       </Row>
     </div>
