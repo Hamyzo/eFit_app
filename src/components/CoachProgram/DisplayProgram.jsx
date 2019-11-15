@@ -288,7 +288,7 @@ class DisplayProgram extends React.Component {
                   />
                   Reps:{" "}
                 </strong>
-                {programScripts.completedReps(period.results)}/
+                {programScripts.completedReps(period.repetitions)}/
                 {period.nb_repetitions}
               </p>
             </Col>
@@ -320,7 +320,7 @@ class DisplayProgram extends React.Component {
       />
       <Row className="period_btns">
         <Col offset={6} span={12}>
-          {this.renderResultsButton(period.results)}
+          {this.renderResultsButton(period.repetitions)}
         </Col>
       </Row>
       <Modal
@@ -329,9 +329,11 @@ class DisplayProgram extends React.Component {
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        {period.results ? (
+        {period.repetitions ? (
           <Tabs defaultActiveKey="0">
-            {period.results.map((rep, rIndex) => this.renderRep(rep, rIndex))}
+            {period.repetitions.map((rep, rIndex) =>
+              this.renderRep(rep, rIndex)
+            )}
           </Tabs>
         ) : (
           <p>No Results Available</p>
@@ -340,12 +342,12 @@ class DisplayProgram extends React.Component {
     </Panel>
   );
 
-  renderResultsButton = results => {
-    if (results == null || results.length == 0) {
+  renderResultsButton = repetition => {
+    if (repetition === null || repetition.length === 0) {
       return (
         <Button
           className="results_btn"
-          disabled={true}
+          disabled
           onClick={this.showResultsModal}
           block
         >
@@ -361,12 +363,12 @@ class DisplayProgram extends React.Component {
     }
   };
 
-  renderRep = (period, index) => (
+  renderRep = (rep, index) => (
     <TabPane tab={`Rep${index + 1}`} key={index}>
       <Table
         pagination={false}
         columns={columnsResults}
-        dataSource={period}
+        dataSource={rep.results}
         size="small"
         bordered={false}
       />
@@ -507,6 +509,7 @@ class DisplayProgram extends React.Component {
       originalIndex
     } = this.state;
 
+    console.log("Program", program);
     return (
       <div>
         {program ? (
