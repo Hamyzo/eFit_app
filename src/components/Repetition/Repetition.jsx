@@ -23,7 +23,6 @@ import * as apiServices from "../../apiServices";
 import * as programScripts from "../../utils/programScripts";
 import * as dateScripts from "../../utils/dateScripts";
 import Spinner from "../Global/Spinner";
-import CustomerFocusSession from "../CustomerFocusSession/CustomerFocusSession";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -111,10 +110,6 @@ class Repetition extends React.Component {
     this.setState({ startCardShow: -1 });
   };
 
-  evaluationOnClick = () => {
-    this.setState({ startCardShow: 2});
-  }
-
   nextStep = () => {
     const current = this.state.currentStep + 1;
     this.setState({
@@ -199,13 +194,14 @@ class Repetition extends React.Component {
                   width="100%"
                   src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
                 />
-                <div
+                <h1
                   className={
-                    windowWidth < 576 ? "textBlockMobile" : "textBlock"
+                    windowWidth < 576 ? "bottomLeftMobile" : "bottomLeft"
                   }
                 >
-                  <h1>{currentSession.name}</h1>
-                </div>
+                  {currentSession.name}
+                </h1>
+
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="DETAILS" key="1">
                     <Row>
@@ -255,15 +251,6 @@ class Repetition extends React.Component {
                       >
                         START REPETITION {currentRepetition} /{" "}
                         {currentPeriodInfo.nb_repetitions}
-                      </Button>
-                    </Row>
-                    <Row className="container mbRepetition">
-                      <Button
-                        block
-                        className="btn-start"
-                        onClick={() => this.evaluationOnClick()}
-                      >
-                        START EVALUATION
                       </Button>
                     </Row>
                   </TabPane>
@@ -489,10 +476,6 @@ class Repetition extends React.Component {
 
     if (startCardShow === 1) {
       return this.renderStartCard();
-    }
-    // start focus session (evaluation)
-    if (startCardShow === 2) {
-      return <CustomerFocusSession/>;
     }
     if (startCardShow === -1) {
       // else ： hide startCard
