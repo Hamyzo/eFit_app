@@ -39,6 +39,7 @@ export const sessionStatus = periods => {
   let latestPeriod = 1;
   let latestRepetition = 1;
   let currentPeriodInfo = periods[0];
+  let previousPeriod = null;
   let isStarted = false;
   periods.forEach((period, i) => {
     totalReps += period.nb_repetitions;
@@ -52,6 +53,7 @@ export const sessionStatus = periods => {
         isStarted = true;
       }
       latestPeriod = i + 1;
+      previousPeriod = i;
       latestRepetition = currentReps + 1;
       currentPeriodInfo = period;
     }
@@ -59,6 +61,7 @@ export const sessionStatus = periods => {
   return {
     status: status(numCompletedReps, totalReps),
     latestPeriod,
+    previousPeriod,
     latestRepetition,
     currentPeriodInfo
   };

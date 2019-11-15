@@ -194,19 +194,13 @@ class Repetition extends React.Component {
                   width="100%"
                   src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
                 />
-                <h1
-                  className={windowWidth < 576 ? "centeredMobile" : "centered"}
-                >
-                  {dateScripts.getRemainingDays(currentPeriodInfo)} days left
-                </h1>
-                <h1
+                <div
                   className={
-                    windowWidth < 576 ? "bottomLeftMobile" : "bottomLeft"
+                    windowWidth < 576 ? "textBlockMobile" : "textBlock"
                   }
                 >
-                  {currentSession.name}
-                </h1>
-
+                  <h1>{currentSession.name}</h1>
+                </div>
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="DETAILS" key="1">
                     <Row>

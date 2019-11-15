@@ -11,8 +11,9 @@ export const getRemainingDays = period => {
   return period.nb_days;
 };
 
-export const getNbDaysSinceLastResult = period => {
-  const { repetitions } = period;
+export const getNbDaysSinceLastResult = (currentPeriod, previousPeriod) => {
+  const { repetitions } = currentPeriod;
+  const { lastRepetitions } = previousPeriod;
 
   if (repetitions && repetitions.length > 0) {
     const currentDate = new Date();
@@ -21,5 +22,15 @@ export const getNbDaysSinceLastResult = period => {
       (currentDate.getTime() - lastWorkOutDate.getTime()) / (1000 * 3600 * 24)
     );
   }
-  return period.nb_days;
+
+  if (!repetitions && repetitions.length === 0) {
+    const currentDate = new Date();
+    const lastWorkOutDate = new Date(
+      lastRepetitions[lastRepetitions.length - 1].date
+    );
+    return Math.round(
+      (currentDate.getTime() - lastWorkOutDate.getTime()) / (1000 * 3600 * 24)
+    );
+  }
+  return 0;
 };

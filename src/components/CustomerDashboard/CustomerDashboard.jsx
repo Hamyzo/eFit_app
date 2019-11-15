@@ -26,6 +26,7 @@ class CustomerDashboard extends React.Component {
       currentFocusSession: null,
       sessionIndex: null,
       currentPeriod: null,
+      previousPeriod: null,
       currentRepetition: null,
       currentPeriodInfo: null
     };
@@ -43,9 +44,9 @@ class CustomerDashboard extends React.Component {
         "5da1f67ccf53670572677651",
         "populate=program,customer,focus_sessions"
       );
-      console.log("Program", program);
       let currentSession = null;
       let currentPeriod = null;
+      let previousPeriod = null;
       let currentRepetition = null;
       let previousStatus = "Completed";
       let currentPeriodInfo = null;
@@ -60,6 +61,7 @@ class CustomerDashboard extends React.Component {
           currentSession = session;
           sessionIndex = index + 1;
           currentPeriod = sessionStatus.latestPeriod;
+          previousPeriod = sessionStatus.previousPeriod;
           currentPeriodInfo = sessionStatus.currentPeriodInfo;
           currentRepetition = sessionStatus.latestRepetition;
           previousStatus = sessionStatus.status;
@@ -69,12 +71,12 @@ class CustomerDashboard extends React.Component {
       const currentFocusSession = programScripts.focusSessionStatus(
         program.focus_sessions
       );
-      console.log(currentFocusSession);
       this.setState({
         program,
         currentSession,
         currentFocusSession,
         currentPeriod,
+        previousPeriod,
         currentPeriodInfo,
         sessionIndex,
         currentRepetition
@@ -121,6 +123,7 @@ class CustomerDashboard extends React.Component {
     const {
       program,
       currentSession,
+      previousPeriod,
       sessionIndex,
       currentFocusSession,
       currentPeriodInfo
@@ -192,7 +195,10 @@ class CustomerDashboard extends React.Component {
                     size="large"
                     className="oneAvatar"
                   >
-                    {dateScripts.getNbDaysSinceLastResult(currentPeriodInfo)}
+                    {dateScripts.getNbDaysSinceLastResult(
+                      currentPeriodInfo,
+                      currentSession.periods[previousPeriod]
+                    )}
                   </Avatar>
                 </Col>
                 <Col span={10}>
