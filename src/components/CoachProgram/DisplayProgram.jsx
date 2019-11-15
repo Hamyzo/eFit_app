@@ -376,6 +376,28 @@ class DisplayProgram extends React.Component {
     </TabPane>
   );
 
+  returnIndexCurrentSession = sessions => {
+    var index = 0;
+    for (var i = 0; i < sessions.length; i++){
+      if(programScripts.sessionStatus(sessions[i].periods).status == "In Progress"){
+        index = i;
+      }
+    }
+    return index;
+  }
+  returnIndexCurrentPeriod = periods => {
+    var index = 0;
+    if (periods != null || periods.length > 0){
+      for (var i = 0; i < periods.length; i++){
+        if(programScripts.status(programScripts.completedReps(periods[i].results),
+          periods[i].nb_repetitions) == "In Progress"){
+          index = i;
+        }
+      }
+    }
+    return index;
+  }
+
   renderSession = (session, index, programStartDate, sessionsArray) => (
     <Panel
       header={
@@ -394,7 +416,7 @@ class DisplayProgram extends React.Component {
             </Col>
             <Col span={8}>
               <p className="margin0">
-                <img
+                {/*<img
                   alt=""
                   className="calendar"
                   src="/assets/images/calendar.svg"
@@ -404,7 +426,7 @@ class DisplayProgram extends React.Component {
                 {this.sessionEndDate(
                   session,
                   this.sessionStartDate(programStartDate, sessionsArray, index)
-                )}
+                )*/}
               </p>
             </Col>
           </Row>
@@ -412,7 +434,7 @@ class DisplayProgram extends React.Component {
       }
       key={index}
     >
-      <Collapse defaultActiveKey={["0"]} bordered={false}>
+      <Collapse defaultActiveKey={[this.returnIndexCurrentPeriod(session.periods)]} bordered={false}>
         {session.periods.map((period, pindex) =>
           this.renderPeriod(
             session,
@@ -452,7 +474,7 @@ class DisplayProgram extends React.Component {
     <div>
       <h1 className="program_name">{program.name || program.program.name}</h1>
 
-      <Collapse defaultActiveKey={["0"]}>
+      <Collapse defaultActiveKey={[this.returnIndexCurrentSession(program.sessions)]}>
         {program.sessions.map((session, index) =>
           this.renderSession(
             session,
