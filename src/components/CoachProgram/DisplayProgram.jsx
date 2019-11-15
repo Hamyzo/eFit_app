@@ -378,25 +378,32 @@ class DisplayProgram extends React.Component {
 
   returnIndexCurrentSession = sessions => {
     var index = 0;
-    for (var i = 0; i < sessions.length; i++){
-      if(programScripts.sessionStatus(sessions[i].periods).status == "In Progress"){
+    for (var i = 0; i < sessions.length; i++) {
+      if (
+        programScripts.sessionStatus(sessions[i].periods).status ==
+        "In Progress"
+      ) {
         index = i;
       }
     }
     return index;
-  }
+  };
   returnIndexCurrentPeriod = periods => {
     var index = 0;
-    if (periods != null || periods.length > 0){
-      for (var i = 0; i < periods.length; i++){
-        if(programScripts.status(programScripts.completedReps(periods[i].results),
-          periods[i].nb_repetitions) == "In Progress"){
+    if (periods != null || periods.length > 0) {
+      for (var i = 0; i < periods.length; i++) {
+        if (
+          programScripts.status(
+            programScripts.completedReps(periods[i].results),
+            periods[i].nb_repetitions
+          ) == "In Progress"
+        ) {
           index = i;
         }
       }
     }
     return index;
-  }
+  };
 
   renderSession = (session, index, programStartDate, sessionsArray) => (
     <Panel
@@ -434,7 +441,10 @@ class DisplayProgram extends React.Component {
       }
       key={index}
     >
-      <Collapse defaultActiveKey={[this.returnIndexCurrentPeriod(session.periods)]} bordered={false}>
+      <Collapse
+        defaultActiveKey={[this.returnIndexCurrentPeriod(session.periods)]}
+        bordered={false}
+      >
         {session.periods.map((period, pindex) =>
           this.renderPeriod(
             session,
@@ -474,7 +484,9 @@ class DisplayProgram extends React.Component {
     <div>
       <h1 className="program_name">{program.name || program.program.name}</h1>
 
-      <Collapse defaultActiveKey={[this.returnIndexCurrentSession(program.sessions)]}>
+      <Collapse
+        defaultActiveKey={[this.returnIndexCurrentSession(program.sessions)]}
+      >
         {program.sessions.map((session, index) =>
           this.renderSession(
             session,

@@ -89,7 +89,7 @@
   z-index: 100;
 }
 
-.textBlock{
+.textBlock {
   position: absolute;
   background-color: #43978d;
   color: white;
@@ -112,13 +112,11 @@
   color: white;
   font-weight: bold;
   font-size: 20px;
-
 }
 .textBlockMobile h1 {
   color: white;
   font-weight: bold;
   font-size: 20px;
-
 }
 /* Centered text */
 .centeredMobile {

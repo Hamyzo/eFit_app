@@ -60,42 +60,46 @@ class CoachProgram extends React.Component {
         </Col>
         <Col className="lastWorkoutCol" span={3}>
           <div className="lastWorkoutDiv">
-            <Statistic title="Last Workout" value={"13 Nov"} prefix={<Icon type="clock-circle" />}/>
+            <Statistic
+              title="Last Workout"
+              value={"13 Nov"}
+              prefix={<Icon type="clock-circle" />}
+            />
           </div>
         </Col>
         <Col className="lastWorkoutCol" span={3}>
           <div className="lastWorkoutDiv">
-            <Statistic title="Next Appointment" value={"13 Nov"} prefix={<Icon type="calendar" />}/>
+            <Statistic
+              title="Next Appointment"
+              value={"13 Nov"}
+              prefix={<Icon type="calendar" />}
+            />
           </div>
         </Col>
         <Col className="lastWorkoutCol" span={3}>
           <div className="lastWorkoutDiv">
-            <Statistic title="Next Focus Session" value={"25 Nov"} prefix={<Icon type="calendar" />}/>
+            <Statistic
+              title="Next Focus Session"
+              value={"25 Nov"}
+              prefix={<Icon type="calendar" />}
+            />
           </div>
         </Col>
         <Col span={3}>
-          <Button  shape="circle" icon="message" />
-          <Button  shape="circle" icon="setting" />
+          <Button shape="circle" icon="message" />
+          <Button shape="circle" icon="setting" />
         </Col>
       </Row>
     </div>
   );
 
   renderCustomerProgress = program => {
-    if(program.focus_sessions == null || program.focus_sessions.length == 0){
-     return ("");
+    if (program.focus_sessions == null || program.focus_sessions.length == 0) {
+      return "";
+    } else {
+      return <CustomerProgress program={program} editable isCustomerProgram />;
     }
-
-      else {
-      return(<CustomerProgress
-          program={program}
-          editable
-          isCustomerProgram
-        />);
-    }
-
-  }
-
+  };
 
   render() {
     const { program } = this.state;
@@ -114,9 +118,7 @@ class CoachProgram extends React.Component {
                   onSubmitSession={this.handleSubmitSession}
                 />
               </Col>
-              <Col span={8}>
-                {this.renderCustomerProgress(program)}
-              </Col>
+              <Col span={8}>{this.renderCustomerProgress(program)}</Col>
             </Row>
           </div>
         ) : (

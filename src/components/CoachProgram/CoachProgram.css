@@ -85,28 +85,28 @@
   margin-top: 3.5%;
 }
 
-.lastWorkoutCol{
+.lastWorkoutCol {
   height: 100px;
   border-right: 1px solid #d9d9d9;
   border-radius: 4px;
 }
-.lastWorkoutDivp{
+.lastWorkoutDivp {
   margin-top: 1%;
   font-color: green;
   font-size: 12px;
 }
 
-.lastWorkoutDate{
+.lastWorkoutDate {
   font-size: 25px;
   margin-top: 0%;
   margin-bottom: -1%;
 }
 
-.resultsTable{
+.resultsTable {
   margin: 4%;
 }
 
-.icon{
+.icon {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -119,11 +119,9 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
-
 }
 
-
-.customerName{
+.customerName {
   font-size: 30px;
   margin-top: 8.5%;
   margin-left: 5%;
@@ -136,7 +134,6 @@
   background-color: #fafafa;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-
 }
 .progressTitle {
   margin-top: 2%;
@@ -154,7 +151,7 @@
   margin-bottom: 5%;
 }
 
-.down-up{
+.down-up {
   width: 15px;
   height: 15px;
   margin-right: 5%;
@@ -177,7 +174,6 @@
   background: #bfbfbf;
   z-index: -0;
   position: relative;
-
 }
 
 .progressRow {
