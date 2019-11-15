@@ -199,13 +199,14 @@ class Repetition extends React.Component {
                   width="100%"
                   src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
                 />
-                <div
+                <h1
                   className={
-                    windowWidth < 576 ? "textBlockMobile" : "textBlock"
+                    windowWidth < 576 ? "bottomLeftMobile" : "bottomLeft"
                   }
                 >
-                  <h1>{currentSession.name}</h1>
-                </div>
+                  {currentSession.name}
+                </h1>
+
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="DETAILS" key="1">
                     <Row>
