@@ -81,3 +81,23 @@ export const focusSessionStatus = focusSessions => {
   });
   return currentFocusSession;
 };
+
+export const focusSessionDisplayButton = (
+  currentSessionStatus,
+  previousStatus,
+  focusSessions
+) => {
+  let showButton = false;
+  let showReminderBanner = true;
+  const currentFocusSession = focusSessionStatus(focusSessions);
+
+  if (
+    currentSessionStatus === "Not Started" &&
+    previousStatus !== "In progress"
+  ) {
+    showButton = true;
+    showReminderBanner = false;
+  }
+
+  return { showButton, showReminderBanner, currentFocusSession };
+};
