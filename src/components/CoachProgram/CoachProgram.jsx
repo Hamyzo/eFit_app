@@ -2,7 +2,7 @@ import React from "react";
 import * as apiServices from "../../apiServices";
 import DisplayProgram from "./DisplayProgram";
 import CustomerProgress from "./CustomerProgress";
-import { Row, Col, Avatar } from "antd";
+import { Row, Col, Avatar, Icon, Statistic, Button } from "antd";
 import Spinner from "../Global/Spinner";
 
 class CoachProgram extends React.Component {
@@ -23,7 +23,7 @@ class CoachProgram extends React.Component {
       const program = await apiServices.getOne(
         "customerPrograms",
         match ? match.params.customerProgramId : "5da1f67ccf53670572677651",
-        "populate=program,customer,focus_sessions"
+        "populate=program,customer,focus_sessions,exercises.exercise,focus_sessions.exercises"
       );
       console.log("Program:", program);
       this.setState({ program });
@@ -51,20 +51,55 @@ class CoachProgram extends React.Component {
     <div className="customer_banner">
       <Row>
         <Col span={2}>
-          <Avatar src={customer.img} size={64} />
+          <Avatar className="profilePic" src={customer.img} size={108} />
         </Col>
         <Col span={4}>
-          <h1>
+          <h1 className="customerName">
             {customer.first_name} {customer.last_name}
           </h1>
-          <p>Last workout: dd/mm</p>
         </Col>
-        <Col offset={4} span={4}>
-          <p> Currently on: Session 2, Period 1</p>
+        <Col className="lastWorkoutCol" span={3}>
+          <div className="lastWorkoutDiv">
+            <Statistic
+              title="Last Workout"
+              value={"13 Nov"}
+              prefix={<Icon type="clock-circle" />}
+            />
+          </div>
+        </Col>
+        <Col className="lastWorkoutCol" span={3}>
+          <div className="lastWorkoutDiv">
+            <Statistic
+              title="Next Appointment"
+              value={"13 Nov"}
+              prefix={<Icon type="calendar" />}
+            />
+          </div>
+        </Col>
+        <Col className="lastWorkoutCol" span={3}>
+          <div className="lastWorkoutDiv">
+            <Statistic
+              title="Next Focus Session"
+              value={"25 Nov"}
+              prefix={<Icon type="calendar" />}
+            />
+          </div>
+        </Col>
+        <Col span={3}>
+          <Button shape="circle" icon="message" />
+          <Button shape="circle" icon="setting" />
         </Col>
       </Row>
     </div>
   );
+
+  renderCustomerProgress = program => {
+    if (program.focus_sessions == null || program.focus_sessions.length == 0) {
+      return "";
+    } else {
+      return <CustomerProgress program={program} editable isCustomerProgram />;
+    }
+  };
 
   render() {
     const { program } = this.state;
@@ -83,13 +118,7 @@ class CoachProgram extends React.Component {
                   onSubmitSession={this.handleSubmitSession}
                 />
               </Col>
-              <Col span={8}>
-                <CustomerProgress
-                  program={program}
-                  editable
-                  isCustomerProgram
-                />
-              </Col>
+              <Col span={8}>{this.renderCustomerProgress(program)}</Col>
             </Row>
           </div>
         ) : (

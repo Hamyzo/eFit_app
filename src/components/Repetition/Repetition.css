@@ -13,6 +13,7 @@
 }
 .modal-content {
   align: center;
+  padding: 20px 0 20px 0;
 }
 
 .hr {
@@ -63,10 +64,6 @@
   font-weight: bold;
 }
 
-.sectionTitle {
-  color: #43978d;
-  font-weight: bold;
-}
 .exerciseList {
   /* width: 826px; */
   height: 100%;
@@ -81,7 +78,8 @@
 .bottomLeftMobile {
   position: absolute;
   color: black;
-  font-weight: bold;
+  font-weight: 900;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 25px;
   top: 100px;
   left: 16px;

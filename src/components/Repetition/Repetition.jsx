@@ -112,8 +112,8 @@ class Repetition extends React.Component {
   };
 
   evaluationOnClick = () => {
-    this.setState({ startCardShow: 2});
-  }
+    this.setState({ startCardShow: 2 });
+  };
 
   nextStep = () => {
     const current = this.state.currentStep + 1;
@@ -199,11 +199,6 @@ class Repetition extends React.Component {
                   width="100%"
                   src="https://www.heart.org/-/media/images/healthy-living/fitness/strengthexercise.jpg"
                 />
-                <h1
-                  className={windowWidth < 576 ? "centeredMobile" : "centered"}
-                >
-                  {dateScripts.getRemainingDays(currentPeriodInfo)} days left
-                </h1>
                 <h1
                   className={
                     windowWidth < 576 ? "bottomLeftMobile" : "bottomLeft"
@@ -443,7 +438,7 @@ class Repetition extends React.Component {
                         header={
                           <Row>
                             <Col span={22} align="center">
-                              <span className="sectionTitle">Steps</span>
+                              <span className="sectionTitle">HOW TO</span>
                             </Col>
                           </Row>
                         }
@@ -498,7 +493,7 @@ class Repetition extends React.Component {
     }
     // start focus session (evaluation)
     if (startCardShow === 2) {
-      return <CustomerFocusSession/>;
+      return <CustomerFocusSession />;
     }
     if (startCardShow === -1) {
       // else ： hide startCard

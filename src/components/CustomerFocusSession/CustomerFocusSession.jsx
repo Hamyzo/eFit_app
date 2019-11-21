@@ -86,80 +86,21 @@ class CustomerFocusSession extends React.Component {
       labelWeight = "Weight",
       labelRestHR = "Rest Heart Rate",
       labelTargetHR = "Target Heart Rate";
-    const title = "Basic Info";
     return <div>
-      <Row justify={"center"}>
-        <Col span={8} className={"basic-icon"}><Icon type="smile" theme="twoTone" twoToneColor={"#43978d"}/></Col>
-        <Col span={15}><Title level={2} className = {"title"}>{title} </Title></Col>
-      </Row>
       <Row>
         <Col span={24}>
-          <div className={"wrapper-fs"}>
-            <AutoComplete placeholder={labelAge}/><br /><br />
-            <AutoComplete placeholder={labelWeight}/><br /><br />
-            <AutoComplete placeholder={labelRestHR}/><br/><br />
-            <AutoComplete placeholder={labelTargetHR}/>
+          <div>
+            <div className={"wrapper-fs"}>
+              <AutoComplete placeholder={labelAge}/>
+              <AutoComplete placeholder={labelWeight}/>
+              <AutoComplete placeholder={labelRestHR}/>
+              <AutoComplete placeholder={labelTargetHR}/>
+          </div>
           </div>
         </Col>
       </Row>
-      <Button
-        type="primary"
-        style={{ float: "right", "marginTop": "10px"}}
-        onClick={() => this.showPart2()}
-      >
-        Next Part
-      </Button>
-    </div>
-  };
-
-  renderPart2() {
-    const title = "Cardiac Rate";
-    const {currentStep} = this.state;
-    return <div>
-      <Row justify={"center"}>
-        <Col span={8} style={{"textAlign": "right"}}>
-          <img className="heart-icon" src="/assets/images/pulse.svg" />
-        </Col>
-        <Col span={15}>
-          <Title level={2} className = {"title"}>{title} </Title>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col span={24}>
-          <div className="wrapper" >
-            <Steps current={currentStep}>
-              {stepsFC.map((item) => (
-                <Step key={item.title} title={item.title} />
-              ))}
-            </Steps>
-            <Row>
-              <div className="steps-content">{stepsFC[currentStep].content}</div>
-              <div className="steps-action">
-                {currentStep < stepsFC.length - 1 && (
-                  <Button type="primary" onClick={() => this.nextFC()}>
-                    Next
-                  </Button>
-                )}
-
-                {currentStep == stepsFC.length - 1 && (
-                  <Button type={"primary"} onClick={() => this.renderPart3()}>
-                    Next Part
-                  </Button>
-                )
-
-                }
-              </div>
-            </Row>
-          </div>
-        </Col>
-      </Row>
-    </div>
-  };
-
-  renderPart3() {
-    return <div>
-
+      <Row></Row>
+      <Row></Row>
     </div>
   }
 
