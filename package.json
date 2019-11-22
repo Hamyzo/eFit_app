@@ -12,14 +12,17 @@
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.14",
+    "react-countdown-circle-timer": "^1.0.3",
     "react-dom": "^16.11.0",
     "react-fa": "^5.0.0",
     "react-highlight-words": "^0.16.0",
+    "react-player": "^1.14.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
     "react-window-size": "^1.2.2",
     "read-more-react": "^1.0.9",
-    "reqwest": "^2.0.5"
+    "reqwest": "^2.0.5",
+    "video-react": "^0.14.1"
   },
   "scripts": {
     "start": "react-scripts start",

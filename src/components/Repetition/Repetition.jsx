@@ -17,6 +17,8 @@ import {
 import { Icon as FaIcon } from "react-fa";
 import "./Repetition.css";
 import windowSize from "react-window-size";
+import ReactPlayer from "react-player";
+import { Player } from "video-react";
 
 import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
@@ -24,6 +26,7 @@ import * as programScripts from "../../utils/programScripts";
 import * as dateScripts from "../../utils/dateScripts";
 import Spinner from "../Global/Spinner";
 import CustomerFocusSession from "../CustomerFocusSession/CustomerFocusSession";
+import Timer from "./Timer";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -173,6 +176,10 @@ class Repetition extends React.Component {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  handleCompleteTimer = () => {
+    console.log("Timer completed");
   };
 
   renderStartCard = () => {
@@ -410,27 +417,37 @@ class Repetition extends React.Component {
           ))}
         </Steps>
         <Row className="top-row" style={{ marginTop: "-4%" }}>
-          <Col>
+          <Col span={24}>
             <div>
-              <div className="steps-content">
-                <img
-                  className="step-img"
-                  alt="Loading"
-                  src={exercises[currentStep].exercise.img}
-                />
+              <Col span={24}>
+                {
+                  <img
+                    className="step-img"
+                    alt="Loading"
+                    src={exercises[currentStep].exercise.img}
+                  />
+                }
                 <br />
                 <br />
                 <Row style={{ marginBottom: "20px" }}>
-                  <Col span={12} align="left">
+                  <Col span={24} align="middle">
                     <h1>{exercises[currentStep].exercise.name}</h1>
                   </Col>
-                  <Col span={12} align="right">
-                    <h1>
-                      {exercises[currentStep].reps} X{" "}
-                      {exercises[currentStep].sets}
-                    </h1>
-                  </Col>
                 </Row>
+                <Row style={{ marginTop: "20px", marginBottom: "20px" }}>
+                  <Timer time={100} onComplete={this.handleCompleteTimer} />
+                </Row>
+                {/* <Row style={{ marginBottom: "20px" }}>
+                  <Col span={9} align="right">
+                    <p>{exercises[currentStep].reps} Reps</p>
+                  </Col>
+                  <Col span={6} align="middle">
+                    <h1>X</h1>
+                  </Col>
+                  <Col span={9} align="left">
+                    <p>{exercises[currentStep].sets} Sets</p>
+                  </Col>
+                </Row> */}
                 <Row>
                   {exercises[currentStep].exercise.steps ? (
                     <Collapse defaultActiveKey={["1"]}>
@@ -443,6 +460,9 @@ class Repetition extends React.Component {
                           </Row>
                         }
                       >
+                        <Player>
+                          <source src="/assets/videos/push-ups.mp4" />
+                        </Player>
                         <Timeline>
                           {exercises[currentStep].exercise.steps.map(step => (
                             <Timeline.Item key={step}>{step}</Timeline.Item>
@@ -460,7 +480,7 @@ class Repetition extends React.Component {
                     </Col>
                   )}
                 </Row>
-              </div>
+              </Col>
               <div className="steps-action">
                 {currentStep < exercises.length - 1 && (
                   <Button type="primary" onClick={() => this.showResultModal()}>
