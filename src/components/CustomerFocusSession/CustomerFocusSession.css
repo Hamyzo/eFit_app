@@ -14,7 +14,13 @@
 .wrapper {
     padding: 20px;
     margin-top: 0;
+    overflow: hidden;
 }
+
+.focusStepHead > div{
+    margin-right: 4px !important;
+}
+
 
 .des-font {
     color: #43978d;
