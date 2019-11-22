@@ -64,6 +64,11 @@
   font-weight: bold;
 }
 
+.infoBanner {
+  /* width: 826px; */
+  height: 100%;
+  margin-top: 10px;
+}
 .exerciseList {
   /* width: 826px; */
   height: 100%;

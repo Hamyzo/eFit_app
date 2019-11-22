@@ -12,9 +12,11 @@ import {
   Icon,
   Timeline,
   Layout,
+  Alert,
   Collapse
 } from "antd";
 import { Icon as FaIcon } from "react-fa";
+import moment from "moment";
 import "./Repetition.css";
 import windowSize from "react-window-size";
 import ReactPlayer from "react-player";
@@ -41,6 +43,7 @@ class Repetition extends React.Component {
       program: null,
       startCardShow: 1,
       currentStep: 0,
+      focusSession: null,
       currentSession: null,
       sessionIndex: null,
       currentPeriod: null,
@@ -75,6 +78,7 @@ class Repetition extends React.Component {
       let previousStatus = "Completed";
       let currentPeriodInfo = null;
       let sessionIndex = null;
+      let focusSession = null;
       program.sessions.forEach((session, index) => {
         const sessionStatus = programScripts.sessionStatus(session.periods);
         if (
@@ -88,6 +92,11 @@ class Repetition extends React.Component {
           currentPeriodInfo = sessionStatus.currentPeriodInfo;
           currentRepetition = sessionStatus.latestRepetition;
           previousStatus = sessionStatus.status;
+          focusSession = programScripts.focusSessionDisplayButton(
+            sessionStatus.status,
+            previousStatus,
+            program.focus_sessions
+          );
         }
       });
       let startCardShow = 1;
@@ -98,6 +107,7 @@ class Repetition extends React.Component {
       this.setState({
         program,
         currentSession,
+        focusSession,
         currentPeriod,
         currentPeriodInfo,
         sessionIndex,
@@ -187,13 +197,15 @@ class Repetition extends React.Component {
       program,
       currentSession,
       sessionIndex,
+      focusSession,
       currentPeriod,
       currentRepetition,
       currentPeriodInfo,
       exercises
     } = this.state;
     const { windowWidth } = this.props;
-    console.log(currentSession);
+    console.log(focusSession);
+    console.log("focusSession", focusSession);
     return (
       <div>
         <Row className="top-row">
@@ -260,6 +272,9 @@ class Repetition extends React.Component {
                         block
                         className="btn-start"
                         onClick={() => this.startOnClick()}
+                        style={{
+                          display: focusSession.showButton ? "none" : "block"
+                        }}
                       >
                         START REPETITION {currentRepetition} /{" "}
                         {currentPeriodInfo.nb_repetitions}
@@ -270,6 +285,9 @@ class Repetition extends React.Component {
                         block
                         className="btn-start"
                         onClick={() => this.evaluationOnClick()}
+                        style={{
+                          display: focusSession.showButton ? "block" : "none"
+                        }}
                       >
                         START EVALUATION
                       </Button>
@@ -301,6 +319,15 @@ class Repetition extends React.Component {
                   </TabPane>
                 </Tabs>
               </div>
+              {focusSession.showReminderBanner ? (
+                <div className="infoBanner marginTopRepetition">
+                  <Alert
+                    message={`Your next evaluation is on the : ${moment(
+                      focusSession.nextFocusSession.due_date
+                    ).format("DD-MM-YYYY")}`}
+                  />
+                </div>
+              ) : null}
               <div
                 className="exerciseList marginTopRepetition"
                 id="exerciseList"
