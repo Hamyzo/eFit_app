@@ -69,6 +69,7 @@ export const sessionStatus = periods => {
 
 export const focusSessionStatus = focusSessions => {
   let currentFocusSession = focusSessions[focusSessions.length - 1];
+  let nextFocusSession = null;
   let found = false;
   focusSessions.forEach((focusSession, i) => {
     if (
@@ -77,9 +78,10 @@ export const focusSessionStatus = focusSessions => {
     ) {
       found = true;
       currentFocusSession = i === 0 ? null : focusSessions[i - 1];
+      nextFocusSession = focusSessions[i];
     }
   });
-  return currentFocusSession;
+  return { currentFocusSession, nextFocusSession };
 };
 
 export const focusSessionDisplayButton = (
@@ -89,7 +91,8 @@ export const focusSessionDisplayButton = (
 ) => {
   let showButton = false;
   let showReminderBanner = true;
-  const currentFocusSession = focusSessionStatus(focusSessions);
+  const { currentFocusSession } = focusSessionStatus(focusSessions);
+  const { nextFocusSession } = focusSessionStatus(focusSessions);
 
   if (
     currentSessionStatus === "Not Started" &&
@@ -99,5 +102,10 @@ export const focusSessionDisplayButton = (
     showReminderBanner = false;
   }
 
-  return { showButton, showReminderBanner, currentFocusSession };
+  return {
+    showButton,
+    showReminderBanner,
+    currentFocusSession,
+    nextFocusSession
+  };
 };

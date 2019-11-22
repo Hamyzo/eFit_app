@@ -197,7 +197,8 @@ class Repetition extends React.Component {
       exercises
     } = this.state;
     const { windowWidth } = this.props;
-    console.log(currentSession);
+    console.log(focusSession);
+    console.log("focusSession", focusSession);
     return (
       <div>
         <Row className="top-row">
@@ -315,7 +316,7 @@ class Repetition extends React.Component {
                 <div className="infoBanner marginTopRepetition">
                   <Alert
                     message={`Your next evaluation is on the : ${moment(
-                      focusSession.currentFocusSession.due_date
+                      focusSession.nextFocusSession.due_date
                     ).format("DD-MM-YYYY")}`}
                   />
                 </div>
