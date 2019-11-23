@@ -31,7 +31,7 @@ const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
-const CUSTOMER_PROGRAM = "5da1f67ccf53670572677651";
+const CUSTOMER_PROGRAM = "5dbedf3ebc5fad3463b3e019";
 
 class Repetition extends React.Component {
   constructor(props) {
@@ -92,7 +92,7 @@ class Repetition extends React.Component {
           focusSession = programScripts.focusSessionDisplayButton(
             sessionStatus.status,
             previousStatus,
-            sessionIndex,
+            index,
             program.focus_sessions
           );
         }
@@ -316,7 +316,7 @@ class Repetition extends React.Component {
               {focusSession.showReminderBanner ? (
                 <div className="infoBanner marginTopRepetition">
                   <Alert
-                    message={`Your next evaluation is on the : ${moment(
+                    message={`Your next evaluation is to be completed before the : ${moment(
                       focusSession.nextFocusSession.due_date
                     ).format("DD-MM-YYYY")}`}
                   />
@@ -513,7 +513,7 @@ class Repetition extends React.Component {
   };
 
   render = () => {
-    const { startCardShow } = this.state;
+    const { startCardShow, focusSession } = this.state;
     // const modalWidth = "300px";
 
     if (startCardShow === 1) {
@@ -521,7 +521,9 @@ class Repetition extends React.Component {
     }
     // start focus session (evaluation)
     if (startCardShow === 2) {
-      return <CustomerFocusSession />;
+      return (
+        <CustomerFocusSession focusSession={focusSession.nextFocusSession} />
+      );
     }
     if (startCardShow === -1) {
       // else ： hide startCard

@@ -100,8 +100,8 @@ export const focusSessionDisplayButton = (
     nextFocusSessionIndex
   } = focusSessionStatus(focusSessions);
 
-  console.log(sessionIndex);
-  console.log(nextFocusSessionIndex);
+  console.log("current session index", sessionIndex);
+  console.log("Next focus session index", nextFocusSessionIndex);
   if (
     currentSessionStatus === "Not Started" &&
     previousStatus !== "In progress" &&
