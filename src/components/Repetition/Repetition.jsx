@@ -92,6 +92,7 @@ class Repetition extends React.Component {
           focusSession = programScripts.focusSessionDisplayButton(
             sessionStatus.status,
             previousStatus,
+            sessionIndex,
             program.focus_sessions
           );
         }
