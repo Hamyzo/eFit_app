@@ -31,6 +31,8 @@ module.exports = {
     "implicit-arrow-linebreak": "off",
     "operator-linebreak": "off",
     "object-curly-newline": "off",
+    "no-nested-ternary": "off",
+    indent: "off",
     "function-paren-newline": "off"
   }
 };

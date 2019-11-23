@@ -19,6 +19,8 @@ import { Icon as FaIcon } from "react-fa";
 import moment from "moment";
 import "./Repetition.css";
 import windowSize from "react-window-size";
+import ReactPlayer from "react-player";
+import { Player } from "video-react";
 
 import RepetitionDone from "./RepetitionDone";
 import * as apiServices from "../../apiServices";
@@ -26,6 +28,7 @@ import * as programScripts from "../../utils/programScripts";
 import * as dateScripts from "../../utils/dateScripts";
 import Spinner from "../Global/Spinner";
 import CustomerFocusSession from "../CustomerFocusSession/CustomerFocusSession";
+import Timer from "./Timer";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
@@ -153,9 +156,6 @@ class Repetition extends React.Component {
     const { results, currentSession, currentStep } = this.state;
     const newResult = {};
     console.log(currentStep);
-    if (!currentSession.exercises[currentStep].reps) {
-      newResult.time = 111;
-    }
     results.push({
       ...newResult,
       exercise: currentSession.exercises[currentStep].exercise,
@@ -184,6 +184,10 @@ class Repetition extends React.Component {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  handleCompleteTimer = () => {
+    this.showResultModal();
   };
 
   renderStartCard = () => {
@@ -337,33 +341,27 @@ class Repetition extends React.Component {
                       }
                       description={
                         <p style={{ marginTop: "-10px" }}>
-                          {exercise.sets + " X " + exercise.reps}{" "}
+                          {exercise.exercise.timed
+                            ? `${
+                                Math.floor(exercise.time / 60) < 10
+                                  ? `0${Math.floor(exercise.time / 60)}`
+                                  : Math.floor(exercise.time / 60)
+                              }:${
+                                exercise.time -
+                                  Math.floor(exercise.time / 60) * 60 <
+                                10
+                                  ? `0${exercise.time -
+                                      Math.floor(exercise.time / 60) * 60}`
+                                  : exercise.time -
+                                    Math.floor(exercise.time / 60) * 60
+                              } minutes`
+                            : `${exercise.sets} X ${exercise.reps}`}{" "}
                         </p>
                       }
                     />
                   </Card>
                 ))}
               </div>
-
-              {/*}  <Card
-                className="wrapper"
-                id="card"
-                style={{}}
-                cover={<img alt="run" src="/assets/images/run.jpg" />}
-              >
-                <Meta
-                  title={currentSession.name}
-                  description={currentSession.description}
-                  style={{ marginTop: "2%" }}
-                />
-                <Button
-                  block
-                  className="btn-start"
-                  onClick={() => this.startOnClick()}
-                >
-                  START REPETITION {currentPeriod}
-                </Button>
-              </Card> */}
             </Col>
           ) : (
             <Spinner />
@@ -386,7 +384,7 @@ class Repetition extends React.Component {
       <div className="wrapper" id="stepDiv">
         <Modal
           className="feedback-modal"
-          title={"How was this exercise?"}
+          title="How was this exercise?"
           visible={modalVisible}
           closable={false}
           maskClosable={false}
@@ -431,16 +429,13 @@ class Repetition extends React.Component {
         </Modal>
         <Steps current={currentStep}>
           {exercises.map((exercise, i) => (
-            <Step
-              key={exercise.exercise._id}
-              title={i === currentStep ? exercise.exercise.name : ""}
-            />
+            <Step key={exercise.exercise._id} title={""} />
           ))}
         </Steps>
         <Row className="top-row" style={{ marginTop: "-4%" }}>
-          <Col>
+          <Col span={24}>
             <div>
-              <div className="steps-content">
+              <Col span={24}>
                 <img
                   className="step-img"
                   alt="Loading"
@@ -449,16 +444,54 @@ class Repetition extends React.Component {
                 <br />
                 <br />
                 <Row style={{ marginBottom: "20px" }}>
-                  <Col span={12} align="left">
-                    <h1>{exercises[currentStep].exercise.name}</h1>
-                  </Col>
-                  <Col span={12} align="right">
-                    <h1>
-                      {exercises[currentStep].reps} X{" "}
-                      {exercises[currentStep].sets}
+                  <Col span={24} align="middle">
+                    <h1 style={{ fontSize: "22px" }}>
+                      {exercises[currentStep].exercise.name +
+                        (exercises[currentStep].exercise.timed
+                          ? ` for ${
+                              Math.floor(exercises[currentStep].time / 60) < 10
+                                ? `0${Math.floor(
+                                    exercises[currentStep].time / 60
+                                  )}`
+                                : Math.floor(exercises[currentStep].time / 60)
+                            }:${
+                              exercises[currentStep].time -
+                                Math.floor(exercises[currentStep].time / 60) *
+                                  60 <
+                              10
+                                ? `0${exercises[currentStep].time -
+                                    Math.floor(
+                                      exercises[currentStep].time / 60
+                                    ) *
+                                      60}`
+                                : exercises[currentStep].time -
+                                  Math.floor(exercises[currentStep].time / 60) *
+                                    60
+                            } minutes`
+                          : "")}
                     </h1>
                   </Col>
                 </Row>
+                {exercises[currentStep].exercise.timed ? (
+                  <Row style={{ marginTop: "20px", marginBottom: "20px" }}>
+                    <Timer
+                      time={exercises[currentStep].time}
+                      onComplete={this.handleCompleteTimer}
+                    />
+                  </Row>
+                ) : (
+                  <Row style={{ marginBottom: "20px" }}>
+                    <Col span={9} align="right">
+                      <p>{exercises[currentStep].reps} Reps</p>
+                    </Col>
+                    <Col span={6} align="middle">
+                      <h1>X</h1>
+                    </Col>
+                    <Col span={9} align="left">
+                      <p>{exercises[currentStep].sets} Sets</p>
+                    </Col>
+                  </Row>
+                )}
                 <Row>
                   {exercises[currentStep].exercise.steps ? (
                     <Collapse defaultActiveKey={["1"]}>
@@ -471,7 +504,10 @@ class Repetition extends React.Component {
                           </Row>
                         }
                       >
-                        <Timeline>
+                        <Player>
+                          <source src="/assets/videos/push-ups.mp4" />
+                        </Player>
+                        <Timeline style={{ marginTop: "20px" }}>
                           {exercises[currentStep].exercise.steps.map(step => (
                             <Timeline.Item key={step}>{step}</Timeline.Item>
                           ))}
@@ -488,23 +524,28 @@ class Repetition extends React.Component {
                     </Col>
                   )}
                 </Row>
-              </div>
-              <div className="steps-action">
-                {currentStep < exercises.length - 1 && (
-                  <Button type="primary" onClick={() => this.showResultModal()}>
-                    Done, Next!
-                  </Button>
-                )}
-                {currentStep === exercises.length - 1 && (
-                  <Button
-                    type="primary"
-                    // onClick={() => message.success("Processing complete!")}
-                    onClick={() => this.showResultModal()}
-                  >
-                    Done
-                  </Button>
-                )}
-              </div>
+              </Col>
+              {!exercises[currentStep].exercise.timed && (
+                <div className="steps-action">
+                  {currentStep < exercises.length - 1 && (
+                    <Button
+                      type="primary"
+                      onClick={() => this.showResultModal()}
+                    >
+                      Done, Next!
+                    </Button>
+                  )}
+                  {currentStep === exercises.length - 1 && (
+                    <Button
+                      type="primary"
+                      // onClick={() => message.success("Processing complete!")}
+                      onClick={() => this.showResultModal()}
+                    >
+                      Done
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </Col>
         </Row>
