@@ -316,7 +316,8 @@ class Repetition extends React.Component {
                   </TabPane>
                 </Tabs>
               </div>
-              {focusSession.showReminderBanner ? (
+              {focusSession.showReminderBanner &&
+              focusSession.nextFocusSession ? (
                 <div className="infoBanner marginTopRepetition">
                   <Alert
                     message={`Your next evaluation is on the : ${moment(
