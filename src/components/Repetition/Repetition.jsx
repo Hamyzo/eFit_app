@@ -155,9 +155,6 @@ class Repetition extends React.Component {
     const { results, currentSession, currentStep } = this.state;
     const newResult = {};
     console.log(currentStep);
-    if (!currentSession.exercises[currentStep].reps) {
-      newResult.time = 111;
-    }
     results.push({
       ...newResult,
       exercise: currentSession.exercises[currentStep].exercise,
@@ -189,7 +186,7 @@ class Repetition extends React.Component {
   };
 
   handleCompleteTimer = () => {
-    console.log("Timer completed");
+    this.showResultModal();
   };
 
   renderStartCard = () => {
@@ -335,12 +332,7 @@ class Repetition extends React.Component {
                 {exercises.map(exercise => (
                   <Card bordered={false}>
                     <Meta
-                      avatar={
-                        <Avatar
-                          size={55}
-                          src={`/assets/images/workouts/${exercise.exercise.name}.gif`}
-                        />
-                      }
+                      avatar={<Avatar size={55} src={exercise.exercise.img} />}
                       title={
                         <h4 style={{ fontSize: "15px", marginTop: "5px" }}>
                           {exercise.exercise.name}{" "}
@@ -443,7 +435,14 @@ class Repetition extends React.Component {
           <Col span={24}>
             <div>
               <Col span={24}>
-                <Row style={{ marginBottom: "20px", marginTop: "20px" }}>
+                <img
+                  className="step-img"
+                  alt="Loading"
+                  src={exercises[currentStep].exercise.img}
+                />
+                <br />
+                <br />
+                <Row style={{ marginBottom: "20px" }}>
                   <Col span={24} align="middle">
                     <h1 style={{ fontSize: "22px" }}>
                       {exercises[currentStep].exercise.name +
@@ -472,13 +471,6 @@ class Repetition extends React.Component {
                     </h1>
                   </Col>
                 </Row>
-                <img
-                  className="step-img"
-                  alt="Loading"
-                  src={`/assets/images/workouts/${exercises[currentStep].exercise.name}.gif`}
-                />
-                <br />
-                <br />
                 {exercises[currentStep].exercise.timed ? (
                   <Row style={{ marginTop: "20px", marginBottom: "20px" }}>
                     <Timer
@@ -532,22 +524,27 @@ class Repetition extends React.Component {
                   )}
                 </Row>
               </Col>
-              <div className="steps-action">
-                {currentStep < exercises.length - 1 && (
-                  <Button type="primary" onClick={() => this.showResultModal()}>
-                    Done, Next!
-                  </Button>
-                )}
-                {currentStep === exercises.length - 1 && (
-                  <Button
-                    type="primary"
-                    // onClick={() => message.success("Processing complete!")}
-                    onClick={() => this.showResultModal()}
-                  >
-                    Done
-                  </Button>
-                )}
-              </div>
+              {!exercises[currentStep].exercise.timed && (
+                <div className="steps-action">
+                  {currentStep < exercises.length - 1 && (
+                    <Button
+                      type="primary"
+                      onClick={() => this.showResultModal()}
+                    >
+                      Done, Next!
+                    </Button>
+                  )}
+                  {currentStep === exercises.length - 1 && (
+                    <Button
+                      type="primary"
+                      // onClick={() => message.success("Processing complete!")}
+                      onClick={() => this.showResultModal()}
+                    >
+                      Done
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </Col>
         </Row>
@@ -556,7 +553,7 @@ class Repetition extends React.Component {
   };
 
   render = () => {
-    const { startCardShow } = this.state;
+    const { startCardShow, focusSession } = this.state;
     // const modalWidth = "300px";
 
     if (startCardShow === 1) {
@@ -564,7 +561,9 @@ class Repetition extends React.Component {
     }
     // start focus session (evaluation)
     if (startCardShow === 2) {
-      return <CustomerFocusSession />;
+      return (
+        <CustomerFocusSession focusSession={focusSession.nextFocusSession} />
+      );
     }
     if (startCardShow === -1) {
       // else ： hide startCard
