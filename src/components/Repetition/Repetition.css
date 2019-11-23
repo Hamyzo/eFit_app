@@ -126,6 +126,12 @@
 
 .text {
   color: #aaa;
+  font-size: medium;
+}
+
+.bigger-text {
+  color: #aaa;
+  font-size: x-large;
 }
 
 .value {

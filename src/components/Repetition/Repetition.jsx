@@ -335,7 +335,12 @@ class Repetition extends React.Component {
                 {exercises.map(exercise => (
                   <Card bordered={false}>
                     <Meta
-                      avatar={<Avatar size={55} src={exercise.exercise.img} />}
+                      avatar={
+                        <Avatar
+                          size={55}
+                          src={`/assets/images/workouts/${exercise.exercise.name}.gif`}
+                        />
+                      }
                       title={
                         <h4 style={{ fontSize: "15px", marginTop: "5px" }}>
                           {exercise.exercise.name}{" "}
@@ -343,33 +348,27 @@ class Repetition extends React.Component {
                       }
                       description={
                         <p style={{ marginTop: "-10px" }}>
-                          {exercise.sets + " X " + exercise.reps}{" "}
+                          {exercise.exercise.timed
+                            ? `${
+                                Math.floor(exercise.time / 60) < 10
+                                  ? `0${Math.floor(exercise.time / 60)}`
+                                  : Math.floor(exercise.time / 60)
+                              }:${
+                                exercise.time -
+                                  Math.floor(exercise.time / 60) * 60 <
+                                10
+                                  ? `0${exercise.time -
+                                      Math.floor(exercise.time / 60) * 60}`
+                                  : exercise.time -
+                                    Math.floor(exercise.time / 60) * 60
+                              } minutes`
+                            : `${exercise.sets} X ${exercise.reps}`}{" "}
                         </p>
                       }
                     />
                   </Card>
                 ))}
               </div>
-
-              {/*}  <Card
-                className="wrapper"
-                id="card"
-                style={{}}
-                cover={<img alt="run" src="/assets/images/run.jpg" />}
-              >
-                <Meta
-                  title={currentSession.name}
-                  description={currentSession.description}
-                  style={{ marginTop: "2%" }}
-                />
-                <Button
-                  block
-                  className="btn-start"
-                  onClick={() => this.startOnClick()}
-                >
-                  START REPETITION {currentPeriod}
-                </Button>
-              </Card> */}
             </Col>
           ) : (
             <Spinner />
@@ -392,7 +391,7 @@ class Repetition extends React.Component {
       <div className="wrapper" id="stepDiv">
         <Modal
           className="feedback-modal"
-          title={"How was this exercise?"}
+          title="How was this exercise?"
           visible={modalVisible}
           closable={false}
           maskClosable={false}
@@ -437,44 +436,69 @@ class Repetition extends React.Component {
         </Modal>
         <Steps current={currentStep}>
           {exercises.map((exercise, i) => (
-            <Step
-              key={exercise.exercise._id}
-              title={i === currentStep ? exercise.exercise.name : ""}
-            />
+            <Step key={exercise.exercise._id} title={""} />
           ))}
         </Steps>
         <Row className="top-row" style={{ marginTop: "-4%" }}>
           <Col span={24}>
             <div>
               <Col span={24}>
-                {
-                  <img
-                    className="step-img"
-                    alt="Loading"
-                    src={exercises[currentStep].exercise.img}
-                  />
-                }
-                <br />
-                <br />
-                <Row style={{ marginBottom: "20px" }}>
+                <Row style={{ marginBottom: "20px", marginTop: "20px" }}>
                   <Col span={24} align="middle">
-                    <h1>{exercises[currentStep].exercise.name}</h1>
+                    <h1 style={{ fontSize: "22px" }}>
+                      {exercises[currentStep].exercise.name +
+                        (exercises[currentStep].exercise.timed
+                          ? ` for ${
+                              Math.floor(exercises[currentStep].time / 60) < 10
+                                ? `0${Math.floor(
+                                    exercises[currentStep].time / 60
+                                  )}`
+                                : Math.floor(exercises[currentStep].time / 60)
+                            }:${
+                              exercises[currentStep].time -
+                                Math.floor(exercises[currentStep].time / 60) *
+                                  60 <
+                              10
+                                ? `0${exercises[currentStep].time -
+                                    Math.floor(
+                                      exercises[currentStep].time / 60
+                                    ) *
+                                      60}`
+                                : exercises[currentStep].time -
+                                  Math.floor(exercises[currentStep].time / 60) *
+                                    60
+                            } minutes`
+                          : "")}
+                    </h1>
                   </Col>
                 </Row>
-                <Row style={{ marginTop: "20px", marginBottom: "20px" }}>
-                  <Timer time={100} onComplete={this.handleCompleteTimer} />
-                </Row>
-                {/* <Row style={{ marginBottom: "20px" }}>
-                  <Col span={9} align="right">
-                    <p>{exercises[currentStep].reps} Reps</p>
-                  </Col>
-                  <Col span={6} align="middle">
-                    <h1>X</h1>
-                  </Col>
-                  <Col span={9} align="left">
-                    <p>{exercises[currentStep].sets} Sets</p>
-                  </Col>
-                </Row> */}
+                <img
+                  className="step-img"
+                  alt="Loading"
+                  src={`/assets/images/workouts/${exercises[currentStep].exercise.name}.gif`}
+                />
+                <br />
+                <br />
+                {exercises[currentStep].exercise.timed ? (
+                  <Row style={{ marginTop: "20px", marginBottom: "20px" }}>
+                    <Timer
+                      time={exercises[currentStep].time}
+                      onComplete={this.handleCompleteTimer}
+                    />
+                  </Row>
+                ) : (
+                  <Row style={{ marginBottom: "20px" }}>
+                    <Col span={9} align="right">
+                      <p>{exercises[currentStep].reps} Reps</p>
+                    </Col>
+                    <Col span={6} align="middle">
+                      <h1>X</h1>
+                    </Col>
+                    <Col span={9} align="left">
+                      <p>{exercises[currentStep].sets} Sets</p>
+                    </Col>
+                  </Row>
+                )}
                 <Row>
                   {exercises[currentStep].exercise.steps ? (
                     <Collapse defaultActiveKey={["1"]}>
@@ -490,7 +514,7 @@ class Repetition extends React.Component {
                         <Player>
                           <source src="/assets/videos/push-ups.mp4" />
                         </Player>
-                        <Timeline>
+                        <Timeline style={{ marginTop: "20px" }}>
                           {exercises[currentStep].exercise.steps.map(step => (
                             <Timeline.Item key={step}>{step}</Timeline.Item>
                           ))}
