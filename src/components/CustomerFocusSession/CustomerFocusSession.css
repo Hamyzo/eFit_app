@@ -43,6 +43,12 @@
     padding-right: 5px;
 }
 
+.rocket-icon {
+    font-size: 53px;
+    color: #4F9BB0;
+    margin-top: 7px;
+}
+
 .wrapper-fs > AutoComplete {
     padding: 10px 0;
 }
