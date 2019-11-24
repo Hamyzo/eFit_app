@@ -179,7 +179,7 @@
 
 .progressChart {
   height: 325px;
-  width: 625px;
+  width: 100%;
 }
 .progressRow {
   display: block;

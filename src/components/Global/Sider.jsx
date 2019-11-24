@@ -15,14 +15,14 @@ class SiderComponent extends React.Component {
   }
 
   componentDidMount() {
-    const collapsed = localStorage.getItem("collapse_state") === "true";
-    const userType = localStorage.getItem("userType");
+    const collapsed = sessionStorage.getItem("collapse_state") === "true";
+    const userType = sessionStorage.getItem("userType");
     this.setState({ collapsed, userType });
   }
 
   onCollapse = collapsed => {
     this.setState({ collapsed });
-    localStorage.setItem("collapse_state", collapsed);
+    sessionStorage.setItem("collapse_state", collapsed);
   };
 
   render() {
