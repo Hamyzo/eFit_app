@@ -311,7 +311,7 @@ class CustomerFocusSession extends React.Component {
         />
           <div>
             <h3 className={"des-font"}>After lying calmly for 5 mins </h3>
-            <h3>The Cardiac Rate: <InputNumber id={"five_min_rest_hr"} min={0} max={500} className={"input-number"}/></h3>
+            <h3>The Cardiac Rate: <InputNumber id={"five_min_rest_hr"} min={0} max={500} autoFocus className={"input-number"}/></h3>
           </div>
         </div>,
 
@@ -325,7 +325,7 @@ class CustomerFocusSession extends React.Component {
         />
           <div>
             <h3 className={"des-font"}>After 30 complete flexions in 45 sec </h3>
-            <h3>The Cardiac Rate: <InputNumber id={"thirty_deflections_hr"} min={0} max={500} className={"input-number"}/></h3>
+            <h3>The Cardiac Rate: <InputNumber id={"thirty_deflections_hr"} min={0} max={500} autoFocus className={"input-number"}/></h3>
           </div>
         </div>,
       },
@@ -338,7 +338,7 @@ class CustomerFocusSession extends React.Component {
         />
           <div>
             <h3 className={"des-font"}>After lying for 1 min after the exercise</h3>
-            <h3>The Cardiac Rate: <InputNumber id={"one_min_elongated_hr"} min={0} max={500} className={"input-number"}/></h3>
+            <h3>The Cardiac Rate: <InputNumber id={"one_min_elongated_hr"} min={0} max={500} autoFocus className={"input-number"}/></h3>
           </div>
         </div>,
       },
@@ -424,10 +424,10 @@ class CustomerFocusSession extends React.Component {
               <div className="steps-content">{focusExercises[currentExerciseStep].description}</div>
               <div>
                 {focusExercises[currentExerciseStep].timed == true && (
-                  <h3>Max Time: <InputNumber id={currentExerciseStep} className={"input-number"}/></h3>
+                  <h3>Max Time: <InputNumber id={currentExerciseStep} autoFocus className={"input-number"}/></h3>
                 )}
                 {!focusExercises[currentExerciseStep].timed && (
-                  <h3>Max Repetitions: <InputNumber id={currentExerciseStep} className={"input-number"}/></h3>
+                  <h3>Max Repetitions: <InputNumber id={currentExerciseStep} autoFocus className={"input-number"}/></h3>
                 )}
               </div>
               <div>
