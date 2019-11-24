@@ -72,7 +72,7 @@ export const postOne = (resource, data) => {
     if (response.status === 201) {
       resolve(response.json());
     } else {
-      reject(response.error());
+      reject(response);
     }
   });
 };
@@ -98,8 +98,7 @@ export const patchOne = (resource, id, data) => {
     if (response.status === 200) {
       resolve(response.json());
     } else {
-      console.log(response);
-      reject(response.error());
+      reject(response);
     }
   });
 };
@@ -120,7 +119,7 @@ export const deleteOne = (resource, id) => {
     if (response.status === 201) {
       resolve(response.json());
     } else {
-      reject(response.error());
+      reject(response);
     }
   });
 };

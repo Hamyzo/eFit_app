@@ -141,24 +141,28 @@ class CustomerFocusSession extends React.Component {
   }
 
   async finish() {
-    const { focusSession, results, currentExerciseStep } = this.state;
+    try {
+      const { focusSession, results, currentExerciseStep } = this.state;
 
-    const preValue = document.getElementById(currentExerciseStep).value;
-    results.push({ reps: preValue });
+      const preValue = document.getElementById(currentExerciseStep).value;
+      results.push({ reps: preValue });
 
-    focusSession.results = results;
+      focusSession.results = results;
 
-    focusSession["validation_date"] = new Date();
+      focusSession["validation_date"] = new Date();
 
-    //focusSession.results = results;
-    const id = focusSession["_id"];
+      //focusSession.results = results;
+      const { _id, ...rest } = focusSession;
 
-    delete focusSession._id;
+      console.log(_id);
 
-    console.log("state=======");
-    console.log(this.state);
+      console.log("state=======");
+      console.log(rest);
 
-    await apiServices.patchOne("focusSessions", id, focusSession);
+      await apiServices.patchOne("focusSessions", _id, rest);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   renderPart1() {
