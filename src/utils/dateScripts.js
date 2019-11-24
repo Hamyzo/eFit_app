@@ -34,3 +34,14 @@ export const getNbDaysSinceLastResult = (currentPeriod, previousPeriod) => {
   }
   return 0;
 };
+
+export const getTimeMMSSFormat = totalSeconds => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds - minutes * 60;
+  const time = `${
+    minutes > 0 ? `${minutes < 10 ? `0${minutes}` : minutes}:` : ""
+  }${seconds < 10 ? `0${seconds}` : seconds}${
+    minutes > 0 ? " minutes" : " seconds"
+  }`;
+  return time;
+};

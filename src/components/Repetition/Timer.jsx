@@ -18,6 +18,7 @@ class Timer extends React.Component {
     const currentTime = `${minutes < 10 ? `0${minutes}` : minutes}:${
       seconds < 10 ? `0${seconds}` : seconds
     }`;
+    const minOrSec = minutes > 0 ? "minutes" : "seconds";
     return (
       <div onClick={this.handleClick}>
         {isPlaying ? (
@@ -27,7 +28,7 @@ class Timer extends React.Component {
             <div className="timer">
               <div className="text">Remaining</div>
               <div className="value">{currentTime}</div>
-              <div className="text">minutes</div>
+              <div className="text">{minOrSec}</div>
             </div>
           )
         ) : (

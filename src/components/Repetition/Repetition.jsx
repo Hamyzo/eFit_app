@@ -34,7 +34,7 @@ const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
-const CUSTOMER_PROGRAM = "5da1f67ccf53670572677651";
+const CUSTOMER_PROGRAM = "5da1fff308104816e1bae7b7";
 
 class Repetition extends React.Component {
   constructor(props) {
@@ -342,19 +342,7 @@ class Repetition extends React.Component {
                       description={
                         <p style={{ marginTop: "-10px" }}>
                           {exercise.exercise.timed
-                            ? `${
-                                Math.floor(exercise.time / 60) < 10
-                                  ? `0${Math.floor(exercise.time / 60)}`
-                                  : Math.floor(exercise.time / 60)
-                              }:${
-                                exercise.time -
-                                  Math.floor(exercise.time / 60) * 60 <
-                                10
-                                  ? `0${exercise.time -
-                                      Math.floor(exercise.time / 60) * 60}`
-                                  : exercise.time -
-                                    Math.floor(exercise.time / 60) * 60
-                              } minutes`
+                            ? dateScripts.getTimeMMSSFormat(exercise.time)
                             : `${exercise.sets} X ${exercise.reps}`}{" "}
                         </p>
                       }
@@ -448,26 +436,9 @@ class Repetition extends React.Component {
                     <h1 style={{ fontSize: "22px" }}>
                       {exercises[currentStep].exercise.name +
                         (exercises[currentStep].exercise.timed
-                          ? ` for ${
-                              Math.floor(exercises[currentStep].time / 60) < 10
-                                ? `0${Math.floor(
-                                    exercises[currentStep].time / 60
-                                  )}`
-                                : Math.floor(exercises[currentStep].time / 60)
-                            }:${
-                              exercises[currentStep].time -
-                                Math.floor(exercises[currentStep].time / 60) *
-                                  60 <
-                              10
-                                ? `0${exercises[currentStep].time -
-                                    Math.floor(
-                                      exercises[currentStep].time / 60
-                                    ) *
-                                      60}`
-                                : exercises[currentStep].time -
-                                  Math.floor(exercises[currentStep].time / 60) *
-                                    60
-                            } minutes`
+                          ? ` for ${dateScripts.getTimeMMSSFormat(
+                              exercises[currentStep].time
+                            )}`
                           : "")}
                     </h1>
                   </Col>
@@ -504,9 +475,7 @@ class Repetition extends React.Component {
                           </Row>
                         }
                       >
-                        <Player>
-                          <source src="/assets/videos/push-ups.mp4" />
-                        </Player>
+                        <Player src={exercises[currentStep].exercise.vid} />
                         <Timeline style={{ marginTop: "20px" }}>
                           {exercises[currentStep].exercise.steps.map(step => (
                             <Timeline.Item key={step}>{step}</Timeline.Item>
