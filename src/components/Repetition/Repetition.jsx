@@ -34,7 +34,7 @@ const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
-const CUSTOMER_PROGRAM = "5da1fff308104816e1bae7b7";
+const CUSTOMER_PROGRAM = "5dbedf3ebc5fad3463b3e019";
 
 class Repetition extends React.Component {
   constructor(props) {
@@ -95,6 +95,7 @@ class Repetition extends React.Component {
           focusSession = programScripts.focusSessionDisplayButton(
             sessionStatus.status,
             previousStatus,
+            index,
             program.focus_sessions
           );
         }
@@ -320,7 +321,7 @@ class Repetition extends React.Component {
               focusSession.nextFocusSession ? (
                 <div className="infoBanner marginTopRepetition">
                   <Alert
-                    message={`Your next evaluation is on the : ${moment(
+                    message={`Your next evaluation is to be completed before the : ${moment(
                       focusSession.nextFocusSession.due_date
                     ).format("DD-MM-YYYY")}`}
                   />
