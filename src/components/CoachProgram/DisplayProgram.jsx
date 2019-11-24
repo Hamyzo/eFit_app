@@ -381,8 +381,8 @@ class DisplayProgram extends React.Component {
     for (var i = 0; i < sessions.length; i++) {
       if (
         programScripts.sessionStatus(sessions[i].periods).status ==
-        "In Progress" || programScripts.sessionStatus(sessions[i].periods).status ==
-        "Completed"
+          "In Progress" ||
+        programScripts.sessionStatus(sessions[i].periods).status == "Completed"
       ) {
         index = i;
       }
@@ -397,9 +397,10 @@ class DisplayProgram extends React.Component {
           programScripts.status(
             programScripts.completedReps(periods[i].repetitions),
             periods[i].nb_repetitions
-          ) == "In Progress" || programScripts.status(
-          programScripts.completedReps(periods[i].repetitions),
-          periods[i].nb_repetitions
+          ) == "In Progress" ||
+          programScripts.status(
+            programScripts.completedReps(periods[i].repetitions),
+            periods[i].nb_repetitions
           ) == "Completed"
         ) {
           index = i;

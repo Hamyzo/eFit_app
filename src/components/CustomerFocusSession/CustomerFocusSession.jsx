@@ -163,6 +163,8 @@ class CustomerFocusSession extends React.Component {
     } catch (e) {
       console.log(e);
     }
+
+    this.setState({ showPart: 0 });
   }
 
   renderPart1() {
