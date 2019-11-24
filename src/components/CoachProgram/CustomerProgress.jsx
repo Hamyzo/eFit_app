@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col, Table, Tabs, Modal, Button, Icon, Statistic } from "antd";
-import { ResponsiveLine } from '@nivo/line';
+import { ResponsiveLine } from "@nivo/line";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
 
@@ -103,13 +103,13 @@ class CustomerProgress extends React.Component {
       "hsl(98, 70%, 50%)"
     ];
     var data = [];
-    for(var i = 0; i < focusSessionsWithResults[0].exercises.length; i ++){
+    for (var i = 0; i < focusSessionsWithResults[0].exercises.length; i++) {
       var exercise = focusSessionsWithResults[0].exercises[i];
       data.push({
-          "id": exercise.name,
-          "color": colors[i],
-          "data": this.exerciseData(i, focusSessionsWithResults)
-        });
+        id: exercise.name,
+        color: colors[i],
+        data: this.exerciseData(i, focusSessionsWithResults)
+      });
     }
     console.log("data ", data);
     return data;
@@ -344,11 +344,13 @@ class CustomerProgress extends React.Component {
                     program.focus_sessions,
                     "dickson_index"
                   )}
-                  prefix={<img
-                    alt=""
-                    className="heartAndDickson"
-                    src="/assets/images/muscle (2).svg"
-                  />}
+                  prefix={
+                    <img
+                      alt=""
+                      className="heartAndDickson"
+                      src="/assets/images/muscle (2).svg"
+                    />
+                  }
                 />
                 <Row className="HeartRow">
                   {program ? (
@@ -374,11 +376,13 @@ class CustomerProgress extends React.Component {
                     program.focus_sessions,
                     "rest_heart_rate"
                   )}
-                  prefix={<img
-                    alt=""
-                    className="heartAndDickson"
-                    src="/assets/images/heartbeat.svg"
-                  />}
+                  prefix={
+                    <img
+                      alt=""
+                      className="heartAndDickson"
+                      src="/assets/images/heartbeat.svg"
+                    />
+                  }
                 />
                 <Row className="HeartRow">
                   {program ? (

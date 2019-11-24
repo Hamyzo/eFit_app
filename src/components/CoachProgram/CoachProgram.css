@@ -23,8 +23,8 @@
 }
 
 .focusSessionsTitle {
-    margin-top: 3.5%;
-    margin-left: 3%;
+  margin-top: 3.5%;
+  margin-left: 3%;
 }
 .lastFocusSessionsTitle {
   margin-top: 2%;
@@ -155,7 +155,7 @@
   width: 25px;
   height: 25px;
   display: block;
-  margin-left: 70%;
+  margin-left: 0%;
   margin-right: 5%;
   margin-top: 5%;
   margin-bottom: 5%;
@@ -171,14 +171,13 @@
   font-size: 25px;
   color: #707070;
   margin: 5%;
-
 }
 
-.bannerButton{
-    margin: 2%;
+.bannerButton {
+  margin: 2%;
 }
 
-.progressChart{
+.progressChart {
   height: 325px;
   width: 625px;
 }
@@ -205,15 +204,14 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 0%;
-
 }
 
 .bannerButtons {
-    margin-top: 10%;
-    text-align: center;
+  margin-top: 10%;
+  text-align: center;
 }
 
-.dickAndHeartRow{
+.dickAndHeartRow {
   margin-top: 2%;
 }
 .dickCol {
@@ -221,15 +219,13 @@
   border-right: 1px solid #d9d9d9;
 
   padding-bottom: 5%;
-
 }
 .HeartCol {
   height: 100px;
 
   padding-bottom: 5%;
-
 }
-.HeartRow{
+.HeartRow {
   padding-bottom: 15%;
   margin-bottom: 15%;
 }
