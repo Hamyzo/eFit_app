@@ -250,6 +250,7 @@ class CustomerProgress extends React.Component {
   { if (program.focus_sessions.length > 2) {
     return(<div className="progressChart">
       <ResponsiveLine
+        curve={select('curve', curveOptions, 'linear')}
         data={this.exerciseChartData(program.focus_sessions)}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
         xScale={{ type: 'point' }}
@@ -310,6 +311,7 @@ class CustomerProgress extends React.Component {
         ]}
       />
     </div>)}
+    else { return ""}
   }
 
 
