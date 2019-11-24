@@ -34,6 +34,10 @@
   margin-right: 4px !important;
 }
 
+.steps-content {
+  padding: 10px 0;
+}
+
 .des-font {
   color: #43978d;
   margin-bottom: 20px;
