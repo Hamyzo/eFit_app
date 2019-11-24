@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Table, Tabs, Modal, Button } from "antd";
+import { Row, Col, Table, Tabs, Modal, Button, Icon, Statistic } from "antd";
 import { ResponsiveLine } from '@nivo/line';
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
@@ -40,15 +40,7 @@ const columns = [
         );
       }
     }
-  },
-  {
-    title: '',
-    dataIndex: 'operation',
-    render: (text, record) => (
-        <a>See More</a>
-      )
-  },
-
+  }
 ];
 
 class CustomerProgress extends React.Component {
@@ -163,8 +155,8 @@ class CustomerProgress extends React.Component {
     if (parseFloat(progress) < 0.0) {
       return (
         <div>
-          <img alt="" className="down-up" src="/assets/images/sort-down.svg" />
-          {parseFloat(progress)}%
+          (<img alt="" className="down-up" src="/assets/images/sort-down.svg" />
+          {parseFloat(progress)}%)
         </div>
       );
     } else if (parseFloat(progress) == 0.0 || progress == "--") {
@@ -172,8 +164,8 @@ class CustomerProgress extends React.Component {
     } else {
       return (
         <div>
-          <img alt="" className="down-up" src="/assets/images/sort-up.svg" />
-          {parseFloat(progress)}%
+          (<img alt="" className="down-up" src="/assets/images/sort-up.svg" />
+          {parseFloat(progress)}%)
         </div>
       );
     }
@@ -326,37 +318,23 @@ class CustomerProgress extends React.Component {
           <Spinner />
         )}
         <div className="progressColumn">
-          <h3 className="progressTitle">Last Focus Session Results</h3>
-
-          <Row>
-            <Col span={10} offset={1}>
+          <h3 className="lastFocusSessionsTitle">Last Focus Session Results</h3>
+          <Row className="dickAndHeartRow">
+            <Col className="dickCol" span={10} offset={1}>
               <div className="dicksonDiv">
-                <h3>Dickson Index</h3>
-                  <Row style={{marginTop:'-4%'}}>
-                    <Col span={10}>
-                      <img
-                      alt=""
-                      className="heartAndDickson"
-                      src="/assets/images/muscle (2).svg"
-                    />
-                    </Col>
-                    <Col span={10}>
-                      {program ? (
-                      <div>
-                        <div className="circle">
-                          {this.lastMeasure(
-                            program.focus_sessions,
-                            "dickson_index"
-                          )}
-                        </div>
-
-                      </div>
-                    ) : (
-                      <div>...</div>
-                    )}
-                    </Col>
-                </Row>
-                <Row>
+                <Statistic
+                  title="Dickson Index"
+                  value={this.lastMeasure(
+                    program.focus_sessions,
+                    "dickson_index"
+                  )}
+                  prefix={<img
+                    alt=""
+                    className="heartAndDickson"
+                    src="/assets/images/muscle (2).svg"
+                  />}
+                />
+                <Row className="HeartRow">
                   {program ? (
                     <div>
                       {this.progressArrow(
@@ -372,39 +350,39 @@ class CustomerProgress extends React.Component {
                 </Row>
               </div>
             </Col>
-            <Col span={10} offset={1}>
+            <Col className="HeartCol" span={10} offset={1}>
               <div className="heartDiv">
-                <h3>Resting Heart Rate</h3>
-                <img
-                  alt=""
-                  className="heartAndDickson"
-                  src="/assets/images/heartbeat.svg"
+                <Statistic
+                  title="Resting Heart Rate"
+                  value={this.lastMeasure(
+                    program.focus_sessions,
+                    "rest_heart_rate"
+                  )}
+                  prefix={<img
+                    alt=""
+                    className="heartAndDickson"
+                    src="/assets/images/heartbeat.svg"
+                  />}
                 />
-
-                {program ? (
-                  <div>
-                    <div className="circle">
-                      {this.lastMeasure(
-                        program.focus_sessions,
-                        "rest_heart_rate"
-                      )}
-                    </div>
-
-                    <Row>
+                <Row className="HeartRow">
+                  {program ? (
+                    <div>
                       {this.progressArrow(
                         this.measureProgress(
                           program.focus_sessions,
                           "rest_heart_rate"
                         )
                       )}
-                    </Row>
-                  </div>
-                ) : (
-                  <div>...</div>
-                )}
+                    </div>
+                  ) : (
+                    <div>...</div>
+                  )}
+                </Row>
               </div>
             </Col>
           </Row>
+
+
           <Row>
             {program ? (
               <div>
@@ -421,7 +399,6 @@ class CustomerProgress extends React.Component {
               <Spinner />
             )}
           </Row>
-
         </div>
 
         <Modal
