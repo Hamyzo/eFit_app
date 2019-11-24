@@ -97,102 +97,101 @@ class CustomerFocusSession extends React.Component {
   }
 
   async showPart2() {
-
     const labelEle = document.getElementsByClassName("require-label");
     console.log(labelEle);
-    if(labelEle.length === 0) {
+    if (labelEle.length === 0) {
       this.bindChangeEvent();
 
       await this.setState({
-        showPart:2,
+        showPart: 2
       });
 
       const part2Input = document.getElementById("part2Input");
 
-      part2Input.addEventListener("focusout",this.validateRequired);
+      part2Input.addEventListener("focusout", this.validateRequired);
     }
-
   }
 
   async showPart3() {
     await this.setState({
-      showPart:3,
+      showPart: 3
     });
 
-    const {currentExerciseStep} = this.state;
+    const { currentExerciseStep } = this.state;
 
     const part3Input = document.getElementById("part3Input");
     part3Input.addEventListener("focusout", this.validateRequired);
-
   }
 
-  validateRequired (event) {
-
+  validateRequired(event) {
     let val = event.target["value"];
-    if(val == "" && !event.target.nextSibling && event.target.nodeName == "INPUT") {
+    if (
+      val == "" &&
+      !event.target.nextSibling &&
+      event.target.nodeName == "INPUT"
+    ) {
       let label = document.createElement("label");
       label.className = "require-label";
       label.innerHTML = "* Required";
 
       event.target.style.float = "left";
       event.target.insertAdjacentElement("afterend", label);
-
     } else {
       let tempLabel = event.target.nextSibling;
 
-      if(tempLabel && tempLabel.nodeName == "LABEL") {
+      if (tempLabel && tempLabel.nodeName == "LABEL") {
         event.target.parentNode.removeChild(tempLabel);
       }
     }
   }
 
   bindChangeEvent() {
-    const {focusSession} =this.state;
+    const { focusSession } = this.state;
 
     const part1Div = document.getElementById("part1Div");
     //const part2Input = document.getElementById("partInput");
     let that = this;
 
-    part1Div.addEventListener("change", function(event) {
-      let id = event.target["id"];
-      let val = event.target["value"];
-      if(isNaN(id)){
-        focusSession[id] = val;
-      }
-    }, false);
+    part1Div.addEventListener(
+      "change",
+      function(event) {
+        let id = event.target["id"];
+        let val = event.target["value"];
+        if (isNaN(id)) {
+          focusSession[id] = val;
+        }
+      },
+      false
+    );
 
     // Required validation
-    part1Div.addEventListener("focusout",this.validateRequired)
+    part1Div.addEventListener("focusout", this.validateRequired);
   }
 
   bindOnfocusEvent() {
     const part1Div = document.getElementById("part1Div");
     part1Div.addEventListener("focusin", function(event) {
-      if(event.target.type == "input" || event.target.type == "text"){
+      if (event.target.type == "input" || event.target.type == "text") {
         event.target.select();
         document.oncontextmenu = function(e) {
           e.preventDefault();
-        }
+        };
       }
-
-    })
-
+    });
   }
 
-  nextFC(){
-
+  nextFC() {
     const labelEle = document.getElementsByClassName("require-label");
-    if(labelEle.length === 0) {
+    if (labelEle.length === 0) {
       const currentStep = this.state.currentStep + 1;
-      this.setState({currentStep});
+      this.setState({ currentStep });
     }
-
   }
 
   removeLabel(ele) {
     let tempLabel = ele.nextSibling;
 
-    if(tempLabel && tempLabel.nodeName == "LABEL") {
+    if (tempLabel && tempLabel.nodeName == "LABEL") {
       ele.parentNode.removeChild(tempLabel);
     }
   }
@@ -208,37 +207,41 @@ class CustomerFocusSession extends React.Component {
 
   nextFocusExercise() {
     const labelEle = document.getElementsByClassName("require-label");
-    if(labelEle.length === 0) {
-      const {results, currentExerciseStep} = this.state;
+    if (labelEle.length === 0) {
+      const { results, currentExerciseStep } = this.state;
       const ele = document.getElementById(currentExerciseStep);
       const preValue = ele.value;
-      if(preValue!=""){
+      if (preValue != "") {
         this.removeLabel(ele);
 
-        if(currentExerciseStep == 0) {
-          results.push({"timed": preValue});
+        if (currentExerciseStep == 0) {
+          results.push({ timed: preValue });
         } else {
-          results.push({"reps": preValue});
+          results.push({ reps: preValue });
         }
 
-
-        this.setState({currentExerciseStep: currentExerciseStep+1, results: results});
+        this.setState({
+          currentExerciseStep: currentExerciseStep + 1,
+          results: results
+        });
       } else {
         this.addLabel(ele);
       }
-
     }
-
   }
 
   async finish() {
     const labelEle = document.getElementsByClassName("require-label");
-    if(labelEle.length === 0) {
-
-      const {focusSession,results, currentExerciseStep} = this.state;
+    if (labelEle.length === 0) {
+      const {
+        focusSession,
+        results,
+        currentExerciseStep,
+        customerProgram
+      } = this.state;
 
       const preValue = document.getElementById(currentExerciseStep).value;
-      results.push({"reps": preValue});
+      results.push({ reps: preValue });
 
       focusSession.results = results;
       focusSession["validation_date"] = new Date();
@@ -256,13 +259,14 @@ class CustomerFocusSession extends React.Component {
         content: "The current focus session has been completed"
       };
 
-      await apiServices.patchOne("focusSessions", _id, rest);
-      await apiServices.postOne("notifications", data);
-    } catch (e) {
-      console.log(e);
+      try {
+        await apiServices.patchOne("focusSessions", _id, rest);
+        await apiServices.postOne("notifications", data);
+        this.setState({ showPart: 0 });
+      } catch (e) {
+        console.log(e);
+      }
     }
-
-    this.setState({ showPart: 0 });
   }
 
   renderPart1() {
@@ -274,59 +278,104 @@ class CustomerFocusSession extends React.Component {
     return (
       <div>
         <Row justify={"center"}>
-          <Col span={8} className={"basic-icon"}>
-            <Icon type="smile" theme="twoTone" twoToneColor={"#43978d"} />
-          </Col>
-          <Col span={15}>
-            <Title level={2} className={"title"}>
-              {title}{" "}
-            </Title>
-          </Col>
+          <div className="customer_focus_session_banner">
+            <Row>
+              <Col span={6} className={"basic-icon"}>
+                <Icon type="solution" />
+              </Col>
+              <Col span={18}>
+                <h1 className="title">{title}</h1>
+              </Col>
+            </Row>
+          </div>
         </Row>
         <Row>
           <Col span={24}>
             <div id={"part1Div"} className={"wrapper-fs"}>
-              {/*<AutoComplete placeholder={labelAge} onChange={(val) => {focusSession.age = val}}/><br /><br />*/}
-              {/*<AutoComplete placeholder={labelWeight} onChange={(val) => {focusSession.weight = val}}/><br /><br />*/}
-              {/*<AutoComplete placeholder={labelRestHR} onChange={(val) => {focusSession["rest_heart_rate"] = val}}/><br/><br />*/}
-              {/*<AutoComplete placeholder={labelTargetHR} onChange={(val) => {focusSession["target_heart_rate"] = val}}/>*/}
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"age"}
-                  min={0}
-                  max={200}
-                  className={"input-number"}
-                  placeholder={labelAge}
-                  autoFocus={true}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"weight"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelWeight}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"rest_heart_rate"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelRestHR}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"target_heart_rate"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelTargetHR}
-                />
-              </div>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelAge"
+                    style={{ paddingLeft: "80px" }}
+                  >
+                    {labelAge} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"age"}
+                    min={0}
+                    max={200}
+                    className={"input-number"}
+                    placeholder="e.g. 24 "
+                    autoFocus={true}
+                  />
+                </Col>
+              </Row>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelWeight"
+                    style={{ paddingLeft: "62px" }}
+                  >
+                    {labelWeight} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"weight"}
+                    min={0}
+                    max={500}
+                    className={"input-number"}
+                    placeholder="e.g. 75 "
+                  />
+                </Col>
+              </Row>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelRestHR"
+                    style={{ paddingLeft: "10px" }}
+                  >
+                    {labelRestHR} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"rest_heart_rate"}
+                    min={0}
+                    max={500}
+                    className={"input-number"}
+                    placeholder="e.g. 90 "
+                  />
+                </Col>
+              </Row>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelRestHR"
+                  >
+                    {labelTargetHR} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"target_heart_rate"}
+                    min={0}
+                    max={500}
+                    className={"input-number"}
+                    placeholder="e.g. 170 "
+                  />
+                </Col>
+              </Row>
             </div>
           </Col>
         </Row>
@@ -342,7 +391,7 @@ class CustomerFocusSession extends React.Component {
   }
 
   renderPart2() {
-    const title = "Cardiac Rate";
+    const title = "Heart Rates";
     const { currentStep } = this.state;
 
     const stepsFC = [
@@ -354,12 +403,18 @@ class CustomerFocusSession extends React.Component {
             <div>
               <h3 className={"des-font"}>After lying calmly for 5 mins </h3>
               <h3>
-                The Cardiac Rate:{" "}
+                <label
+                  htmlFor="dynamic_rule_username"
+                  className="ant-form-item-required"
+                >
+                  Measured heart Rate :{" "}
+                </label>
                 <InputNumber
                   id={"five_min_rest_hr"}
                   min={0}
                   max={500}
-                  className={"input-number"}
+                  className={"input-number input_focus_session"}
+                  placeholder="e.g. 80 "
                 />
               </h3>
             </div>
@@ -376,12 +431,18 @@ class CustomerFocusSession extends React.Component {
                 After 30 complete flexions in 45 sec{" "}
               </h3>
               <h3>
-                The Cardiac Rate:{" "}
+                <label
+                  htmlFor="dynamic_rule_username"
+                  className="ant-form-item-required"
+                >
+                  Measured heart Rate :{" "}
+                </label>
                 <InputNumber
                   id={"thirty_deflections_hr"}
                   min={0}
                   max={500}
-                  className={"input-number"}
+                  className={"input-number input_focus_session"}
+                  placeholder="e.g. 120 "
                 />
               </h3>
             </div>
@@ -398,12 +459,18 @@ class CustomerFocusSession extends React.Component {
                 After lying for 1 min after the exercise
               </h3>
               <h3>
-                The Cardiac Rate:{" "}
+                <label
+                  htmlFor="dynamic_rule_username"
+                  className="ant-form-item-required "
+                >
+                  Measured heart Rate :{" "}
+                </label>
                 <InputNumber
                   id={"one_min_elongated_hr"}
                   min={0}
                   max={500}
-                  className={"input-number"}
+                  className={"input-number input_focus_session"}
+                  placeholder="e.g. 110 "
                 />
               </h3>
             </div>
@@ -429,7 +496,7 @@ class CustomerFocusSession extends React.Component {
             <div className="wrapper" id={"part2Input"}>
               <Steps current={currentStep}>
                 {stepsFC.map(item => (
-                  <Step key={item.title} title={item.title} />
+                  <Step key={item.title} title={""} />
                 ))}
               </Steps>
               <Row>
@@ -478,7 +545,7 @@ class CustomerFocusSession extends React.Component {
 
         <Row>
           <Col span={24}>
-            <div className="wrapper">
+            <div className="wrapper" id={"part3Input"}>
               <Col span={24}>
                 <Steps
                   current={currentExerciseStep}
@@ -491,35 +558,83 @@ class CustomerFocusSession extends React.Component {
                 </Steps>
               </Col>
 
+              <img
+                className="step-img"
+                alt="Loading"
+                src={focusExercises[currentExerciseStep].img}
+              />
+              <br />
+              <br />
+              <Row style={{ marginBottom: "20px" }}>
+                <Col span={24} align="middle">
+                  <h1 style={{ fontSize: "22px" }}>
+                    {focusExercises[currentExerciseStep].name}
+                  </h1>
+                </Col>
+              </Row>
+              <Row style={{ marginBottom: "20px" }}>
+                {focusExercises[currentExerciseStep].steps ? (
+                  <Collapse defaultActiveKey={["1"]}>
+                    <Collapse.Panel
+                      header={
+                        <Row>
+                          <Col span={22} align="center">
+                            <span className="sectionTitle">HOW TO</span>
+                          </Col>
+                        </Row>
+                      }
+                    >
+                      <Timeline style={{ marginTop: "20px" }}>
+                        {focusExercises[currentExerciseStep].steps.map(step => (
+                          <Timeline.Item key={step}>{step}</Timeline.Item>
+                        ))}
+                      </Timeline>
+                    </Collapse.Panel>
+                  </Collapse>
+                ) : (
+                  <Col>
+                    <Collapse bordered={false} defaultActiveKey={["1"]}>
+                      <Collapse.Panel header="Description">
+                        <p>
+                          {" "}
+                          {focusExercises[currentExerciseStep].description}
+                        </p>
+                      </Collapse.Panel>
+                    </Collapse>
+                  </Col>
+                )}
+              </Row>
               <Row>
-                <h2>{focusExercises[currentExerciseStep].name}</h2>
-                <div>
-                  <img
-                    alt="focus exercise"
-                    height={windowWidth < 576 ? "150px" : "200px"}
-                    width="100%"
-                    src={focusExercises[currentExerciseStep].img}
-                  />
-                </div>
-                <div className="steps-content">
-                  {focusExercises[currentExerciseStep].description}
-                </div>
                 <div>
                   {focusExercises[currentExerciseStep].timed == true && (
                     <h3>
-                      Max Time:{" "}
+                      <label
+                        htmlFor="dynamic_rule_username"
+                        className="ant-form-item-required"
+                      >
+                        Max Time:{" "}
+                      </label>
+
                       <InputNumber
                         id={currentExerciseStep}
-                        className={"input-number"}
+                        className={"input-number input_focus_session"}
+                        placeholder="e.g. 60 "
                       />
                     </h3>
                   )}
                   {!focusExercises[currentExerciseStep].timed && (
                     <h3>
-                      Max Repetitions:{" "}
+                      <label
+                        htmlFor="dynamic_rule_username"
+                        className="ant-form-item-required"
+                      >
+                        Max Repetitions:{" "}
+                      </label>
+
                       <InputNumber
                         id={currentExerciseStep}
-                        className={"input-number"}
+                        className={"input-number input_focus_session"}
+                        placeholder="e.g. 30 "
                       />
                     </h3>
                   )}
