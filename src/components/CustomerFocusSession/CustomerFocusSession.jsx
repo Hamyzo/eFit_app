@@ -1,5 +1,17 @@
 import React from "react";
-import { Row, Col, Typography, Button, Steps, Icon, InputNumber } from "antd";
+import {
+  Row,
+  Col,
+  Typography,
+  Button,
+  Steps,
+  Icon,
+  InputNumber,
+  Avatar,
+  Statistic,
+  Collapse,
+  Timeline
+} from "antd";
 
 /**
  * <Focus session>
@@ -34,6 +46,9 @@ import { Row, Col, Typography, Button, Steps, Icon, InputNumber } from "antd";
 import "./CustomerFocusSession.css";
 import * as apiServices from "../../apiServices";
 import RepetitionDone from "../Repetition/RepetitionDone";
+import * as dateScripts from "../../utils/dateScripts";
+import Timer from "../Repetition/Timer";
+import { Player } from "video-react";
 
 const { Title } = Typography;
 const { Step } = Steps;
@@ -192,14 +207,16 @@ class CustomerFocusSession extends React.Component {
     return (
       <div>
         <Row justify={"center"}>
-          <Col span={8} className={"basic-icon"}>
-            <Icon type="smile" theme="twoTone" twoToneColor={"#43978d"} />
-          </Col>
-          <Col span={15}>
-            <Title level={2} className={"title"}>
-              {title}{" "}
-            </Title>
-          </Col>
+          <div className="customer_focus_session_banner">
+            <Row>
+              <Col span={6} className={"basic-icon"}>
+                <Icon type="solution" />
+              </Col>
+              <Col span={18}>
+                <h1 className="title">{title}</h1>
+              </Col>
+            </Row>
+          </div>
         </Row>
         <Row>
           <Col span={24}>
@@ -208,43 +225,90 @@ class CustomerFocusSession extends React.Component {
               {/*<AutoComplete placeholder={labelWeight} onChange={(val) => {focusSession.weight = val}}/><br /><br />*/}
               {/*<AutoComplete placeholder={labelRestHR} onChange={(val) => {focusSession["rest_heart_rate"] = val}}/><br/><br />*/}
               {/*<AutoComplete placeholder={labelTargetHR} onChange={(val) => {focusSession["target_heart_rate"] = val}}/>*/}
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"age"}
-                  min={0}
-                  max={200}
-                  className={"input-number"}
-                  placeholder={labelAge}
-                  autoFocus={true}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"weight"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelWeight}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"rest_heart_rate"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelRestHR}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"target_heart_rate"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelTargetHR}
-                />
-              </div>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelAge"
+                    style={{ paddingLeft: "80px" }}
+                  >
+                    {labelAge} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"age"}
+                    min={0}
+                    max={200}
+                    className={"input-number"}
+                    placeholder="e.g. 24 "
+                    autoFocus={true}
+                  />
+                </Col>
+              </Row>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelWeight"
+                    style={{ paddingLeft: "62px" }}
+                  >
+                    {labelWeight} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"weight"}
+                    min={0}
+                    max={500}
+                    className={"input-number"}
+                    placeholder="e.g. 75 "
+                  />
+                </Col>
+              </Row>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelRestHR"
+                    style={{ paddingLeft: "10px" }}
+                  >
+                    {labelRestHR} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"rest_heart_rate"}
+                    min={0}
+                    max={500}
+                    className={"input-number"}
+                    placeholder="e.g. 90 "
+                  />
+                </Col>
+              </Row>
+              <Row className={"part-one-input"}>
+                <Col span={11}>
+                  <label
+                    htmlFor="dynamic_rule_username"
+                    className="ant-form-item-required"
+                    title="labelRestHR"
+                  >
+                    {labelTargetHR} :
+                  </label>
+                </Col>
+                <Col span={13}>
+                  <InputNumber
+                    id={"target_heart_rate"}
+                    min={0}
+                    max={500}
+                    className={"input-number"}
+                    placeholder="e.g. 170 "
+                  />
+                </Col>
+              </Row>
             </div>
           </Col>
         </Row>
@@ -260,7 +324,7 @@ class CustomerFocusSession extends React.Component {
   }
 
   renderPart2() {
-    const title = "Cardiac Rate";
+    const title = "Heart Rates";
     const { currentStep } = this.state;
 
     const stepsFC = [
@@ -272,12 +336,18 @@ class CustomerFocusSession extends React.Component {
             <div>
               <h3 className={"des-font"}>After lying calmly for 5 mins </h3>
               <h3>
-                The Cardiac Rate:{" "}
+                <label
+                  htmlFor="dynamic_rule_username"
+                  className="ant-form-item-required"
+                >
+                  Measured heart Rate :{" "}
+                </label>
                 <InputNumber
                   id={"five_min_rest_hr"}
                   min={0}
                   max={500}
-                  className={"input-number"}
+                  className={"input-number input_focus_session"}
+                  placeholder="e.g. 80 "
                 />
               </h3>
             </div>
@@ -294,12 +364,18 @@ class CustomerFocusSession extends React.Component {
                 After 30 complete flexions in 45 sec{" "}
               </h3>
               <h3>
-                The Cardiac Rate:{" "}
+                <label
+                  htmlFor="dynamic_rule_username"
+                  className="ant-form-item-required"
+                >
+                  Measured heart Rate :{" "}
+                </label>
                 <InputNumber
                   id={"thirty_deflections_hr"}
                   min={0}
                   max={500}
-                  className={"input-number"}
+                  className={"input-number input_focus_session"}
+                  placeholder="e.g. 120 "
                 />
               </h3>
             </div>
@@ -316,12 +392,18 @@ class CustomerFocusSession extends React.Component {
                 After lying for 1 min after the exercise
               </h3>
               <h3>
-                The Cardiac Rate:{" "}
+                <label
+                  htmlFor="dynamic_rule_username"
+                  className="ant-form-item-required "
+                >
+                  Measured heart Rate :{" "}
+                </label>
                 <InputNumber
                   id={"one_min_elongated_hr"}
                   min={0}
                   max={500}
-                  className={"input-number"}
+                  className={"input-number input_focus_session"}
+                  placeholder="e.g. 110 "
                 />
               </h3>
             </div>
@@ -347,7 +429,7 @@ class CustomerFocusSession extends React.Component {
             <div className="wrapper" id={"part2Input"}>
               <Steps current={currentStep}>
                 {stepsFC.map(item => (
-                  <Step key={item.title} title={item.title} />
+                  <Step key={item.title} title={""} />
                 ))}
               </Steps>
               <Row>
@@ -379,6 +461,7 @@ class CustomerFocusSession extends React.Component {
   renderPart3() {
     const title = "Performance";
     const { currentExerciseStep, focusExercises } = this.state;
+    console.log("focusExercises", focusExercises);
     const { windowWidth } = this.props;
 
     return (
@@ -409,35 +492,83 @@ class CustomerFocusSession extends React.Component {
                 </Steps>
               </Col>
 
+              <img
+                className="step-img"
+                alt="Loading"
+                src={focusExercises[currentExerciseStep].img}
+              />
+              <br />
+              <br />
+              <Row style={{ marginBottom: "20px" }}>
+                <Col span={24} align="middle">
+                  <h1 style={{ fontSize: "22px" }}>
+                    {focusExercises[currentExerciseStep].name}
+                  </h1>
+                </Col>
+              </Row>
+              <Row style={{ marginBottom: "20px" }}>
+                {focusExercises[currentExerciseStep].steps ? (
+                  <Collapse defaultActiveKey={["1"]}>
+                    <Collapse.Panel
+                      header={
+                        <Row>
+                          <Col span={22} align="center">
+                            <span className="sectionTitle">HOW TO</span>
+                          </Col>
+                        </Row>
+                      }
+                    >
+                      <Timeline style={{ marginTop: "20px" }}>
+                        {focusExercises[currentExerciseStep].steps.map(step => (
+                          <Timeline.Item key={step}>{step}</Timeline.Item>
+                        ))}
+                      </Timeline>
+                    </Collapse.Panel>
+                  </Collapse>
+                ) : (
+                  <Col>
+                    <Collapse bordered={false} defaultActiveKey={["1"]}>
+                      <Collapse.Panel header="Description">
+                        <p>
+                          {" "}
+                          {focusExercises[currentExerciseStep].description}
+                        </p>
+                      </Collapse.Panel>
+                    </Collapse>
+                  </Col>
+                )}
+              </Row>
               <Row>
-                <h2>{focusExercises[currentExerciseStep].name}</h2>
-                <div>
-                  <img
-                    alt="focus exercise"
-                    height={windowWidth < 576 ? "150px" : "200px"}
-                    width="100%"
-                    src={focusExercises[currentExerciseStep].img}
-                  />
-                </div>
-                <div className="steps-content">
-                  {focusExercises[currentExerciseStep].description}
-                </div>
                 <div>
                   {focusExercises[currentExerciseStep].timed == true && (
                     <h3>
-                      Max Time:{" "}
+                      <label
+                        htmlFor="dynamic_rule_username"
+                        className="ant-form-item-required"
+                      >
+                        Max Time:{" "}
+                      </label>
+
                       <InputNumber
                         id={currentExerciseStep}
-                        className={"input-number"}
+                        className={"input-number input_focus_session"}
+                        placeholder="e.g. 60 "
                       />
                     </h3>
                   )}
                   {!focusExercises[currentExerciseStep].timed && (
                     <h3>
-                      Max Repetitions:{" "}
+                      <label
+                        htmlFor="dynamic_rule_username"
+                        className="ant-form-item-required"
+                      >
+                        Max Repetitions:{" "}
+                      </label>
+
                       <InputNumber
                         id={currentExerciseStep}
-                        className={"input-number"}
+                        className={"input-number input_focus_session"}
+                        placeholder="e.g. 30 "
                       />
                     </h3>
                   )}
