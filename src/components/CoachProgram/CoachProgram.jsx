@@ -94,7 +94,7 @@ class CoachProgram extends React.Component {
   );
 
   renderCustomerProgress = program => {
-    if (program.focus_sessions == null || program.focus_sessions.length == 0) {
+    if (program.focus_sessions == null || program.focus_sessions.length == 0 || program.focus_sessions[0].results == null || program.focus_sessions[0].length == 0) {
       return "";
     } else {
       return <CustomerProgress program={program} editable isCustomerProgram />;
@@ -110,7 +110,7 @@ class CoachProgram extends React.Component {
           <div>
             {this.renderBanner(program.customer)}
             <Row>
-              <Col span={15}>
+              <Col span={13}>
                 <DisplayProgram
                   program={program}
                   editable
@@ -118,7 +118,7 @@ class CoachProgram extends React.Component {
                   onSubmitSession={this.handleSubmitSession}
                 />
               </Col>
-              <Col span={8}>{this.renderCustomerProgress(program)}</Col>
+              <Col span={11}>{this.renderCustomerProgress(program)}</Col>
             </Row>
           </div>
         ) : (

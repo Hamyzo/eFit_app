@@ -142,12 +142,12 @@
 }
 
 .heartAndDickson {
-  width: 40%;
-  height: 40%;
+  width: 25px;
+  height: 25px;
   display: block;
-  margin-left: auto;
-  margin-right: 25%;
-  margin-top: 17%;
+  margin-left: 70%;
+  margin-right: 5%;
+  margin-top: 5%;
   margin-bottom: 5%;
 }
 
@@ -158,24 +158,16 @@
 }
 
 .circle {
-  border: 1px solid #707070;
-  display: block;
-  margin-left: 27%;
-  margin-right: auto;
-  margin-top: -25%;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  font-size: 20px;
-  font-color: black;
-  color: #fff;
-  line-height: 42px;
-  text-align: center;
-  background: #bfbfbf;
-  z-index: -0;
-  position: relative;
+  margin-left: -25%;
+  font-size: 25px;
+  color: #707070;
+
 }
 
+.progressChart{
+  height: 400px;
+  width: 600px;
+}
 .progressRow {
   display: block;
   margin-left: auto;

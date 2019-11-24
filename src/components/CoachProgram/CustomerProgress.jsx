@@ -1,7 +1,9 @@
 import React from "react";
-import { Row, Col, Table } from "antd";
+import { Row, Col, Table, Tabs, Modal, Button } from "antd";
+import { ResponsiveLine } from '@nivo/line';
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
+
 
 const columns = [
   {
@@ -38,12 +40,93 @@ const columns = [
         );
       }
     }
-  }
+  },
+  {
+    title: '',
+    dataIndex: 'operation',
+    render: (text, record) => (
+        <a>See More</a>
+      )
+  },
+
 ];
 
 class CustomerProgress extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      visible: false
+    }
+  }
+
+  formatDate = rawDate => {
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+
+    const d = new Date(rawDate);
+    const day = d.getDate();
+    const monthIndex = d.getMonth();
+    return `${day}-${monthNames[monthIndex]}`;
+  };
+  showResultsModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleOk = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  exerciseChartData = (focusSessions) => {
+    var focusSessionsWithResults = this.removeFocusSessionsNotDone(focusSessions);
+    var colors = ["hsl(186, 70%, 50%)", "hsl(187, 70%, 50%)", "hsl(31, 70%, 50%)", "hsl(187, 70%, 50%)", "hsl(98, 70%, 50%)", "hsl(187, 70%, 50%)", "hsl(98, 70%, 50%)"]
+    var data = [];
+    for(var i = 0; i < focusSessionsWithResults[0].exercises.length; i ++){
+      var exercise = focusSessionsWithResults[0].exercises[i];
+      data.push(
+        {
+          "id": exercise.name,
+          "color": colors[i],
+          "data": this.exerciseData(i, focusSessionsWithResults)
+        }
+      )
+    }
+    console.log("data ", data);
+    return data;
+  }
+
+  exerciseData = (i, focusSessions) => {
+    var data = [];
+    for (var x = 0; x < focusSessions.length; x++){
+      data.push(
+        {
+          "x": this.formatDate(focusSessions[x].due_date),
+          "y": this.timeOrReps(focusSessions[x].results[i])
+        }
+      )
+    }
+    return data;
   }
 
   lastMeasure = (focusSessions, measure) => {
@@ -85,7 +168,7 @@ class CustomerProgress extends React.Component {
         </div>
       );
     } else if (parseFloat(progress) == 0.0 || progress == "--") {
-      return " ";
+      return "--";
     } else {
       return (
         <div>
@@ -106,13 +189,12 @@ class CustomerProgress extends React.Component {
       parseFloat(focusSessionsWithResults[y][measure]),
       parseFloat(focusSessionsWithResults[x][measure])
     );
-    if (focusSessions[0].results[0].reps == null) {
-      console.log("TRUE");
-    }
+
     return changePercentage.toFixed(1);
   };
 
   resultsRow = (result, previous_res, exercise, i) => {
+
     return {
       key: i,
       exercise: exercise.name,
@@ -134,28 +216,24 @@ class CustomerProgress extends React.Component {
   };
 
   timeOrReps = n => {
+    if(n != null){
     var num = n.reps || n.time;
-    return parseInt(num);
+    }
+    if (num != null) {
+      return parseInt(num);
+    }
+    else return 0;
   };
 
   resultsTable = focusSessions => {
-    if (
-      focusSessions == null ||
-      (focusSessions.length == 1 && focusSessions[0].results == null)
-    ) {
+    if (focusSessions == null || (focusSessions.length == 1 && focusSessions[0].results == null)) {
       return "No Results Available";
     } else if (focusSessions.length == 1 && focusSessions[0].results != null) {
       return focusSessions[0].results.map((result, i) =>
-        this.resultsFirstFocusSessionRow(
-          result,
-          focusSessions[0].exercises[i],
-          i
-        )
+        this.resultsFirstFocusSessionRow(result, focusSessions[0].exercises[i], i)
       );
     }
-    var focusSessionsWithResults = this.removeFocusSessionsNotDone(
-      focusSessions
-    );
+    var focusSessionsWithResults = this.removeFocusSessionsNotDone(focusSessions);
     var y = focusSessionsWithResults.length - 1;
     var x = focusSessionsWithResults.length - 2;
     return focusSessionsWithResults[y].results.map((result, i) =>
@@ -168,47 +246,131 @@ class CustomerProgress extends React.Component {
     );
   };
 
+  renderProgressChart =(program)=>
+  { if (program.focus_sessions.length > 2) {
+    return(<div className="progressChart">
+      <ResponsiveLine
+        data={this.exerciseChartData(program.focus_sessions)}
+        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+        xScale={{ type: 'point' }}
+        yScale={{ type: 'linear', stacked: false, min: 'auto', max: 'auto' }}
+        axisTop={null}
+        axisRight={null}
+        axisBottom={{
+          orient: 'bottom',
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: 'focus session date',
+          legendOffset: 36,
+          legendPosition: 'middle'
+        }}
+        axisLeft={{
+          orient: 'left',
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: 'count',
+          legendOffset: -40,
+          legendPosition: 'middle'
+        }}
+        colors={{ scheme: 'nivo' }}
+        pointSize={10}
+        pointColor={{ theme: 'background' }}
+        pointBorderWidth={2}
+        pointBorderColor={{ from: 'serieColor' }}
+        pointLabel="y"
+        pointLabelYOffset={-12}
+        useMesh={true}
+        legends={[
+          {
+            anchor: 'bottom-right',
+            direction: 'column',
+            justify: false,
+            translateX: 100,
+            translateY: 0,
+            itemsSpacing: 0,
+            itemDirection: 'left-to-right',
+            itemWidth: 80,
+            itemHeight: 20,
+            itemOpacity: 0.75,
+            symbolSize: 12,
+            symbolShape: 'circle',
+            symbolBorderColor: 'rgba(0, 0, 0, .5)',
+            effects: [
+              {
+                on: 'hover',
+                style: {
+                  itemBackground: 'rgba(0, 0, 0, .03)',
+                  itemOpacity: 1
+                }
+              }
+            ]
+          }
+        ]}
+      />
+    </div>)}
+  }
+
+
   render() {
     const { program } = this.props;
-    //const {    } = this.state;
 
     return (
       <div>
+        {program ? this.renderProgressChart(program) : (
+          <Spinner />
+        )}
         <div className="progressColumn">
           <h3 className="progressTitle">Last Focus Session Results</h3>
 
           <Row>
             <Col span={10} offset={1}>
               <div className="dicksonDiv">
-                <img
-                  alt=""
-                  className="heartAndDickson"
-                  src="/assets/images/muscle (2).svg"
-                />
+                <h3>Dickson Index</h3>
+                  <Row style={{marginTop:'-4%'}}>
+                    <Col span={10}>
+                      <img
+                      alt=""
+                      className="heartAndDickson"
+                      src="/assets/images/muscle (2).svg"
+                    />
+                    </Col>
+                    <Col span={10}>
+                      {program ? (
+                      <div>
+                        <div className="circle">
+                          {this.lastMeasure(
+                            program.focus_sessions,
+                            "dickson_index"
+                          )}
+                        </div>
 
-                {program ? (
-                  <div>
-                    <div className="circle">
-                      {this.lastMeasure(
-                        program.focus_sessions,
-                        "dickson_index"
+                      </div>
+                    ) : (
+                      <div>...</div>
+                    )}
+                    </Col>
+                </Row>
+                <Row>
+                  {program ? (
+                    <div>
+                      {this.progressArrow(
+                        this.measureProgress(
+                          program.focus_sessions,
+                          "dickson_index"
+                        )
                       )}
                     </div>
-                    <h3>Dickson Index</h3>
-                    {this.progressArrow(
-                      this.measureProgress(
-                        program.focus_sessions,
-                        "dickson_index"
-                      )
-                    )}
-                  </div>
-                ) : (
-                  <div>...</div>
-                )}
+                  ) : (
+                    <div>...</div>
+                  )}
+                </Row>
               </div>
             </Col>
             <Col span={10} offset={1}>
               <div className="heartDiv">
+                <h3>Resting Heart Rate</h3>
                 <img
                   alt=""
                   className="heartAndDickson"
@@ -223,7 +385,7 @@ class CustomerProgress extends React.Component {
                         "rest_heart_rate"
                       )}
                     </div>
-                    <h3>Resting Heart Rate</h3>
+
                     <Row>
                       {this.progressArrow(
                         this.measureProgress(
@@ -255,7 +417,18 @@ class CustomerProgress extends React.Component {
               <Spinner />
             )}
           </Row>
+
         </div>
+
+        <Modal
+          title="Progress Chart"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+
+        </Modal>
+
       </div>
     );
   }
