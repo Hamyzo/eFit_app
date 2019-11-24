@@ -546,7 +546,7 @@ class CustomerFocusSession extends React.Component {
                         htmlFor="dynamic_rule_username"
                         className="ant-form-item-required"
                       >
-                        Max Time:{" "}
+                        Total Time:{" "}
                       </label>
 
                       <InputNumber
@@ -562,7 +562,7 @@ class CustomerFocusSession extends React.Component {
                         htmlFor="dynamic_rule_username"
                         className="ant-form-item-required"
                       >
-                        Max Repetitions:{" "}
+                        Total Repetitions:{" "}
                       </label>
 
                       <InputNumber
