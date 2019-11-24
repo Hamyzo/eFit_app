@@ -117,3 +117,30 @@
 .ant-col-12 {
   width: 50%;
 }
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text {
+  color: #aaa;
+  font-size: medium;
+}
+
+.bigger-text {
+  color: #aaa;
+  font-size: x-large;
+}
+
+.value {
+  font-size: 40px;
+}
+
+.info {
+  max-width: 360px;
+  margin: 40px auto 0;
+  text-align: center;
+  font-size: 16px;
+}
