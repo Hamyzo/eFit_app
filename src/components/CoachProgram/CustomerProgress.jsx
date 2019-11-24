@@ -251,7 +251,7 @@ class CustomerProgress extends React.Component {
   };
 
   renderProgressChart = program => {
-    if (program.focus_sessions.length > 2) {
+    if (program.focus_sessions.length > 0) {
       return (
         <div className="progressChart">
           <h1 className="focusSessionsTitle">Focus Sessions Progress</h1>
