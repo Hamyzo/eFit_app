@@ -86,8 +86,10 @@ class CoachProgram extends React.Component {
           </div>
         </Col>
         <Col span={3}>
-          <Button shape="circle" icon="message" />
-          <Button shape="circle" icon="setting" />
+          <div className="bannerButtons">
+            <Button className="bannerButton" shape="circle" icon="message" />
+            <Button className="bannerButton" shape="circle" icon="setting" />
+          </div>
         </Col>
       </Row>
     </div>

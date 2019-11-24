@@ -18,9 +18,14 @@
 }
 
 .program_name {
-  margin-top: 2%;
+  margin-top: 3%;
+  margin-left: 3%;
 }
 
+.focusSessionsTitle {
+    margin-top: 3.5%;
+    margin-left: 3%;
+}
 .period_btns {
   margin-top: 2%;
   float: right;
@@ -158,10 +163,14 @@
 }
 
 .circle {
-  margin-left: -25%;
   font-size: 25px;
   color: #707070;
+  margin: 5%;
 
+}
+
+.bannerButton{
+    margin: 2%;
 }
 
 .progressChart{
@@ -197,4 +206,9 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 5%;
+}
+
+.bannerButtons {
+    margin-top: 10%;
+    text-align: center;
 }
