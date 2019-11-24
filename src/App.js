@@ -39,7 +39,7 @@ class App extends React.Component {
     this.state = {
       isLoggedIn: props.location
         ? props.location.state.isLoggedIn
-        : localStorage.getItem("isLoggedIn") === "true"
+        : sessionStorage.getItem("isLoggedIn") === "true"
     };
   }
 

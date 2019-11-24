@@ -111,13 +111,21 @@ class CoachProgram extends React.Component {
   render() {
     const { program } = this.state;
 
+    const showProgress = program
+      ? !(
+          program.focus_sessions == null ||
+          program.focus_sessions.length === 0 ||
+          program.focus_sessions[0].results == null ||
+          program.focus_sessions[0].results.length === 0
+        )
+      : null;
     return (
       <div>
         {program ? (
           <div>
             {this.renderBanner(program.customer)}
             <Row>
-              <Col span={13}>
+              <Col span={showProgress ? 13 : 24}>
                 <DisplayProgram
                   program={program}
                   editable
@@ -125,7 +133,9 @@ class CoachProgram extends React.Component {
                   onSubmitSession={this.handleSubmitSession}
                 />
               </Col>
-              <Col span={11}>{this.renderCustomerProgress(program)}</Col>
+              {showProgress ? (
+                <Col span={11}>{this.renderCustomerProgress(program)}</Col>
+              ) : null}
             </Row>
           </div>
         ) : (

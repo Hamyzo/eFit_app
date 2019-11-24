@@ -1,7 +1,7 @@
 .wrapper-fs {
   /* width: 826px; */
   height: 100%;
-  padding: 30px 15px 30px;
+  padding: 30px 90px 30px;
   /*margin-top: 20px;*/
   background: #fff;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
@@ -17,6 +17,11 @@
   overflow: hidden;
 }
 
+.require-label {
+  color: red;
+  float: left;
+  font-size: 12px;
+}
 .customer_focus_session_banner {
   width: 120%;
   height: 20%;
@@ -43,10 +48,14 @@
 }
 
 .part-one-input {
-  padding: 6px;
+  padding: 10px;
 }
 .focusStepHead > div {
   margin-right: 4px !important;
+}
+
+.steps-content {
+  padding: 10px 0;
 }
 
 .des-font {
