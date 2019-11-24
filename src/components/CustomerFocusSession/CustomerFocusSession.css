@@ -17,12 +17,18 @@
   overflow: hidden;
 }
 
+.require-label {
+  color: red;
+  float: left;
+  font-size: 12px;
+}
 .input-number {
   width: 170px;
+
 }
 
 .part-one-input {
-  padding: 6px;
+  padding: 10px;
 }
 .focusStepHead > div {
   margin-right: 4px !important;

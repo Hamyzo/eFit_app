@@ -1,5 +1,13 @@
 import React from "react";
-import { Row, Col, Typography, Button, Steps, Icon, InputNumber } from "antd";
+import {
+  Row,
+  Col,
+  Typography,
+  Button,
+  Steps,
+  Icon,
+  InputNumber
+} from "antd";
 
 /**
  * <Focus session>
@@ -35,8 +43,9 @@ import "./CustomerFocusSession.css";
 import * as apiServices from "../../apiServices";
 import RepetitionDone from "../Repetition/RepetitionDone";
 
+
 const { Title } = Typography;
-const { Step } = Steps;
+const {Step} = Steps;
 
 class CustomerFocusSession extends React.Component {
   constructor(props) {
@@ -48,7 +57,11 @@ class CustomerFocusSession extends React.Component {
       focusExercises: [],
       focusSession: {},
       results: [],
-      prevId: 0
+      prevId: 0,
+      partRequired: false,
+      part1Required: false,
+      part2StepRequired: false,
+      part3StepRequired: false
     };
   }
 
@@ -60,109 +73,184 @@ class CustomerFocusSession extends React.Component {
   }
 
   async getFocusSession() {
-    await this.setState({ focusSession: this.props.focusSession });
+    await this.setState({focusSession: this.props.focusSession});
     this.bindChangeEvent();
+
   }
 
   // get focusExercises
   async getPart3Exs() {
-    const exercises = await apiServices.get("focusExercises", "");
+    const exercises = await apiServices.get("focusExercises","");
     this.setState({
       focusExercises: exercises
     });
   }
 
-  showPart2() {
-    this.bindChangeEvent();
+  async showPart2() {
 
-    this.setState({
-      showPart: 2
-    });
+    const labelEle = document.getElementsByClassName("require-label");
+    console.log(labelEle);
+    if(labelEle.length === 0) {
+      this.bindChangeEvent();
+
+      await this.setState({
+        showPart:2,
+      });
+
+      const part2Input = document.getElementById("part2Input");
+
+      part2Input.addEventListener("focusout",this.validateRequired);
+    }
+
   }
 
-  showPart3() {
-    this.setState({
-      showPart: 3
+  async showPart3() {
+    await this.setState({
+      showPart:3,
     });
+
+    const {currentExerciseStep} = this.state;
+
+    const part3Input = document.getElementById("part3Input");
+    part3Input.addEventListener("focusout", this.validateRequired);
+
+  }
+
+  validateRequired (event) {
+
+    let val = event.target["value"];
+    if(val == "" && !event.target.nextSibling && event.target.nodeName == "INPUT") {
+      let label = document.createElement("label");
+      label.className = "require-label";
+      label.innerHTML = "* Required";
+
+      event.target.style.float = "left";
+      event.target.insertAdjacentElement("afterend", label);
+
+    } else {
+      let tempLabel = event.target.nextSibling;
+
+      if(tempLabel && tempLabel.nodeName == "LABEL") {
+        event.target.parentNode.removeChild(tempLabel);
+      }
+    }
   }
 
   bindChangeEvent() {
-    const { focusSession } = this.state;
+    const {focusSession} =this.state;
 
     const part1Div = document.getElementById("part1Div");
-    //const part2Input = document.getElementById("partInput");
     let that = this;
 
-    part1Div.addEventListener(
-      "change",
-      function(event) {
-        let id = event.target["id"];
-        let val = event.target["value"];
-        if (isNaN(id)) {
-          focusSession[id] = val;
-        }
-      },
-      false
-    );
+    part1Div.addEventListener("change", function(event) {
+      let id = event.target["id"];
+      let val = event.target["value"];
+      if(isNaN(id)){
+        focusSession[id] = val;
+      }
+    }, false);
+
+    // Required validation
+    part1Div.addEventListener("focusout",this.validateRequired)
   }
 
   bindOnfocusEvent() {
     const part1Div = document.getElementById("part1Div");
     part1Div.addEventListener("focusin", function(event) {
-      if (event.target.type == "input" || event.target.type == "text") {
+      if(event.target.type == "input" || event.target.type == "text"){
         event.target.select();
         document.oncontextmenu = function(e) {
           e.preventDefault();
-        };
+        }
       }
-    });
+
+    })
+
   }
 
-  nextFC() {
-    const currentStep = this.state.currentStep + 1;
-    this.setState({ currentStep });
+  nextFC(){
+
+    const labelEle = document.getElementsByClassName("require-label");
+    if(labelEle.length === 0) {
+      const currentStep = this.state.currentStep + 1;
+      this.setState({currentStep});
+    }
+
+  }
+
+  removeLabel(ele) {
+    let tempLabel = ele.nextSibling;
+
+    if(tempLabel && tempLabel.nodeName == "LABEL") {
+      ele.parentNode.removeChild(tempLabel);
+    }
+  }
+
+  addLabel(ele) {
+    let label = document.createElement("label");
+    label.className = "require-label";
+    label.innerHTML = "* Required";
+
+    ele.style.float = "left";
+    ele.insertAdjacentElement("afterend", label);
   }
 
   nextFocusExercise() {
-    const { results, currentExerciseStep, focusSession } = this.state;
-    const preValue = document.getElementById(currentExerciseStep).value;
-    if (currentExerciseStep == 0) {
-      results.push({ timed: preValue });
-    } else {
-      results.push({ reps: preValue });
+    const labelEle = document.getElementsByClassName("require-label");
+    if(labelEle.length === 0) {
+      const {results, currentExerciseStep} = this.state;
+      const ele = document.getElementById(currentExerciseStep);
+      const preValue = ele.value;
+      if(preValue!=""){
+        this.removeLabel(ele);
+
+        if(currentExerciseStep == 0) {
+          results.push({"timed": preValue});
+        } else {
+          results.push({"reps": preValue});
+        }
+
+
+        this.setState({currentExerciseStep: currentExerciseStep+1, results: results});
+      } else {
+        this.addLabel(ele);
+      }
+
     }
 
-    this.setState({
-      currentExerciseStep: currentExerciseStep + 1,
-      results: results
-    });
-
-    console.log(focusSession);
   }
 
   async finish() {
-    try {
-      const { focusSession, results, currentExerciseStep } = this.state;
+    const labelEle = document.getElementsByClassName("require-label");
+    if(labelEle.length === 0) {
+
+      const {focusSession,results, currentExerciseStep} = this.state;
 
       const preValue = document.getElementById(currentExerciseStep).value;
-      results.push({ reps: preValue });
+      results.push({"reps": preValue});
 
       focusSession.results = results;
 
       focusSession["validation_date"] = new Date();
 
       //focusSession.results = results;
-      const { _id, ...rest } = focusSession;
+      //const id = focusSession["_id"];
+      //delete focusSession._id;
 
-      console.log(_id);
+      const {_id, ...rest} = focusSession;
 
-      console.log("state=======");
-      console.log(rest);
+      try {
+        //await apiServices.patchOne("focusSessions", id, focusSession);
+        await apiServices.patchOne("focusSessions", _id, rest);
+        this.setState({showPart: 0});
+      } catch (e) {
+        console.log(e);
+      }
 
-      await apiServices.patchOne("focusSessions", _id, rest);
-    } catch (e) {
-      console.log(e);
     }
+
+
+
   }
 
   renderPart1() {
@@ -171,293 +259,213 @@ class CustomerFocusSession extends React.Component {
       labelRestHR = "Rest Heart Rate",
       labelTargetHR = "Target Heart Rate";
     const title = "Basic Info";
-    return (
-      <div>
-        <Row justify={"center"}>
-          <Col span={8} className={"basic-icon"}>
-            <Icon type="smile" theme="twoTone" twoToneColor={"#43978d"} />
-          </Col>
-          <Col span={15}>
-            <Title level={2} className={"title"}>
-              {title}{" "}
-            </Title>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            <div id={"part1Div"} className={"wrapper-fs"}>
-              {/*<AutoComplete placeholder={labelAge} onChange={(val) => {focusSession.age = val}}/><br /><br />*/}
-              {/*<AutoComplete placeholder={labelWeight} onChange={(val) => {focusSession.weight = val}}/><br /><br />*/}
-              {/*<AutoComplete placeholder={labelRestHR} onChange={(val) => {focusSession["rest_heart_rate"] = val}}/><br/><br />*/}
-              {/*<AutoComplete placeholder={labelTargetHR} onChange={(val) => {focusSession["target_heart_rate"] = val}}/>*/}
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"age"}
-                  min={0}
-                  max={200}
-                  className={"input-number"}
-                  placeholder={labelAge}
-                  autoFocus={true}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"weight"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelWeight}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"rest_heart_rate"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelRestHR}
-                />
-              </div>
-              <div className={"part-one-input"}>
-                <InputNumber
-                  id={"target_heart_rate"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                  placeholder={labelTargetHR}
-                />
-              </div>
+    return <div>
+      <Row justify={"center"}>
+        <Col span={8} className={"basic-icon"}><Icon type="smile" theme="twoTone" twoToneColor={"#43978d"}/></Col>
+        <Col span={15}><Title level={2} className = {"title"}>{title} </Title></Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <div id={"part1Div"} className={"wrapper-fs"}>
+            {/*<AutoComplete placeholder={labelAge} onChange={(val) => {focusSession.age = val}}/><br /><br />*/}
+            {/*<AutoComplete placeholder={labelWeight} onChange={(val) => {focusSession.weight = val}}/><br /><br />*/}
+            {/*<AutoComplete placeholder={labelRestHR} onChange={(val) => {focusSession["rest_heart_rate"] = val}}/><br/><br />*/}
+            {/*<AutoComplete placeholder={labelTargetHR} onChange={(val) => {focusSession["target_heart_rate"] = val}}/>*/}
+            <div className={"part-one-input"}>
+              <InputNumber id={"age"} min={0} max={200} className={"input-number"} placeholder={labelAge} autoFocus={true}/>
             </div>
-          </Col>
-        </Row>
-        <Button
-          type="primary"
-          style={{ float: "right", marginTop: "10px" }}
-          onClick={() => this.showPart2()}
-        >
-          Next Part
-        </Button>
-      </div>
-    );
-  }
+            <div className={"part-one-input"}>
+              <InputNumber id={"weight"} min={0} max={500} className={"input-number"} placeholder={labelWeight} />
+            </div>
+            <div className={"part-one-input"}>
+              <InputNumber id={"rest_heart_rate"} min={0} max={500} className={"input-number"} placeholder={labelRestHR}/>
+            </div>
+            <div className={"part-one-input"}>
+              <InputNumber id={"target_heart_rate"} min={0} max={500} className={"input-number"} placeholder={labelTargetHR} />
+            </div>
+
+          </div>
+        </Col>
+      </Row>
+      <Button
+        type="primary"
+        style={{ float: "right", "marginTop": "10px"}}
+        onClick={() => this.showPart2()}
+      >
+        Next Part
+      </Button>
+    </div>
+  };
 
   renderPart2() {
     const title = "Cardiac Rate";
-    const { currentStep } = this.state;
+    const {currentStep} = this.state;
 
     const stepsFC = [
       {
-        title: "First",
-        content: (
+        title: 'First',
+        content: <div><img
+
+          alt={"Loading"}
+          src={"/assets/images/lyDown.png"}
+        />
           <div>
-            <img alt={"Loading"} src={"/assets/images/lyDown.png"} />
-            <div>
-              <h3 className={"des-font"}>After lying calmly for 5 mins </h3>
-              <h3>
-                The Cardiac Rate:{" "}
-                <InputNumber
-                  id={"five_min_rest_hr"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                />
-              </h3>
-            </div>
+            <h3 className={"des-font"}>After lying calmly for 5 mins </h3>
+            <h3>The Cardiac Rate: <InputNumber id={"five_min_rest_hr"} min={0} max={500} className={"input-number"}/></h3>
           </div>
-        )
+        </div>,
+
       },
       {
-        title: "Second",
-        content: (
+        title: 'Second',
+        content: <div><img
+
+          alt={"Loading"}
+          src={"/assets/images/flexion.jpg"}
+        />
           <div>
-            <img alt={"Loading"} src={"/assets/images/flexion.jpg"} />
-            <div>
-              <h3 className={"des-font"}>
-                After 30 complete flexions in 45 sec{" "}
-              </h3>
-              <h3>
-                The Cardiac Rate:{" "}
-                <InputNumber
-                  id={"thirty_deflections_hr"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                />
-              </h3>
-            </div>
+            <h3 className={"des-font"}>After 30 complete flexions in 45 sec </h3>
+            <h3>The Cardiac Rate: <InputNumber id={"thirty_deflections_hr"} min={0} max={500} className={"input-number"}/></h3>
           </div>
-        )
+        </div>,
       },
       {
-        title: "Last",
-        content: (
+        title: 'Last',
+        content: <div><img
+
+          alt={"Loading"}
+          src={"/assets/images/evalu-exercise.jpg"}
+        />
           <div>
-            <img alt={"Loading"} src={"/assets/images/evalu-exercise.jpg"} />
-            <div>
-              <h3 className={"des-font"}>
-                After lying for 1 min after the exercise
-              </h3>
-              <h3>
-                The Cardiac Rate:{" "}
-                <InputNumber
-                  id={"one_min_elongated_hr"}
-                  min={0}
-                  max={500}
-                  className={"input-number"}
-                />
-              </h3>
-            </div>
+            <h3 className={"des-font"}>After lying for 1 min after the exercise</h3>
+            <h3>The Cardiac Rate: <InputNumber id={"one_min_elongated_hr"} min={0} max={500} className={"input-number"}/></h3>
           </div>
-        )
-      }
+        </div>,
+      },
     ];
-    return (
-      <div>
-        <Row justify={"center"}>
-          <Col span={8} style={{ textAlign: "right" }}>
-            <img className="heart-icon" src="/assets/images/pulse.svg" />
-          </Col>
-          <Col span={15}>
-            <Title level={2} className={"title"}>
-              {title}{" "}
-            </Title>
-          </Col>
-        </Row>
+    return <div>
+      <Row justify={"center"}>
+        <Col span={8} style={{"textAlign": "right"}}>
+          <img className="heart-icon" src="/assets/images/pulse.svg" />
+        </Col>
+        <Col span={15}>
+          <Title level={2} className = {"title"}>{title} </Title>
+        </Col>
+      </Row>
 
-        <Row>
-          <Col span={24}>
-            <div className="wrapper" id={"part2Input"}>
-              <Steps current={currentStep}>
-                {stepsFC.map(item => (
-                  <Step key={item.title} title={item.title} />
-                ))}
-              </Steps>
-              <Row>
-                <div className="steps-content">
-                  {stepsFC[currentStep].content}
-                </div>
-                <div>{/*countDown Timer*/}</div>
-                <div className="steps-action">
-                  {currentStep < stepsFC.length - 1 && (
-                    <Button type="primary" onClick={() => this.nextFC()}>
-                      Next
-                    </Button>
-                  )}
+      <Row>
+        <Col span={24}>
+          <div className="wrapper" id={"part2Input"}>
+            <Steps current={currentStep}>
+              {stepsFC.map((item) => (
+                <Step key={item.title} title={item.title} />
+              ))}
+            </Steps>
+            <Row>
+              <div className="steps-content">{stepsFC[currentStep].content}</div>
+              <div>
+                {/*countDown Timer*/}
+              </div>
+              <div className="steps-action">
+                {currentStep < stepsFC.length - 1 && (
+                  <Button type="primary" onClick={() => this.nextFC()}>
+                    Next
+                  </Button>
+                )}
 
-                  {currentStep == stepsFC.length - 1 && (
-                    <Button type={"primary"} onClick={() => this.showPart3()}>
-                      Next Part
-                    </Button>
-                  )}
-                </div>
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
+                {currentStep == stepsFC.length - 1 && (
+                  <Button type={"primary"} onClick={() => this.showPart3()}>
+                    Next Part
+                  </Button>
+                )
+
+                }
+              </div>
+            </Row>
+          </div>
+        </Col>
+      </Row>
+    </div>
+  };
 
   renderPart3() {
     const title = "Performance";
-    const { currentExerciseStep, focusExercises } = this.state;
+    const {currentExerciseStep, focusExercises} = this.state;
     const { windowWidth } = this.props;
 
-    return (
-      <div>
-        <Row justify={"center"}>
-          <Col span={8} style={{ textAlign: "right" }}>
-            <Icon type="rocket" className="rocket-icon" />
-          </Col>
-          <Col span={15}>
-            <Title level={2} className={"title"}>
-              {title}{" "}
-            </Title>
-          </Col>
-        </Row>
 
-        <Row>
-          <Col span={24}>
-            <div className="wrapper">
-              <Col span={24}>
-                <Steps
-                  current={currentExerciseStep}
-                  size={"small"}
-                  className={"focusStepHead"}
-                >
-                  {focusExercises.map(item => (
-                    <Step key={item.name} title={""} />
-                  ))}
-                </Steps>
-              </Col>
+    return <div>
+      <Row justify={"center"}>
+        <Col span={8} style={{"textAlign": "right"}}>
+          <Icon type="rocket" className="rocket-icon"/>
+        </Col>
+        <Col span={15}>
+          <Title level={2} className = {"title"}>{title} </Title>
+        </Col>
+      </Row>
 
-              <Row>
-                <h2>{focusExercises[currentExerciseStep].name}</h2>
-                <div>
-                  <img
-                    alt="focus exercise"
-                    height={windowWidth < 576 ? "150px" : "200px"}
-                    width="100%"
-                    src={focusExercises[currentExerciseStep].img}
-                  />
-                </div>
-                <div className="steps-content">
-                  {focusExercises[currentExerciseStep].description}
-                </div>
-                <div>
-                  {focusExercises[currentExerciseStep].timed == true && (
-                    <h3>
-                      Max Time:{" "}
-                      <InputNumber
-                        id={currentExerciseStep}
-                        className={"input-number"}
-                      />
-                    </h3>
-                  )}
-                  {!focusExercises[currentExerciseStep].timed && (
-                    <h3>
-                      Max Repetitions:{" "}
-                      <InputNumber
-                        id={currentExerciseStep}
-                        className={"input-number"}
-                      />
-                    </h3>
-                  )}
-                </div>
-                <div>{/*countDown Timer*/}</div>
-                <div className="steps-action">
-                  {currentExerciseStep < focusExercises.length - 1 && (
-                    <Button
-                      type="primary"
-                      onClick={() => this.nextFocusExercise()}
-                    >
-                      Next
-                    </Button>
-                  )}
+      <Row>
+        <Col span={24}>
+          <div className="wrapper" id={"part3Input"}>
+            <Col span={24}>
+              <Steps current={currentExerciseStep} size={"small"} className={"focusStepHead"}>
+                {focusExercises.map((item) => (
+                  <Step key={item.name} title={""} />
+                ))}
+              </Steps></Col>
 
-                  {currentExerciseStep == focusExercises.length - 1 && (
-                    <Button type={"primary"} onClick={() => this.finish()}>
-                      Done
-                    </Button>
-                  )}
-                </div>
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </div>
-    );
+            <Row>
+              <h2>{focusExercises[currentExerciseStep].name}</h2>
+              <div><img
+                alt="focus exercise"
+                height={windowWidth < 576 ? "150px" : "200px"}
+                width="100%"
+                src={focusExercises[currentExerciseStep].img}/></div>
+              <div className="steps-content">{focusExercises[currentExerciseStep].description}</div>
+              <div>
+                {focusExercises[currentExerciseStep].timed == true && (
+                  <h3>Max Time: <InputNumber id={currentExerciseStep} className={"input-number"}/></h3>
+                )}
+                {!focusExercises[currentExerciseStep].timed && (
+                  <h3>Max Repetitions: <InputNumber id={currentExerciseStep} className={"input-number"}/></h3>
+                )}
+              </div>
+              <div>
+                {/*countDown Timer*/}
+              </div>
+              <div className="steps-action">
+                {currentExerciseStep < focusExercises.length - 1  && (
+
+                  <Button type="primary" onClick={() => this.nextFocusExercise()}>
+                    Next
+                  </Button>
+                )}
+
+                {currentExerciseStep == focusExercises.length - 1 && (
+                  <Button type={"primary"} onClick={() => this.finish()}>
+                    Done
+                  </Button>
+                )
+
+                }
+              </div>
+            </Row>
+          </div>
+        </Col>
+      </Row>
+
+    </div>
   }
 
   render() {
-    const { showPart } = this.state;
-    if (showPart == 1) {
+    const {showPart} = this.state;
+    if(showPart == 1) {
       return this.renderPart1();
-    } else if (showPart == 2) {
+    } else if(showPart == 2) {
       return this.renderPart2();
-    } else if (showPart == 3) {
+    } else if(showPart == 3) {
       return this.renderPart3();
-    } else if (showPart == 0) {
+    } else if(showPart == 0) {
       return <RepetitionDone />;
     }
   }
