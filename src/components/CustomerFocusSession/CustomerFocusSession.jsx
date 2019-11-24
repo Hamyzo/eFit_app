@@ -1,13 +1,12 @@
 import React from "react";
 import {
-  AutoComplete,
   Row,
   Col,
   Typography,
   Button,
   Steps,
   Icon,
-  Card
+  InputNumber
 } from "antd";
 
 /**
@@ -47,8 +46,6 @@ import RepetitionDone from "../Repetition/RepetitionDone";
 
 const { Title } = Typography;
 const {Step} = Steps;
-const { Meta } = Card;
-
 
 class CustomerFocusSession extends React.Component {
   constructor(props) {
@@ -59,17 +56,23 @@ class CustomerFocusSession extends React.Component {
       currentExerciseStep: 0,
       focusExercises: [],
       focusSession: {},
-      results: []
+      results: [],
+      prevId: 0
     };
   }
 
   componentDidMount() {
-    this.setState({focusSession: this.props.focusSession})
+    this.getFocusSession();
     this.getPart3Exs();
-    console.log("------------ this.props ---------------")
-    console.log(this.props)
+
+    this.bindOnfocusEvent();
   }
 
+  async getFocusSession() {
+    await this.setState({focusSession: this.props.focusSession});
+    this.bindChangeEvent();
+
+  }
 
   // get focusExercises
   async getPart3Exs() {
@@ -79,46 +82,91 @@ class CustomerFocusSession extends React.Component {
     });
   }
 
-  showPart2(focusSession) {
+  showPart2() {
+
+    this.bindChangeEvent();
+
     this.setState({
       showPart:2,
-      focusSession: focusSession
     })
 
   }
 
-  showPart3(focusSession) {
+  showPart3() {
     this.setState({
       showPart:3,
-      focusSession: focusSession
     })
+
   }
 
-  async finish(results) {
-    const focusSession = this.state.focusSession;
-    focusSession.results = results;
-    const id = focusSession["_id"];
-    delete focusSession._id;
 
-    await apiServices.patchOne("focusSessions", id, focusSession);
-    this.setState({
-      showPart:0,
-      results: results,
-      focusSession: focusSession
-    })
+
+  bindChangeEvent() {
+    const {focusSession} =this.state;
+
+    const part1Div = document.getElementById("part1Div");
+    //const part2Input = document.getElementById("partInput");
+    let that = this;
+
+    part1Div.addEventListener("change", function(event) {
+        let id = event.target["id"];
+        let val = event.target["value"];
+        if(isNaN(id)){
+          focusSession[id] = val;
+        }
+    }, false)
   }
+
+  bindOnfocusEvent() {
+    const part1Div = document.getElementById("part1Div");
+    part1Div.addEventListener("focusin", function(event) {
+      if(event.target.type == "input" || event.target.type == "text"){
+        event.target.select();
+        document.oncontextmenu = function(e) {
+          e.preventDefault();
+        }
+      }
+
+    })
+
+  }
+
   nextFC(){
     const currentStep = this.state.currentStep + 1;
     this.setState({currentStep});
   }
 
   nextFocusExercise() {
-    const currentExerciseStep = this.state.currentExerciseStep + 1;
-    this.setState({currentExerciseStep});
+    const {results, currentExerciseStep, focusSession} = this.state;
+    const preValue = document.getElementById(currentExerciseStep).value;
+    results.push("reps:"+preValue);
+
+    this.setState({currentExerciseStep: currentExerciseStep+1, results: results});
+
+    console.log(focusSession)
+  }
+
+  async finish() {
+    const {focusSession,results, currentExerciseStep} = this.state;
+
+    const preValue = document.getElementById(currentExerciseStep).value;
+    results.push("reps:"+preValue);
+
+    focusSession.results = results;
+
+    //focusSession.results = results;
+    const id = focusSession["_id"];
+
+    delete focusSession._id;
+
+    console.log("state=======")
+    console.log(this.state);
+
+    await apiServices.patchOne("focusSessions", id, focusSession);
+
   }
 
   renderPart1() {
-    const {focusSession} = this.state;
     const labelAge = "Age",
       labelWeight = "Weight",
       labelRestHR = "Rest Heart Rate",
@@ -131,18 +179,31 @@ class CustomerFocusSession extends React.Component {
       </Row>
       <Row>
         <Col span={24}>
-          <div className={"wrapper-fs"}>
-            <AutoComplete placeholder={labelAge} onChange={(val) => {focusSession.age = val}}/><br /><br />
-            <AutoComplete placeholder={labelWeight} onChange={(val) => {focusSession.weight = val}}/><br /><br />
-            <AutoComplete placeholder={labelRestHR} onChange={(val) => {focusSession["rest_heart_rate"] = val}}/><br/><br />
-            <AutoComplete placeholder={labelTargetHR} onChange={(val) => {focusSession["target_heart_rate"] = val}}/>
+          <div id={"part1Div"} className={"wrapper-fs"}>
+            {/*<AutoComplete placeholder={labelAge} onChange={(val) => {focusSession.age = val}}/><br /><br />*/}
+            {/*<AutoComplete placeholder={labelWeight} onChange={(val) => {focusSession.weight = val}}/><br /><br />*/}
+            {/*<AutoComplete placeholder={labelRestHR} onChange={(val) => {focusSession["rest_heart_rate"] = val}}/><br/><br />*/}
+            {/*<AutoComplete placeholder={labelTargetHR} onChange={(val) => {focusSession["target_heart_rate"] = val}}/>*/}
+            <div className={"part-one-input"}>
+              <InputNumber id={"age"} min={0} max={200} className={"input-number"} placeholder={labelAge} autoFocus={true}/>
+            </div>
+            <div className={"part-one-input"}>
+              <InputNumber id={"weight"} min={0} max={500} className={"input-number"} placeholder={labelWeight} />
+            </div>
+            <div className={"part-one-input"}>
+              <InputNumber id={"rest_heart_rate"} min={0} max={500} className={"input-number"} placeholder={labelRestHR}/>
+            </div>
+            <div className={"part-one-input"}>
+              <InputNumber id={"target_heart_rate"} min={0} max={500} className={"input-number"} placeholder={labelTargetHR} />
+            </div>
+
           </div>
         </Col>
       </Row>
       <Button
         type="primary"
         style={{ float: "right", "marginTop": "10px"}}
-        onClick={() => this.showPart2(focusSession)}
+        onClick={() => this.showPart2()}
       >
         Next Part
       </Button>
@@ -151,7 +212,7 @@ class CustomerFocusSession extends React.Component {
 
   renderPart2() {
     const title = "Cardiac Rate";
-    const {currentStep, focusSession} = this.state;
+    const {currentStep} = this.state;
 
     const stepsFC = [
       {
@@ -163,7 +224,7 @@ class CustomerFocusSession extends React.Component {
         />
           <div>
             <h3 className={"des-font"}>After lying calmly for 5 mins </h3>
-            <h3>The Cardiac Rate: <AutoComplete onChange={(val) => {focusSession.five_min_rest_hr = val}}/></h3>
+            <h3>The Cardiac Rate: <InputNumber id={"five_min_rest_hr"} min={0} max={500} className={"input-number"}/></h3>
           </div>
         </div>,
 
@@ -177,7 +238,7 @@ class CustomerFocusSession extends React.Component {
         />
           <div>
             <h3 className={"des-font"}>After 30 complete flexions in 45 sec </h3>
-            <h3>The Cardiac Rate: <AutoComplete onChange={(val) => {focusSession.thirty_deflections_hr = val}}/></h3>
+            <h3>The Cardiac Rate: <InputNumber id={"thirty_deflections_hr"} min={0} max={500} className={"input-number"}/></h3>
           </div>
         </div>,
       },
@@ -189,8 +250,8 @@ class CustomerFocusSession extends React.Component {
           src={"/assets/images/evalu-exercise.jpg"}
         />
           <div>
-            <h3 className={"des-font"}>After doing exercise for 1 min </h3>
-            <h3>The Cardiac Rate: <AutoComplete onChange={(val) => {focusSession.one_min_elongated_hr = val}}/></h3>
+            <h3 className={"des-font"}>After lying for 1 min after the exercise</h3>
+            <h3>The Cardiac Rate: <InputNumber id={"one_min_elongated_hr"} min={0} max={500} className={"input-number"}/></h3>
           </div>
         </div>,
       },
@@ -207,7 +268,7 @@ class CustomerFocusSession extends React.Component {
 
       <Row>
         <Col span={24}>
-          <div className="wrapper" >
+          <div className="wrapper" id={"part2Input"}>
             <Steps current={currentStep}>
               {stepsFC.map((item) => (
                 <Step key={item.title} title={item.title} />
@@ -226,7 +287,7 @@ class CustomerFocusSession extends React.Component {
                 )}
 
                 {currentStep == stepsFC.length - 1 && (
-                  <Button type={"primary"} onClick={() => this.showPart3(focusSession)}>
+                  <Button type={"primary"} onClick={() => this.showPart3()}>
                     Next Part
                   </Button>
                 )
@@ -242,8 +303,8 @@ class CustomerFocusSession extends React.Component {
 
   renderPart3() {
     const title = "Performance";
-    const {currentExerciseStep, focusExercises, results} = this.state;
-    const { windowWidth } = this.props
+    const {currentExerciseStep, focusExercises} = this.state;
+    const { windowWidth } = this.props;
 
 
     return <div>
@@ -276,24 +337,25 @@ class CustomerFocusSession extends React.Component {
               <div className="steps-content">{focusExercises[currentExerciseStep].description}</div>
               <div>
                 {focusExercises[currentExerciseStep].timed == true && (
-                  <h3>Max Time: <AutoComplete onChange={(val) => {results.push({"time": val})}} /></h3>
+                  <h3>Max Time: <InputNumber id={currentExerciseStep} className={"input-number"}/></h3>
                 )}
                 {!focusExercises[currentExerciseStep].timed && (
-                  <h3>Max Repetitions: <AutoComplete onChange={(val) => {results.push({"reps": val})}} /></h3>
+                  <h3>Max Repetitions: <InputNumber id={currentExerciseStep} className={"input-number"}/></h3>
                 )}
               </div>
               <div>
                 {/*countDown Timer*/}
               </div>
               <div className="steps-action">
-                {currentExerciseStep < focusExercises.length - 1 && (
+                {currentExerciseStep < focusExercises.length - 1  && (
+
                   <Button type="primary" onClick={() => this.nextFocusExercise()}>
                     Next
                   </Button>
                 )}
 
                 {currentExerciseStep == focusExercises.length - 1 && (
-                  <Button type={"primary"} onClick={() => this.finish(results)}>
+                  <Button type={"primary"} onClick={() => this.finish()}>
                     Done
                   </Button>
                 )

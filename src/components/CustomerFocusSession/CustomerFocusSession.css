@@ -17,6 +17,13 @@
     overflow: hidden;
 }
 
+.input-number {
+    width: 170px;
+}
+
+.part-one-input {
+    padding: 6px;
+}
 .focusStepHead > div{
     margin-right: 4px !important;
 }
