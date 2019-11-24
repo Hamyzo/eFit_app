@@ -304,14 +304,30 @@ class Repetition extends React.Component {
                         Repetition {currentRepetition}
                       </Col>
                     </Row>
+
                     <Row className="container mbRepetition">
                       <Button
                         block
                         className="btn-start"
                         onClick={() => this.startOnClick()}
+                        style={{
+                          display: focusSession.showButton ? "none" : "block"
+                        }}
                       >
                         START REPETITION {currentRepetition} /{" "}
                         {currentPeriodInfo.nb_repetitions}
+                      </Button>
+                    </Row>
+                    <Row className="container mbRepetition">
+                      <Button
+                        block
+                        className="btn-start"
+                        onClick={() => this.evaluationOnClick()}
+                        style={{
+                          display: focusSession.showButton ? "block" : "none"
+                        }}
+                      >
+                        START EVALUATION
                       </Button>
                     </Row>
                   </TabPane>
@@ -524,7 +540,7 @@ class Repetition extends React.Component {
   };
 
   render = () => {
-    const { startCardShow, focusSession } = this.state;
+    const { startCardShow, focusSession, program } = this.state;
     // const modalWidth = "300px";
 
     if (startCardShow === 1) {
@@ -533,7 +549,10 @@ class Repetition extends React.Component {
     // start focus session (evaluation)
     if (startCardShow === 2) {
       return (
-        <CustomerFocusSession focusSession={focusSession.nextFocusSession} />
+        <CustomerFocusSession
+          focusSession={focusSession.nextFocusSession}
+          customerProgram={program}
+        />
       );
     }
     if (startCardShow === -1) {

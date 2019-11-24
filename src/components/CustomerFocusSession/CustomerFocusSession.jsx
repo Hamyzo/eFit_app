@@ -47,6 +47,7 @@ class CustomerFocusSession extends React.Component {
       currentExerciseStep: 0,
       focusExercises: [],
       focusSession: {},
+      customerProgram: {},
       results: [],
       prevId: 0
     };
@@ -54,6 +55,7 @@ class CustomerFocusSession extends React.Component {
 
   componentDidMount() {
     this.getFocusSession();
+    this.getCustomerProgram();
     this.getPart3Exs();
 
     this.bindOnfocusEvent();
@@ -62,6 +64,10 @@ class CustomerFocusSession extends React.Component {
   async getFocusSession() {
     await this.setState({ focusSession: this.props.focusSession });
     this.bindChangeEvent();
+  }
+
+  async getCustomerProgram() {
+    await this.setState({ customerProgram: this.props.customerProgram });
   }
 
   // get focusExercises
@@ -142,24 +148,34 @@ class CustomerFocusSession extends React.Component {
 
   async finish() {
     try {
-      const { focusSession, results, currentExerciseStep } = this.state;
+      const {
+        focusSession,
+        results,
+        currentExerciseStep,
+        customerProgram
+      } = this.state;
 
       const preValue = document.getElementById(currentExerciseStep).value;
       results.push({ reps: preValue });
 
       focusSession.results = results;
-
       focusSession["validation_date"] = new Date();
-
       //focusSession.results = results;
       const { _id, ...rest } = focusSession;
 
-      console.log(_id);
+      const customer = customerProgram.customer._id;
+      const { coach } = customerProgram.program;
 
-      console.log("state=======");
-      console.log(rest);
+      const data = {
+        customer,
+        coach,
+        sender: "CUSTOMER",
+        type: "FOCUS_SESSION",
+        content: "The current focus session has been completed"
+      };
 
       await apiServices.patchOne("focusSessions", _id, rest);
+      await apiServices.postOne("notifications", data);
     } catch (e) {
       console.log(e);
     }
