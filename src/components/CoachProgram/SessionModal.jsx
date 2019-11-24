@@ -228,10 +228,10 @@ class SessionModal extends React.Component {
                       align="middle"
                     >
                       <Col span={8}>
-                        <Form.Item label="Exercise" key={exercise._id}>
+                        <Form.Item label="Exercise" key={`exercise${i}`}>
                           {form.getFieldDecorator(`exercise${i}`, {
                             initialValue: exercise.exercise
-                              ? exercise.exercise._id || exercise.exercise
+                              ? exercise.exercise.name || exercise.exercise
                               : exercise.exercise,
                             rules: [
                               {
@@ -243,66 +243,104 @@ class SessionModal extends React.Component {
                             <Select
                               name={`exercise${i}`}
                               onChange={value =>
-                                onChangeSessionExercises(i, "exercise", value)
+                                onChangeSessionExercises(
+                                  i,
+                                  "exercise",
+                                  exercises.find(
+                                    exerciseFind => exerciseFind._id === value
+                                  )
+                                )
                               }
                             >
-                              {exercises.map(exercise => (
-                                <Select.Option key={exercise._id}>
-                                  {exercise.name}
+                              {exercises.map(exerciseSelect => (
+                                <Select.Option
+                                  key={exerciseSelect._id}
+                                  value={exerciseSelect._id}
+                                >
+                                  {exerciseSelect.name}
                                 </Select.Option>
                               ))}
                             </Select>
                           )}
                         </Form.Item>
                       </Col>
-                      <Col span={5}>
-                        <Form.Item label="Reps" key={exercise._id}>
-                          {form.getFieldDecorator(`reps${i}`, {
-                            initialValue: exercise.reps,
-                            rules: [
-                              {
-                                required: true,
-                                message: "This field is required"
-                              }
-                            ]
-                          })(
-                            <Input
-                              name={`reps${i}`}
-                              onChange={e =>
-                                onChangeSessionExercises(
-                                  i,
-                                  "reps",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          )}
-                        </Form.Item>
-                      </Col>
-                      <Col span={5}>
-                        <Form.Item label="Sets" key={exercise._id}>
-                          {form.getFieldDecorator(`sets${i}`, {
-                            initialValue: exercise.sets,
-                            rules: [
-                              {
-                                required: true,
-                                message: "This field is required"
-                              }
-                            ]
-                          })(
-                            <Input
-                              name={`sets${i}`}
-                              onChange={e =>
-                                onChangeSessionExercises(
-                                  i,
-                                  "sets",
-                                  e.target.value
-                                )
-                              }
-                            />
-                          )}
-                        </Form.Item>
-                      </Col>
+                      {exercise.exercise && exercise.exercise.timed ? (
+                        <Col span={5}>
+                          <Form.Item label="Time (secs)" key={exercise._id}>
+                            {form.getFieldDecorator(`time${i}`, {
+                              initialValue: exercise.time,
+                              rules: [
+                                {
+                                  required: true,
+                                  message: "This field is required"
+                                }
+                              ]
+                            })(
+                              <Input
+                                name={`time${i}`}
+                                onChange={e =>
+                                  onChangeSessionExercises(
+                                    i,
+                                    "time",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            )}
+                          </Form.Item>
+                        </Col>
+                      ) : (
+                        <Col span={10}>
+                          <Col span={11}>
+                            <Form.Item label="Reps" key={exercise._id}>
+                              {form.getFieldDecorator(`reps${i}`, {
+                                initialValue: exercise.reps,
+                                rules: [
+                                  {
+                                    required: true,
+                                    message: "This field is required"
+                                  }
+                                ]
+                              })(
+                                <Input
+                                  name={`reps${i}`}
+                                  onChange={e =>
+                                    onChangeSessionExercises(
+                                      i,
+                                      "reps",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              )}
+                            </Form.Item>
+                          </Col>
+                          <Col span={11} offset={2}>
+                            <Form.Item label="Sets" key={exercise._id}>
+                              {form.getFieldDecorator(`sets${i}`, {
+                                initialValue: exercise.sets,
+                                rules: [
+                                  {
+                                    required: true,
+                                    message: "This field is required"
+                                  }
+                                ]
+                              })(
+                                <Input
+                                  name={`sets${i}`}
+                                  onChange={e =>
+                                    onChangeSessionExercises(
+                                      i,
+                                      "sets",
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              )}
+                            </Form.Item>
+                          </Col>
+                        </Col>
+                      )}
                       <Col span={2}>
                         <Button
                           shape="circle"

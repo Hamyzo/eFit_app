@@ -109,11 +109,11 @@ class CustomerFocusSession extends React.Component {
     let that = this;
 
     part1Div.addEventListener("change", function(event) {
-        let id = event.target["id"];
-        let val = event.target["value"];
-        if(isNaN(id)){
-          focusSession[id] = val;
-        }
+      let id = event.target["id"];
+      let val = event.target["value"];
+      if(isNaN(id)){
+        focusSession[id] = val;
+      }
     }, false)
   }
 
