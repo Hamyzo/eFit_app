@@ -146,18 +146,19 @@
   border-radius: 4px;
 }
 .progressTitle {
-  margin-top: 9.5%;
-  margin-left: 3%;
+  margin-top: 2%;
+  margin-left: -5%;
+  text-align: center;
 }
 
 .heartAndDickson {
   width: 25px;
-  height: 30px;
+  height: 25px;
   display: block;
-  margin-left: 0%;
-  margin-right: 15%;
-  margin-top: 15%;
-  margin-bottom: 0%;
+  margin-left: 70%;
+  margin-right: 5%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .down-up {

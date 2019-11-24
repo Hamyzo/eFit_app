@@ -96,7 +96,12 @@ class CoachProgram extends React.Component {
   );
 
   renderCustomerProgress = program => {
-    if (program.focus_sessions == null || program.focus_sessions.length == 0 || program.focus_sessions[0].results == null || program.focus_sessions[0].length == 0) {
+    if (
+      program.focus_sessions == null ||
+      program.focus_sessions.length == 0 ||
+      program.focus_sessions[0].results == null ||
+      program.focus_sessions[0].length == 0
+    ) {
       return "";
     } else {
       return <CustomerProgress program={program} editable isCustomerProgram />;
