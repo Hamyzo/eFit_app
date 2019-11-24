@@ -139,7 +139,12 @@ class CustomerFocusSession extends React.Component {
   nextFocusExercise() {
     const {results, currentExerciseStep, focusSession} = this.state;
     const preValue = document.getElementById(currentExerciseStep).value;
-    results.push("reps:"+preValue);
+    if(currentExerciseStep == 0) {
+      results.push({"timed": preValue});
+    } else {
+      results.push({"reps": preValue});
+    }
+
 
     this.setState({currentExerciseStep: currentExerciseStep+1, results: results});
 
@@ -150,9 +155,11 @@ class CustomerFocusSession extends React.Component {
     const {focusSession,results, currentExerciseStep} = this.state;
 
     const preValue = document.getElementById(currentExerciseStep).value;
-    results.push("reps:"+preValue);
+    results.push({"reps": preValue});
 
     focusSession.results = results;
+
+    focusSession["validation_date"] = new Date();
 
     //focusSession.results = results;
     const id = focusSession["_id"];
