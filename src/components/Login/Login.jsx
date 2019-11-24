@@ -10,8 +10,14 @@ class Login extends React.Component {
   }
 
   handleClick = (userType, isLoggedIn) => {
-    localStorage.setItem("userType", userType);
-    localStorage.setItem("isLoggedIn", isLoggedIn);
+    sessionStorage.setItem("userType", userType);
+    sessionStorage.setItem("isLoggedIn", isLoggedIn);
+    sessionStorage.setItem(
+      "userId",
+      userType === "Coach"
+        ? "5da1fb86ae4d1111d4e57f43"
+        : "5da0f86a634544464ce4a7b2"
+    );
     this.props.history.push({
       pathname: "/dashboard",
       state: { isLoggedIn: true }
