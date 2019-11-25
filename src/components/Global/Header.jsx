@@ -68,7 +68,9 @@ class HeaderComponent extends React.Component {
         "notifications",
         `populate=${
           userType === "Coach" ? "coach" : "customer"
-        }=${userId}&sender=${userType === "Coach" ? "CUSTOMER" : "COACH"}`
+        }=${userId}&sender=${
+          userType === "Coach" ? "CUSTOMER" : "COACH"
+        }&sort=-_id`
       );
 
       this.setState({
@@ -118,6 +120,7 @@ class HeaderComponent extends React.Component {
             closable={false}
             onClose={this.onClose}
             visible={this.state.visible}
+            bodyStyle={{ overflow: "auto", height: "calc(100vh - 110px)" }}
           >
             {notifications.map(notification => (
               <Card style={{ width: "100%" }} bordered={false}>
