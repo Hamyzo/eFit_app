@@ -1,0 +1,56 @@
+import React from "react";
+import { Result, Button, Card } from "antd";
+import "./Login.css";
+import { NavLink, Redirect } from "react-router-dom";
+
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  handleClick = (userType, isLoggedIn) => {
+    sessionStorage.setItem("userType", userType);
+    sessionStorage.setItem("isLoggedIn", isLoggedIn);
+    sessionStorage.setItem(
+      "userId",
+      userType === "Coach"
+        ? "5da1fb86ae4d1111d4e57f43"
+        : "5da0f86a634544464ce4a7b2"
+    );
+    this.props.history.push({
+      pathname: "/dashboard",
+      state: { isLoggedIn: true }
+    });
+  };
+
+  render() {
+    return (
+      <div className="container" id="login">
+        <div className="logo-login">
+          <img src="/assets/images/logo.png" />
+        </div>
+        <Card className="formLogin">
+          <Button
+            type="primary"
+            className="btn-lg"
+            key="coach"
+            onClick={() => this.handleClick("Coach", true)}
+          >
+            <NavLink to={"/dashboard"}> I am a Coach</NavLink>
+          </Button>
+          <Button
+            key="customer"
+            className="btn-lg"
+            style={{ marginLeft: "30px" }}
+            onClick={() => this.handleClick("Customer", true)}
+          >
+            I am a Customer
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+}
+
+export default Login;

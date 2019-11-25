@@ -332,7 +332,12 @@ class CustomerProgress extends React.Component {
 
     return (
       <div>
-        {program ? this.renderProgressChart(program) : <Spinner />}
+        {program &&
+        this.removeFocusSessionsNotDone(program.focus_sessions).length > 1 ? (
+          this.renderProgressChart(program)
+        ) : (
+          <Spinner />
+        )}
         <div className="progressColumn">
           <h3 className="lastFocusSessionsTitle">Last Focus Session Results</h3>
           <Row className="dickAndHeartRow">

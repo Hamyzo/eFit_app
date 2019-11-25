@@ -6,8 +6,25 @@
 }
 .plant_progress {
   margin-left: 23%;
-  margin-top: 28%;
-  margin-right: -5%;
+  margin-top: 10%;
+  margin-right: -10%;
+  margin-bottom: 5%;
+}
+
+.plant_progress_container {
+  position: absolute;
+  margin-top: -170px;
+  margin-left: 48%;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+  width: 50%;
+  padding-right: 20%;
+  padding-top: -10%;
 }
 
 .img-responsive {
@@ -18,8 +35,19 @@
   -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
+.water-points {
+  margin-top: 5%;
+  background-color: white;
+  width: 30%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 7px;
+}
+
 .progress {
-  margin-top: 7%;
+  margin-top: 3%;
   background-color: white;
   width: 100%;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
@@ -97,6 +125,7 @@
   margin-top: -2px;
   margin-left: -5px;
 }
+
 .plantwater {
   margin-top: 29%;
   padding-left: 20%;
@@ -140,4 +169,176 @@
 .progress_tags {
   margin-top: 15%;
   margin-left: 23%;
+}
+
+.background {
+  position: relative;
+  margin: -150px -10px 0 -10px;
+  z-index: 0;
+}
+
+.tree {
+  position: absolute;
+  left: 10px;
+  top: 120px;
+}
+.sun-plant {
+  position: absolute;
+  left: 80px;
+  top: 70px;
+}
+.water-plant {
+  transform: rotate(60deg);
+  position: absolute;
+  left: 25px;
+  top: 200px;
+  animation: fadein 1s;
+  animation: rotation 2s infinite linear;
+}
+
+@keyframes light {
+  from {
+    box-shadow: 0px 0px 4px #f00;
+  }
+  to {
+    box-shadow: 0px 0px 16px #f00;
+  }
+}
+.light {
+  margin: 300px;
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  position: absolute;
+  left: 500px;
+  top: 350px;
+  border-radius: 50%;
+  animation: light 2s ease-in-out infinite alternate;
+}
+
+.loader {
+  margin-top: 50px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 400px;
+  top: 400px;
+  animation: jump 1.5s ease-out infinite alternate;
+  background: linear-gradient(
+    to bottom,
+    #cb60b3 0%,
+    #c146a1 50%,
+    #a80077 51%,
+    #db36a4 100%
+  );
+}
+@keyframes jump {
+  from {
+    transform: translateY(0px) rotate(0deg) scale(1, 1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-50px) rotate(360deg) scale(0.8, 0.8);
+    opacity: 0.8;
+  }
+}
+
+clouds {
+  position: absolute;
+  margin-top: 30px;
+  z-index: 10;
+}
+
+.cloud {
+  width: 70px;
+  height: 25px;
+  background: #fff;
+  border-radius: 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.cloud:before,
+.cloud:after {
+  content: "";
+  background: #fff;
+  width: 30px;
+  height: 20px;
+  position: absolute;
+  top: -7px;
+  left: 10px;
+  border-radius: 10px;
+  transform: rotate(30deg);
+}
+
+.cloud:after {
+  width: 24px;
+  height: 24px;
+  top: -5px;
+  right: -2px;
+  left: auto;
+}
+
+.x1 {
+  left: 55%;
+  animation: moveclouds 10s linear infinite;
+}
+
+.x2 {
+  left: 58%;
+  transform: scale(0.3);
+  opacity: 0.6;
+  animation: moveclouds 15s linear infinite;
+}
+
+.x3 {
+  left: 58%;
+  top: -20px;
+  transform: scale(0.8);
+  opacity: 0.8;
+  animation: moveclouds 25s linear infinite;
+}
+
+.x4 {
+  left: 58%;
+  top: -25px;
+  transform: scale(0.75);
+  opacity: 0.75;
+  animation: moveclouds 23s linear infinite;
+}
+
+.x5 {
+  left: 50%;
+  top: -70px;
+  transform: scale(1.5);
+  opacity: 0.8;
+  animation: moveclouds 30s linear infinite;
+}
+
+@keyframes moveclouds {
+  0% {
+    margin-left: 100px;
+  }
+  100% {
+    margin-left: -200px;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rotation {
+  50% {
+    transform: rotate(110deg);
+  }
+  100% {
+    transform: rotate(60deg);
+  }
 }

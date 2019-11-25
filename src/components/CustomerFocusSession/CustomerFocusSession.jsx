@@ -132,8 +132,8 @@ class CustomerFocusSession extends React.Component {
   nextFocusExercise() {
     const { results, currentExerciseStep, focusSession } = this.state;
     const preValue = document.getElementById(currentExerciseStep).value;
-    if (currentExerciseStep == 0) {
-      results.push({ timed: preValue });
+    if (currentExerciseStep === 0) {
+      results.push({ time: preValue });
     } else {
       results.push({ reps: preValue });
     }
