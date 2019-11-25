@@ -36,7 +36,7 @@ const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
-const CUSTOMER_PROGRAM = "5dbedf3ebc5fad3463b3e019";
+const CUSTOMER_PROGRAM = "5da1fff308104816e1bae7b7";
 
 class Repetition extends React.Component {
   constructor(props) {

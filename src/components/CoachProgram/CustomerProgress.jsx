@@ -157,16 +157,15 @@ class CustomerProgress extends React.Component {
   };
 
   progressArrow = progress => {
-    if (parseFloat(progress) < 0.0) {
+    if (parseFloat(progress) < 0) {
       return (
         <div>
           (<img alt="" className="down-up" src="/assets/images/sort-down.svg" />
           {parseFloat(progress)}%)
         </div>
       );
-    } else if (parseFloat(progress) == 0.0 || progress == "--") {
-      return "--";
-    } else {
+    }
+    if (parseFloat(progress) > 0) {
       return (
         <div>
           (<img alt="" className="down-up" src="/assets/images/sort-up.svg" />
@@ -174,6 +173,7 @@ class CustomerProgress extends React.Component {
         </div>
       );
     }
+    return "--";
   };
 
   progressCalculator = (focusSessions, measure) => {
