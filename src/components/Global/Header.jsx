@@ -45,6 +45,7 @@ class HeaderComponent extends React.Component {
     this.setState({
       visible: false
     });
+    this.getNotifications();
   };
 
   deleteNotification = async notification => {
@@ -86,7 +87,9 @@ class HeaderComponent extends React.Component {
       <Header className="header">
         <Col span={3} align="left" offset={1}>
           <Badge
-            count={notifications.filter(seen => false).length}
+            count={
+              notifications.filter(notification => !notification.seen).length
+            }
             overflowCount={9}
             style={{ backgroundColor: "#D46C4E" }}
             onClick={() => this.showDrawer(notifications)}
