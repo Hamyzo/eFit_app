@@ -250,13 +250,16 @@ class CustomerFocusSession extends React.Component {
 
       const customer = customerProgram.customer._id;
       const { coach } = customerProgram.program;
+      // eslint-disable-next-line camelcase
+      const { first_name, last_name } = customerProgram.customer;
 
       const data = {
         customer,
         coach,
         sender: "CUSTOMER",
         type: "FOCUS_SESSION",
-        content: "The current focus session has been completed"
+        // eslint-disable-next-line camelcase
+        content: `${first_name} ${last_name} has completed a focus session`
       };
 
       try {
