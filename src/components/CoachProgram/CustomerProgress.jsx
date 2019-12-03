@@ -64,7 +64,7 @@ class CustomerProgress extends React.Component {
   };
 
   exerciseChartData = focusSessions => {
-    var focusSessionsWithResults = this.removeFocusSessionsNotDone(
+    var focusSessionsWithResults = programScripts.removeFocusSessionsNotDone(
       focusSessions
     );
     var colors = [
@@ -117,16 +117,6 @@ class CustomerProgress extends React.Component {
     }
   };
 
-  removeFocusSessionsNotDone = focusSessions => {
-    for (var i = 0; i < focusSessions.length; i++) {
-      if (focusSessions[i].results.length == 0) {
-        focusSessions.splice(i, 1);
-      }
-    }
-    return focusSessions;
-  };
-
-
   progressArrow = progress => {
     if (parseFloat(progress) < 0.0) {
       return (
@@ -148,7 +138,7 @@ class CustomerProgress extends React.Component {
   };
 
   progressCalculator = (focusSessions, measure) => {
-    var focusSessionsWithResults = this.removeFocusSessionsNotDone(
+    var focusSessionsWithResults = programScripts.removeFocusSessionsNotDone(
       focusSessions
     );
     var x = focusSessionsWithResults.length - 2;
@@ -166,10 +156,12 @@ class CustomerProgress extends React.Component {
       key: i,
       exercise: exercise.name,
       reps: result.reps || result.time,
-      progress: programScripts.percentageDifference(
-        this.timeOrReps(result),
-        this.timeOrReps(previous_res)
-      ).toFixed(1)
+      progress: programScripts
+        .percentageDifference(
+          this.timeOrReps(result),
+          this.timeOrReps(previous_res)
+        )
+        .toFixed(1)
     };
   };
 
@@ -206,7 +198,7 @@ class CustomerProgress extends React.Component {
         )
       );
     }
-    var focusSessionsWithResults = this.removeFocusSessionsNotDone(
+    var focusSessionsWithResults = programScripts.removeFocusSessionsNotDone(
       focusSessions
     );
     var y = focusSessionsWithResults.length - 1;

@@ -102,7 +102,7 @@ class CoachDashboard extends React.Component {
     try {
       const customers = await apiServices.get(
         "customers",
-        "populate=current_program.program,current_program.focus_sessions,current_program.focus_sessions.exercises,current_program.focus_sessions.results.exercise.exercise"
+        "populate=current_program.program,current_program.focus_sessions,current_program.focus_sessions.exercises"
       );
       // console.log("CustomersList", customers);
       this.setState({
@@ -323,25 +323,48 @@ class CoachDashboard extends React.Component {
   averageProgress = customers => {
     var AllCustomersProgress = [];
     customers.forEach(cust => {
-      if (cust.current_program.focus_sessions != null && cust.current_program.focus_sessions.length > 1) {
-
-        var x = cust.current_program.focus_sessions.length - 1;
-        var y = cust.current_program.focus_sessions.length - 2;
-        console.log("888888888888888888888", cust)
-        if (cust.current_program.focus_sessions[x].results != null && cust.current_program.focus_sessions[x].results.length > 0) {
-
-          for (var i = 0; i < cust.current_program.focus_sessions[x].exercises.length; i++) {
-            AllCustomersProgress.push(programScripts.percentageDifference(cust.current_program.focus_sessions[x].results[i], cust.current_program.focus_sessions[y].results[i]))
+      var x = 0;
+      var y = 0;
+      if (cust.current_program.focus_sessions != null) {
+        const focusSessions = programScripts.removeFocusSessionsNotDone(
+          cust.current_program.focus_sessions
+        );
+        if (focusSessions.length > 1) {
+          x = focusSessions.length - 1;
+          y = focusSessions.length - 2;
+          if (
+            focusSessions[x].results != null &&
+            focusSessions[x].results.length > 0
+          ) {
+            for (var i = 0; i < focusSessions[x].exercises.length; i++) {
+              if (
+                focusSessions[x].results[i].reps != null &&
+                focusSessions[y].results[i].reps != null
+              ) {
+                AllCustomersProgress.push(
+                  programScripts.percentageDifference(
+                    focusSessions[x].results[i].reps,
+                    focusSessions[y].results[i].reps
+                  )
+                );
+              }
+            }
           }
-
         }
       }
     });
-    console.log(AllCustomersProgress)
-    return AllCustomersProgress
-  }
+    return (
+      this.sumAllProgress(AllCustomersProgress) / AllCustomersProgress.length
+    );
+  };
 
-
+  sumAllProgress = progress => {
+    var total = 0;
+    progress.forEach(p => {
+      total = total + p;
+    });
+    return total;
+  };
 
   dayCounter = date => {
     const oneDay = 24 * 60 * 60 * 1000;
@@ -416,7 +439,7 @@ class CoachDashboard extends React.Component {
       this.dayCounterBetween2dates(
         programScripts.addDaysDate(today, weekNo * 7),
         date
-      ) < 8
+      ) < 10
     ) {
       console.log("true");
       return true;
@@ -491,10 +514,17 @@ class CoachDashboard extends React.Component {
           <Col span={8}>
             <Card className="statCard">
               {customersWithProgramData ? (
-                  this.averageProgress(customersWithProgramData)
-                ) : (
+                <Statistic
+                  title="Average Customer Progress"
+                  value={this.averageProgress(customersWithProgramData)}
+                  precision={2}
+                  valueStyle={{ color: "#3f8600" }}
+                  prefix={<Icon type="arrow-up" />}
+                  suffix="%"
+                />
+              ) : (
                 <Spinner />
-                )}
+              )}
             </Card>
           </Col>
         </Row>

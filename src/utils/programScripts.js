@@ -181,3 +181,13 @@ export const addDaysDate = (date, days) => {
 export const  percentageDifference = (n1, n2) => {
   return ((n1 - n2) / ((n1 + n2) / 2)) * 100;
 };
+
+export const  removeFocusSessionsNotDone = focusSessions => {
+  for (var i = 0; i < focusSessions.length; i++) {
+    if (focusSessions[i].results.length == 0) {
+      focusSessions.splice(i, 1);
+    }
+  }
+  return focusSessions;
+};
+
