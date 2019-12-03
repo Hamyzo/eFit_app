@@ -8,7 +8,8 @@ import {
   Modal,
   Tabs,
   Icon,
-  Avatar
+  Avatar,
+  Tag
 } from "antd";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
@@ -21,15 +22,22 @@ const { TabPane } = Tabs;
 const columns = [
   {
     title: "Exercise",
-    dataIndex: "exercise.name"
+    dataIndex: "exercise.name",
+    align: "center"
   },
   {
-    title: "Sets",
-    dataIndex: "sets"
-  },
-  {
-    title: "Repetitions",
-    dataIndex: "reps"
+    title: "SetsXReps or Time",
+    dataIndex: "sets",
+    render: (text, row) => {
+      {
+        if (row.sets != null) {
+          return row.sets + "X" + row.reps;
+        } else {
+          return row.time + " seconds";
+        }
+      }
+    },
+    align: "center"
   }
 ];
 
@@ -40,7 +48,28 @@ const columnsResults = [
   },
   {
     title: "Performance",
-    dataIndex: "performance"
+    dataIndex: "performance",
+    render: text => {
+      if (parseInt(text) == 0) {
+        return (
+          <div>
+            <Tag color={"gold"}>Normal</Tag>
+          </div>
+        );
+      } else if (parseInt(text) == 1) {
+        return (
+          <div>
+            <Tag color={"green"}>Easy</Tag>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <Tag color={"red"}>Difficult</Tag>
+          </div>
+        );
+      }
+    }
   }
 ];
 
@@ -168,9 +197,10 @@ class DisplayProgram extends React.Component {
     this.setState({ index });
   };
 
-  showResultsModal = () => {
+  showResultsModal = selectedPeriod => {
     this.setState({
-      visible: true
+      visible: true,
+      selectedPeriod
     });
   };
 
@@ -221,22 +251,18 @@ class DisplayProgram extends React.Component {
     return `${day}/${monthNames[monthIndex]}`;
   };
 
-  addDaysDate = (date, days) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  };
-
   sessionEndDate = (session, sessionStartDate) => {
     let totalDays = 0;
     for (let j = 0; j < session.periods.length; j += 1) {
       totalDays += parseInt(session.periods[j].nb_days, 10);
     }
-    return this.formatDate(this.addDaysDate(sessionStartDate, totalDays));
+    return this.formatDate(
+      programScripts.addDaysDate(sessionStartDate, totalDays)
+    );
   };
 
   periodEndDate = (periodLength, periodStartDate) =>
-    this.formatDate(this.addDaysDate(periodStartDate, periodLength));
+    this.formatDate(programScripts.addDaysDate(periodStartDate, periodLength));
 
   sessionLength = periods => {
     let length = 0;
@@ -252,7 +278,7 @@ class DisplayProgram extends React.Component {
       daysToSum =
         daysToSum + 1 + this.sessionLength(sessionsArray[i].periods) + 1;
     }
-    const newDate = this.addDaysDate(programStartDate, daysToSum);
+    const newDate = programScripts.addDaysDate(programStartDate, daysToSum);
     return this.formatDate(newDate);
   };
 
@@ -261,7 +287,7 @@ class DisplayProgram extends React.Component {
     for (let j = 0; j < periodIndex; j += 1) {
       daysToSum = daysToSum + 1 + parseInt(periodsArray[j].nb_days, 10);
     }
-    const newDate = this.addDaysDate(
+    const newDate = programScripts.addDaysDate(
       this.sessionStartDate(programStartDate),
       daysToSum
     );
@@ -313,6 +339,7 @@ class DisplayProgram extends React.Component {
       style={customPanelStyle}
     >
       <Table
+        className="exercisesTable"
         pagination={false}
         columns={columns}
         dataSource={session.exercises}
@@ -320,30 +347,14 @@ class DisplayProgram extends React.Component {
       />
       <Row className="period_btns">
         <Col offset={6} span={12}>
-          {this.renderResultsButton(period.repetitions)}
+          {this.renderResultsButton(period)}
         </Col>
       </Row>
-      <Modal
-        title="Period Results"
-        visible={this.state.visible}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-      >
-        {period.repetitions ? (
-          <Tabs defaultActiveKey="0">
-            {period.repetitions.map((rep, rIndex) =>
-              this.renderRep(rep, rIndex)
-            )}
-          </Tabs>
-        ) : (
-          <p>No Results Available</p>
-        )}
-      </Modal>
     </Panel>
   );
 
-  renderResultsButton = repetition => {
-    if (repetition === null || repetition.length === 0) {
+  renderResultsButton = period => {
+    if (period.repetitions === null || period.repetitions.length === 0) {
       return (
         <Button
           className="results_btn"
@@ -356,7 +367,11 @@ class DisplayProgram extends React.Component {
       );
     } else {
       return (
-        <Button className="results_btn" onClick={this.showResultsModal} block>
+        <Button
+          className="results_btn"
+          onClick={() => this.showResultsModal(period)}
+          block
+        >
           See Results
         </Button>
       );
@@ -365,7 +380,10 @@ class DisplayProgram extends React.Component {
 
   renderRep = (rep, index) => (
     <TabPane tab={`Rep${index + 1}`} key={index}>
+      {console.log(rep)}
+      <h3>Completed on: {programScripts.formatDate(rep.date)}</h3>
       <Table
+        className="exercisesTable"
         pagination={false}
         columns={columnsResults}
         dataSource={rep.results}
@@ -381,8 +399,7 @@ class DisplayProgram extends React.Component {
     for (var i = 0; i < sessions.length; i++) {
       if (
         programScripts.sessionStatus(sessions[i].periods).status ==
-          "In Progress" ||
-        programScripts.sessionStatus(sessions[i].periods).status == "Completed"
+        "In progress"
       ) {
         index = i;
       }
@@ -397,11 +414,7 @@ class DisplayProgram extends React.Component {
           programScripts.status(
             programScripts.completedReps(periods[i].repetitions),
             periods[i].nb_repetitions
-          ) == "In Progress" ||
-          programScripts.status(
-            programScripts.completedReps(periods[i].repetitions),
-            periods[i].nb_repetitions
-          ) == "Completed"
+          ) == "In progress"
         ) {
           index = i;
         }
@@ -523,7 +536,8 @@ class DisplayProgram extends React.Component {
       selectedSession,
       index,
       isNewSession,
-      originalIndex
+      originalIndex,
+      selectedPeriod
     } = this.state;
 
     console.log("Program", program);
@@ -551,6 +565,24 @@ class DisplayProgram extends React.Component {
               onDeleteExercise={this.handleDeleteExercise}
               isNewSession={isNewSession}
             />
+            {selectedPeriod ? (
+              <Modal
+                title="Period Results"
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+              >
+                {selectedPeriod.repetitions ? (
+                  <Tabs defaultActiveKey="0">
+                    {selectedPeriod.repetitions.map((rep, rIndex) =>
+                      this.renderRep(rep, rIndex)
+                    )}
+                  </Tabs>
+                ) : (
+                  <p>No Results Available</p>
+                )}
+              </Modal>
+            ) : null}
           </div>
         ) : (
           <Spinner />

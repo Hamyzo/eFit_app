@@ -23,6 +23,7 @@ import CustomerAppointments from "./components/CustomerAppointments/CustomerAppo
 import CustomerNotifications from "./components/CustomerNotifications/CustomerNotifications";
 import Program from "./components/CoachProgram/Program";
 import Login from "./components/Login/Login";
+import CoachDashboard from "./components/CoachDashboard/CoachDashboard";
 
 const { Content } = Layout;
 
@@ -62,13 +63,24 @@ class App extends React.Component {
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
                 path="/"
-                component={CustomerDashboard}
+                component={
+                  sessionStorage.getItem("userType") === "Coach"
+                    ? CoachDashboard
+                    : CustomerDashboard
+                }
               />
-              <Route path="/dashboard" component={CustomerDashboard} />
+              <Route
+                path="/dashboard"
+                component={
+                  sessionStorage.getItem("userType") === "Coach"
+                    ? CoachDashboard
+                    : CustomerDashboard
+                }
+              />
               <Route exact path="/login" component={Login} />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
-                path="/coachProgram/:customerProgramId"
+                path="/coachProgram/:customerId"
                 component={CoachProgram}
               />
               <PrivateRoute

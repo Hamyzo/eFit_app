@@ -304,8 +304,8 @@ class CustomersList extends React.Component {
         // fixed: "left",
         width: 150,
         render: (text, row, index) =>
-          row.current_program && row.current_program._id ? (
-            <NavLink to={`/coachProgram/${row.current_program._id}`}>
+          row.current_program && row._id ? (
+            <NavLink to={`/coachProgram/${row._id}`}>
               {row.current_program.program.name}
             </NavLink>
           ) : (
