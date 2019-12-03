@@ -118,3 +118,76 @@ export const focusSessionDisplayButton = (
     nextFocusSession
   };
 };
+
+export const lastWorkout = customer => {
+  var lastWO = new Date(customer.registration_date);
+  if (hasResults(customer.current_program)) {
+    customer.current_program.sessions.forEach(session => {
+      session.periods.forEach(period => {
+        period.repetitions.forEach(rep => {
+          lastWO = rep.date;
+        });
+      });
+    });
+  }
+  return lastWO;
+};
+
+export const hasResults = program => {
+  if (
+    program.sessions.length > 0 ||
+    program.sessions != null ||
+    program.sessions[0].periods.length > 0 ||
+    program.sessions[0].periods != null ||
+    program.sessions[0].periods[0].repetitions.length > 0 ||
+    program.sessions[0].periods[0].repetitions != null ||
+    program.sessions[0].periods[0].repetitions[0].results != null ||
+    program.sessions[0].periods[0].repetitions[0].results.length > 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const  formatDate = rawDate => {
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+
+  const d = new Date(rawDate);
+  const day = d.getDate();
+  const monthIndex = d.getMonth();
+  return `${day}/${monthNames[monthIndex]}`;
+};
+
+export const addDaysDate = (date, days) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+export const  percentageDifference = (n1, n2) => {
+  return ((n1 - n2) / ((n1 + n2) / 2)) * 100;
+};
+
+export const  removeFocusSessionsNotDone = focusSessions => {
+  for (var i = 0; i < focusSessions.length; i++) {
+    if (focusSessions[i].results.length == 0) {
+      focusSessions.splice(i, 1);
+    }
+  }
+  return focusSessions;
+};
+

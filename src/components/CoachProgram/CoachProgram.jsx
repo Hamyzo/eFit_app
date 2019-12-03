@@ -4,17 +4,18 @@ import DisplayProgram from "./DisplayProgram";
 import CustomerProgress from "./CustomerProgress";
 import { Row, Col, Avatar, Icon, Statistic, Button } from "antd";
 import Spinner from "../Global/Spinner";
+import * as programScripts from "../../utils/programScripts";
 
 class CoachProgram extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      program: null
+      customer: null
     };
   }
 
   componentDidMount = async () => {
-    this.getProgram();
+    this.getCustomer();
   };
 
   getProgram = async () => {
@@ -28,6 +29,22 @@ class CoachProgram extends React.Component {
       console.log("Program:", program);
       this.setState({ program });
     } catch (e) {}
+  };
+
+  getCustomer = async () => {
+    try {
+      const { match } = this.props;
+      const customer = await apiServices.getOne(
+        "customers",
+        match ? match.params.customerId : "5da078748a19ac1eab85fe14",
+        "populate=current_program.program,current_program.focus_sessions,current_program.focus_sessions.exercises"
+      );
+      // console.log("CustomersList", customers);
+      this.setState({ customer });
+      console.log("CUSTOMER: ", customer);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   handleSubmitSession = async (session, index, originalIndex, isNewSession) => {
@@ -47,13 +64,25 @@ class CoachProgram extends React.Component {
     }
   };
 
+  nextFocusSession = focusSessions => {
+    var i = focusSessions.length - 1;
+    if (
+      focusSessions[i].results != null ||
+      focusSessions[i].results.length == 0
+    ) {
+      return "N/A";
+    } else {
+      return programScripts.formatDate(focusSessions[i].due_date);
+    }
+  };
+
   renderBanner = customer => (
     <div className="customer_banner">
       <Row>
         <Col span={2}>
           <Avatar className="profilePic" src={customer.img} size={108} />
         </Col>
-        <Col span={4}>
+        <Col span={4} offset={1}>
           <h1 className="customerName">
             {customer.first_name} {customer.last_name}
           </h1>
@@ -62,7 +91,9 @@ class CoachProgram extends React.Component {
           <div className="lastWorkoutDiv">
             <Statistic
               title="Last Workout"
-              value={"13 Nov"}
+              value={programScripts.formatDate(
+                programScripts.lastWorkout(customer)
+              )}
               prefix={<Icon type="clock-circle" />}
             />
           </div>
@@ -80,7 +111,9 @@ class CoachProgram extends React.Component {
           <div className="lastWorkoutDiv">
             <Statistic
               title="Next Focus Session"
-              value={"25 Nov"}
+              value={this.nextFocusSession(
+                customer.current_program.focus_sessions
+              )}
               prefix={<Icon type="calendar" />}
             />
           </div>
@@ -109,32 +142,42 @@ class CoachProgram extends React.Component {
   };
 
   render() {
-    const { program } = this.state;
+    const { customer } = this.state;
+    console.log(customer);
 
-    const showProgress = program
+    /* const showProgress = program
       ? !(
           program.focus_sessions == null ||
           program.focus_sessions.length === 0 ||
           program.focus_sessions[0].results == null ||
           program.focus_sessions[0].results.length === 0
         )
-      : null;
+      : null;*/
     return (
       <div>
-        {program ? (
+        {customer ? (
           <div>
-            {this.renderBanner(program.customer)}
+            {this.renderBanner(customer)}
             <Row>
-              <Col span={showProgress ? 13 : 24}>
-                <DisplayProgram
-                  program={program}
-                  editable
-                  isCustomerProgram
-                  onSubmitSession={this.handleSubmitSession}
-                />
+              <Col span={13}>
+                {customer.current_program ? (
+                  <div>
+                    <DisplayProgram
+                      program={customer.current_program}
+                      editable
+                      isCustomerProgram
+                      onSubmitSession={this.handleSubmitSession}
+                    />
+                  </div>
+                ) : (
+                  <Spinner />
+                )}
               </Col>
-              {showProgress ? (
-                <Col span={11}>{this.renderCustomerProgress(program)}</Col>
+              {customer.current_program ? (
+                <Col span={11}>
+                  {console.log("JJJJJJ,", customer.current_program)}
+                  {this.renderCustomerProgress(customer.current_program)}
+                </Col>
               ) : null}
             </Row>
           </div>
