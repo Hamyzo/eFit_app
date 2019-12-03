@@ -168,9 +168,10 @@ class DisplayProgram extends React.Component {
     this.setState({ index });
   };
 
-  showResultsModal = () => {
+  showResultsModal = selectedPeriod => {
     this.setState({
-      visible: true
+      visible: true,
+      selectedPeriod
     });
   };
 
@@ -320,30 +321,14 @@ class DisplayProgram extends React.Component {
       />
       <Row className="period_btns">
         <Col offset={6} span={12}>
-          {this.renderResultsButton(period.repetitions)}
+          {this.renderResultsButton(period)}
         </Col>
       </Row>
-      <Modal
-        title="Period Results"
-        visible={this.state.visible}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-      >
-        {period.repetitions ? (
-          <Tabs defaultActiveKey="0">
-            {period.repetitions.map((rep, rIndex) =>
-              this.renderRep(rep, rIndex)
-            )}
-          </Tabs>
-        ) : (
-          <p>No Results Available</p>
-        )}
-      </Modal>
     </Panel>
   );
 
-  renderResultsButton = repetition => {
-    if (repetition === null || repetition.length === 0) {
+  renderResultsButton = period => {
+    if (period.repetitions === null || period.repetitions.length === 0) {
       return (
         <Button
           className="results_btn"
@@ -356,7 +341,11 @@ class DisplayProgram extends React.Component {
       );
     } else {
       return (
-        <Button className="results_btn" onClick={this.showResultsModal} block>
+        <Button
+          className="results_btn"
+          onClick={() => this.showResultsModal(period)}
+          block
+        >
           See Results
         </Button>
       );
@@ -523,7 +512,8 @@ class DisplayProgram extends React.Component {
       selectedSession,
       index,
       isNewSession,
-      originalIndex
+      originalIndex,
+      selectedPeriod
     } = this.state;
 
     console.log("Program", program);
@@ -551,6 +541,24 @@ class DisplayProgram extends React.Component {
               onDeleteExercise={this.handleDeleteExercise}
               isNewSession={isNewSession}
             />
+            {selectedPeriod ? (
+              <Modal
+                title="Period Results"
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+              >
+                {selectedPeriod.repetitions ? (
+                  <Tabs defaultActiveKey="0">
+                    {selectedPeriod.repetitions.map((rep, rIndex) =>
+                      this.renderRep(rep, rIndex)
+                    )}
+                  </Tabs>
+                ) : (
+                  <p>No Results Available</p>
+                )}
+              </Modal>
+            ) : null}
           </div>
         ) : (
           <Spinner />
