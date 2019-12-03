@@ -1,7 +1,18 @@
 import React from "react";
-import { Result, Icon, message } from "antd";
+import {
+  Result,
+  Icon,
+  message,
+  Button,
+  Typography,
+  Table,
+  List,
+  Card
+} from "antd";
 import "./RepetitionDone.css";
 //import CongraIcon from "../../components/Global/CongraIcon";
+
+const { Paragraph, Text } = Typography;
 
 class RepetitionDone extends React.Component {
   constructor(props) {
@@ -29,16 +40,56 @@ class RepetitionDone extends React.Component {
 
     return (
       <div className={"content"}>
-        <img
-          className={"welldone-img"}
-          src={
-            "https://www.pngtube.com/myfile/detail/70-708989_transparent-well-done-clipart-png.png"
+        <Result
+          icon={
+            <img
+              className={"welldone-img"}
+              src={
+                "https://www.pngtube.com/myfile/detail/70-708989_transparent-well-done-clipart-png.png"
+              }
+            />
           }
-        />
-        <div className={"finished-text"}>
-          <h1>FINISHED 💪</h1>
-        </div>
-        {/*<CongraIcon />*/}
+          title="Repetition Finished"
+          subTitle="You have received the following rewards!"
+          extra={[
+            <Button type="primary" key="console">
+              Go To Dashboard
+            </Button>
+          ]}
+        >
+          <div className="desc">
+            <List
+              grid={{
+                gutter: 16,
+                xs: 1,
+                sm: 2,
+                md: 4,
+                lg: 4,
+                xl: 6,
+                xxl: 3
+              }}
+              dataSource={[
+                {
+                  title: "Water",
+                  content: "+3 Points"
+                },
+                {
+                  title: "Sun",
+                  content: "+2 Points"
+                },
+                {
+                  title: "XP",
+                  content: "+20 Points"
+                }
+              ]}
+              renderItem={item => (
+                <List.Item>
+                  <Card title={item.title}>{item.content}</Card>
+                </List.Item>
+              )}
+            />
+          </div>
+        </Result>
       </div>
     );
   }

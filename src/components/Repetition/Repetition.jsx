@@ -29,12 +29,14 @@ import * as dateScripts from "../../utils/dateScripts";
 import Spinner from "../Global/Spinner";
 import CustomerFocusSession from "../CustomerFocusSession/CustomerFocusSession";
 import Timer from "./Timer";
+import CustomerProgress from "../CoachProgram/CustomerProgress";
+import { ResponsiveLine } from "@nivo/line";
 
 const { Meta } = Card;
 const { TabPane } = Tabs;
 const { Step } = Steps;
 
-const CUSTOMER_PROGRAM = "5dbee421ec899a4934917bf7";
+const CUSTOMER_PROGRAM = "5da1fff308104816e1bae7b7";
 
 class Repetition extends React.Component {
   constructor(props) {
@@ -69,7 +71,7 @@ class Repetition extends React.Component {
       const program = await apiServices.getOne(
         "customerPrograms",
         CUSTOMER_PROGRAM,
-        "populate=program,customer,focus_sessions"
+        "populate=program,customer,focus_sessions,exercises.exercise,focus_sessions.exercises"
       );
       console.log("Program", program);
       let currentSession = null;
@@ -150,6 +152,160 @@ class Repetition extends React.Component {
       Modal.destroyAll();
       this.nextStep();
     }, 500);
+  };
+
+  formatDate = rawDate => {
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+
+    const d = new Date(rawDate);
+    const day = d.getDate();
+    const monthIndex = d.getMonth();
+    return `${day}-${monthNames[monthIndex]}`;
+  };
+
+  exerciseData = (i, focusSessions) => {
+    var data = [];
+    for (var x = 0; x < focusSessions.length; x++) {
+      data.push({
+        x: this.formatDate(focusSessions[x].due_date),
+        y: this.timeOrReps(focusSessions[x].results[i])
+      });
+    }
+    return data;
+  };
+
+  timeOrReps = n => {
+    if (n != null) {
+      var num = n.reps || n.time;
+    }
+    if (num != null) {
+      return parseInt(num);
+    } else return 0;
+  };
+
+  removeFocusSessionsNotDone = focusSessions => {
+    for (var i = 0; i < focusSessions.length; i++) {
+      if (focusSessions[i].results.length == 0) {
+        focusSessions.splice(i, 1);
+      }
+    }
+    return focusSessions;
+  };
+
+  exerciseChartData = focusSessions => {
+    var focusSessionsWithResults = this.removeFocusSessionsNotDone(
+      focusSessions
+    );
+    var colors = [
+      "hsl(186, 70%, 50%)",
+      "hsl(187, 70%, 50%)",
+      "hsl(31, 70%, 50%)",
+      "hsl(187, 70%, 50%)",
+      "hsl(98, 70%, 50%)",
+      "hsl(187, 70%, 50%)",
+      "hsl(98, 70%, 50%)"
+    ];
+    var data = [];
+    for (var i = 0; i < focusSessionsWithResults[0].exercises.length; i++) {
+      var exercise = focusSessionsWithResults[0].exercises[i];
+      data.push({
+        id: exercise.name,
+        color: colors[i],
+        data: this.exerciseData(i, focusSessionsWithResults)
+      });
+    }
+    console.log("data ", data);
+    return data;
+  };
+
+  renderProgressChart = program => {
+    if (program.focus_sessions.length > 2) {
+      return (
+        <div className="progressChart">
+          <h1 className="focusSessionsTitle">Focus Sessions Progress</h1>
+          <ResponsiveLine
+            data={this.exerciseChartData(program.focus_sessions)}
+            margin={{ top: 15, right: 110, bottom: 20, left: 60 }}
+            xScale={{ type: "point" }}
+            yScale={{
+              type: "linear",
+              stacked: false,
+              min: "auto",
+              max: "auto"
+            }}
+            axisTop={null}
+            axisRight={null}
+            axisBottom={{
+              orient: "bottom",
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: "focus session date",
+              legendOffset: 36,
+              legendPosition: "middle"
+            }}
+            axisLeft={{
+              orient: "left",
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: "count",
+              legendOffset: -40,
+              legendPosition: "middle"
+            }}
+            colors={{ scheme: "nivo" }}
+            pointSize={10}
+            pointColor={{ theme: "background" }}
+            pointBorderWidth={2}
+            pointBorderColor={{ from: "serieColor" }}
+            pointLabel="y"
+            pointLabelYOffset={-12}
+            useMesh={true}
+            legends={[
+              {
+                anchor: "bottom-right",
+                direction: "column",
+                justify: false,
+                translateX: 100,
+                translateY: 0,
+                itemsSpacing: 0,
+                itemDirection: "left-to-right",
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: "circle",
+                symbolBorderColor: "rgba(0, 0, 0, .5)",
+                effects: [
+                  {
+                    on: "hover",
+                    style: {
+                      itemBackground: "rgba(0, 0, 0, .03)",
+                      itemOpacity: 1
+                    }
+                  }
+                ]
+              }
+            ]}
+          />
+        </div>
+      );
+    } else {
+      return "";
+    }
   };
 
   handleResultsBtn = (resultLoading, value) => {
@@ -304,7 +460,6 @@ class Repetition extends React.Component {
                         Repetition {currentRepetition}
                       </Col>
                     </Row>
-
                     <Row className="container mbRepetition">
                       <Button
                         block
@@ -330,6 +485,15 @@ class Repetition extends React.Component {
                         START EVALUATION
                       </Button>
                     </Row>
+                    {!(
+                      program.focus_sessions == null ||
+                      program.focus_sessions.length === 0 ||
+                      program.focus_sessions[0].results == null ||
+                      this.removeFocusSessionsNotDone(program.focus_sessions)
+                        .length < 1
+                    ) ? (
+                      <Row>{this.renderProgressChart(program)}</Row>
+                    ) : null}
                   </TabPane>
                 </Tabs>
               </div>

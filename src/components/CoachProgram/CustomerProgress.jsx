@@ -118,16 +118,15 @@ class CustomerProgress extends React.Component {
   };
 
   progressArrow = progress => {
-    if (parseFloat(progress) < 0.0) {
+    if (parseFloat(progress) < 0) {
       return (
         <div>
           (<img alt="" className="down-up" src="/assets/images/sort-down.svg" />
           {parseFloat(progress)}%)
         </div>
       );
-    } else if (parseFloat(progress) == 0.0 || progress == "--") {
-      return "--";
-    } else {
+    }
+    if (parseFloat(progress) > 0) {
       return (
         <div>
           (<img alt="" className="down-up" src="/assets/images/sort-up.svg" />
@@ -135,6 +134,7 @@ class CustomerProgress extends React.Component {
         </div>
       );
     }
+    return "--";
   };
 
   progressCalculator = (focusSessions, measure) => {
@@ -295,7 +295,12 @@ class CustomerProgress extends React.Component {
 
     return (
       <div>
-        {program ? this.renderProgressChart(program) : <Spinner />}
+        {program &&
+        this.removeFocusSessionsNotDone(program.focus_sessions).length > 1 ? (
+          this.renderProgressChart(program)
+        ) : (
+          <Spinner />
+        )}
         <div className="progressColumn">
           <h3 className="lastFocusSessionsTitle">Last Focus Session Results</h3>
           <Row className="dickAndHeartRow">

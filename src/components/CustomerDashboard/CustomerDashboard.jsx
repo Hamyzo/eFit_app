@@ -17,6 +17,8 @@ import Spinner from "../Global/Spinner";
 import { NavLink } from "react-router-dom";
 import * as dateScripts from "../../utils/dateScripts";
 
+const CUSTOMER_PROGRAM = "5da1f67ccf53670572677651";
+
 class CustomerDashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +30,9 @@ class CustomerDashboard extends React.Component {
       currentPeriod: null,
       previousPeriod: null,
       currentRepetition: null,
-      currentPeriodInfo: null
+      currentPeriodInfo: null,
+      watering: false,
+      waterProgress: 20
     };
   }
 
@@ -41,7 +45,7 @@ class CustomerDashboard extends React.Component {
       const { match } = this.props;
       const program = await apiServices.getOne(
         "customerPrograms",
-        "5da1f67ccf53670572677651",
+        CUSTOMER_PROGRAM,
         "populate=program,customer,focus_sessions"
       );
       let currentSession = null;
@@ -86,6 +90,19 @@ class CustomerDashboard extends React.Component {
     }
   };
 
+  handleWaterPlant = () => {
+    const { program, waterProgress } = this.state;
+    this.setState({
+      watering: true,
+      waterProgress: waterProgress + 10,
+      program: {
+        ...program,
+        customer: { ...program.customer, water: program.customer.water - 1 }
+      }
+    });
+    setTimeout(() => this.setState({ watering: false }), 5000);
+  };
+
   renderWaterIcon = () => (
     <Row>
       <Col span={4} style={{ height: "18px", width: "18px" }}>
@@ -126,32 +143,66 @@ class CustomerDashboard extends React.Component {
       previousPeriod,
       sessionIndex,
       currentFocusSession,
-      currentPeriodInfo
+      currentPeriodInfo,
+      watering,
+      waterProgress
     } = this.state;
+
+    console.log(program);
+
     return (
       <div>
         {program ? (
           <div>
-            <Row>
-              <Col span={10}>
-                <div className="plant">
+            <div style={{ marginTop: "20px" }}>
+              <div className="clouds">
+                <div className="cloud x1" />
+                <div className="cloud x2" />
+                <div className="cloud x3" />
+                <div className="cloud x4" />
+                <div className="cloud x5" />
+              </div>
+
+              <div className="background">
+                <img
+                  src="/assets/images/gamification/background.jpg"
+                  width="100%"
+                  height="270"
+                />
+              </div>
+
+              <div className="tree">
+                <img
+                  src={`/assets/images/gamification/tree_${program.customer.level}.PNG`}
+                  width="200"
+                  height="200"
+                  style={{ position: "center" }}
+                />
+              </div>
+              <div className="sun-plant">
+                <img
+                  src="/assets/images/gamification/sun.jpg"
+                  width="100"
+                  height="100"
+                />
+              </div>
+              {watering ? (
+                <div className="water-plant">
                   <img
-                    className="img-responsive"
-                    typeof="foaf:Image"
-                    src="https://making-the-web.com/sites/default/files/clipart/131252/cartoon-plant-131252-4910920.jpg"
-                    width="50%"
-                    height="50%"
-                    alt="Cartoon Plant 6 - 540 X 554"
-                    title="Cartoon Plant 6 - 540 X 554"
+                    src="/assets/images/gamification/water.PNG"
+                    width="120"
+                    height="120"
                   />
                 </div>
-              </Col>
-              <Col span={10}>
+              ) : null}
+            </div>
+            <Row>
+              <Col span={10} className="plant_progress_container">
                 <div className="plant_progress">
                   <h1> My plant </h1>
                   <div className="progress_bars">
                     <Progress
-                      percent={30}
+                      percent={waterProgress}
                       strokeColor={{
                         "0%": "#108ee9",
                         "100%": "#87d068"
@@ -184,6 +235,43 @@ class CustomerDashboard extends React.Component {
                 </div>
               </Col>
             </Row>
+            <div className="progress">
+              <Row>
+                <Col span={8}>
+                  <Avatar
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      verticalAlign: "middle"
+                    }}
+                    size="large"
+                    className="oneAvatar"
+                  >
+                    <img className="water" src="/assets/images/raindrop.svg" />
+                  </Avatar>
+                </Col>
+                <Col span={6}>
+                  <h2
+                    style={{
+                      marginTop: "30%",
+                      marginLeft: "-35%",
+                      fontSize: "120%"
+                    }}
+                  >
+                    {program.customer.water} Points
+                  </h2>
+                </Col>
+                <Col span={10}>
+                  <Button
+                    style={{
+                      marginTop: "15%"
+                    }}
+                    onClick={this.handleWaterPlant}
+                  >
+                    Water My Plant
+                  </Button>
+                </Col>
+              </Row>
+            </div>
             <div className="progress">
               <Row>
                 <Col span={8}>
