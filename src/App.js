@@ -10,7 +10,6 @@ import Header from "./components/Global/Header";
 import Footer from "./components/Global/Footer";
 import MobileFooter from "./components/Global/MobileFooter";
 
-
 // pages imports
 
 import CoachProgram from "./components/CoachProgram/CoachProgram";
@@ -64,19 +63,26 @@ class App extends React.Component {
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
                 path="/"
-                component={CustomerDashboard}
+                component={
+                  sessionStorage.getItem("userType") === "Coach"
+                    ? CoachDashboard
+                    : CustomerDashboard
+                }
               />
-              <Route path="/dashboard" component={CustomerDashboard} />
+              <Route
+                path="/dashboard"
+                component={
+                  sessionStorage.getItem("userType") === "Coach"
+                    ? CoachDashboard
+                    : CustomerDashboard
+                }
+              />
               <Route exact path="/login" component={Login} />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
                 path="/coachProgram/:customerId"
                 component={CoachProgram}
               />
-              <PrivateRoute
-                isLoggedIn={isLoggedIn}
-                path="/CoachDashboard"
-                component={CoachDashboard} />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
                 path="/program/:programId"

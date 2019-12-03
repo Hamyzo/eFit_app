@@ -150,7 +150,7 @@ export const hasResults = program => {
   }
 };
 
-export const  formatDate = rawDate => {
+export const formatDate = rawDate => {
   const monthNames = [
     "Jan",
     "Feb",
@@ -178,11 +178,11 @@ export const addDaysDate = (date, days) => {
   return result;
 };
 
-export const  percentageDifference = (n1, n2) => {
+export const percentageDifference = (n1, n2) => {
   return ((n1 - n2) / ((n1 + n2) / 2)) * 100;
 };
 
-export const  removeFocusSessionsNotDone = focusSessions => {
+export const removeFocusSessionsNotDone = focusSessions => {
   for (var i = 0; i < focusSessions.length; i++) {
     if (focusSessions[i].results.length == 0) {
       focusSessions.splice(i, 1);
@@ -190,4 +190,3 @@ export const  removeFocusSessionsNotDone = focusSessions => {
   }
   return focusSessions;
 };
-
