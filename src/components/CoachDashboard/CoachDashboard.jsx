@@ -288,32 +288,6 @@ class CoachDashboard extends React.Component {
             pointLabel="y"
             pointLabelYOffset={-12}
             useMesh={true}
-            legends={[
-              {
-                anchor: "bottom-right",
-                direction: "column",
-                justify: false,
-                translateX: 100,
-                translateY: 0,
-                itemsSpacing: 0,
-                itemDirection: "left-to-right",
-                itemWidth: 80,
-                itemHeight: 20,
-                itemOpacity: 0.75,
-                symbolSize: 12,
-                symbolShape: "circle",
-                symbolBorderColor: "rgba(0, 0, 0, .5)",
-                effects: [
-                  {
-                    on: "hover",
-                    style: {
-                      itemBackground: "rgba(0, 0, 0, .03)",
-                      itemOpacity: 1
-                    }
-                  }
-                ]
-              }
-            ]}
           />
         </div>
       );
@@ -491,28 +465,8 @@ class CoachDashboard extends React.Component {
     return (
       <div>
         <Row>
-          <Col span={8}>
-            <Card className="statCard">
-              <div className="grpah">
-                {customersWithProgramData ? (
-                  this.renderGraph(customersWithProgramData)
-                ) : (
-                  <Spinner />
-                )}
-              </div>
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card className="statCard">
-              {customersWithProgramData ? (
-                this.myResponsiveBar(customersWithProgramData)
-              ) : (
-                <Spinner />
-              )}
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card className="statCard">
+          <Col span={6}>
+            <Card className="statCard1">
               {customersWithProgramData ? (
                 <Statistic
                   title="Average Customer Progress"
@@ -522,6 +476,33 @@ class CoachDashboard extends React.Component {
                   prefix={<Icon type="arrow-up" />}
                   suffix="%"
                 />
+              ) : (
+                <Spinner />
+              )}
+            </Card>
+            <Card className="statCard">
+              <Statistic title="Active Users" value={3} />
+            </Card>
+          </Col>
+          <Col span={9}>
+            <Card className="statCard">
+              <div className="grpah">
+                <h3>Weekly Amount of Workouts</h3>
+                <p>past 6 weeks</p>
+                {customersWithProgramData ? (
+                  this.renderGraph(customersWithProgramData)
+                ) : (
+                  <Spinner />
+                )}
+              </div>
+            </Card>
+          </Col>
+          <Col span={9}>
+            <Card className="statCard">
+              <h3>Exercise difficulty distribution</h3>
+              <p>past 7 days</p>
+              {customersWithProgramData ? (
+                this.myResponsiveBar(customersWithProgramData)
               ) : (
                 <Spinner />
               )}
