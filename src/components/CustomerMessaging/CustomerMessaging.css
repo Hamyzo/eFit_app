@@ -123,12 +123,12 @@ img {
 
 .recent_heading {
   float: left;
-  width: 50%;
+  width: 70%;
 }
 .srch_bar {
   display: inline-block;
   text-align: right;
-  width: 50%;
+  width: 30%;
   margin-top: 2%;
 }
 .headind_srch {

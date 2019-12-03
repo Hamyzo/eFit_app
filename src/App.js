@@ -16,7 +16,7 @@ import CoachProgram from "./components/CoachProgram/CoachProgram";
 import CustomersList from "./components/CustomersList/CustomersList";
 import CustomerInfoStepper from "./components/CustomerProfile/CustomerInfoStepper";
 import Repetition from "./components/Repetition/Repetition";
-import RepetitionDone from "./components/Repetition/RepetitionDone";
+import CoachMessaging from "./components/CoachMessaging/CoachMessaging";
 import CustomerDashboard from "./components/CustomerDashboard/CustomerDashboard";
 import CustomerMessaging from "./components/CustomerMessaging/CustomerMessaging";
 import CustomerAppointments from "./components/CustomerAppointments/CustomerAppointments";
@@ -100,6 +100,11 @@ class App extends React.Component {
                 isLoggedIn={isLoggedIn}
                 path="/messages"
                 component={CustomerMessaging}
+              />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/coachMessages"
+                component={CoachMessaging}
               />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}

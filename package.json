@@ -20,9 +20,11 @@
     "react-player": "^1.14.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
+    "react-scroll": "^1.7.14",
     "react-window-size": "^1.2.2",
     "read-more-react": "^1.0.9",
     "reqwest": "^2.0.5",
+    "socket.io-client": "^2.3.0",
     "video-react": "^0.14.1"
   },
   "scripts": {
