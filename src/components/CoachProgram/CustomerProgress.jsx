@@ -3,6 +3,7 @@ import { Row, Col, Table, Tabs, Modal, Button, Icon, Statistic } from "antd";
 import { ResponsiveLine } from "@nivo/line";
 import "./CoachProgram.css";
 import Spinner from "../Global/Spinner";
+import * as programScripts from "../../utils/programScripts";
 
 const columns = [
   {
@@ -50,33 +51,6 @@ class CustomerProgress extends React.Component {
     };
   }
 
-  formatDate = rawDate => {
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec"
-    ];
-
-    const d = new Date(rawDate);
-    const day = d.getDate();
-    const monthIndex = d.getMonth();
-    return `${day}-${monthNames[monthIndex]}`;
-  };
-  showResultsModal = () => {
-    this.setState({
-      visible: true
-    });
-  };
-
   handleOk = () => {
     this.setState({
       visible: false
@@ -119,7 +93,7 @@ class CustomerProgress extends React.Component {
     var data = [];
     for (var x = 0; x < focusSessions.length; x++) {
       data.push({
-        x: this.formatDate(focusSessions[x].due_date),
+        x: programScripts.formatDate(focusSessions[x].due_date),
         y: this.timeOrReps(focusSessions[x].results[i])
       });
     }
@@ -152,9 +126,6 @@ class CustomerProgress extends React.Component {
     return focusSessions;
   };
 
-  percentageDifference = (n1, n2) => {
-    return ((n1 - n2) / ((n1 + n2) / 2)) * 100;
-  };
 
   progressArrow = progress => {
     if (parseFloat(progress) < 0.0) {
@@ -182,7 +153,7 @@ class CustomerProgress extends React.Component {
     );
     var x = focusSessionsWithResults.length - 2;
     var y = focusSessionsWithResults.length - 1;
-    var changePercentage = this.percentageDifference(
+    var changePercentage = programScripts.percentageDifference(
       parseFloat(focusSessionsWithResults[y][measure]),
       parseFloat(focusSessionsWithResults[x][measure])
     );
@@ -195,7 +166,7 @@ class CustomerProgress extends React.Component {
       key: i,
       exercise: exercise.name,
       reps: result.reps || result.time,
-      progress: this.percentageDifference(
+      progress: programScripts.percentageDifference(
         this.timeOrReps(result),
         this.timeOrReps(previous_res)
       ).toFixed(1)
@@ -251,7 +222,7 @@ class CustomerProgress extends React.Component {
   };
 
   renderProgressChart = program => {
-    if (program.focus_sessions.length > 0) {
+    if (program.focus_sessions.length > 0 || program.focus_sessions != null) {
       return (
         <div className="progressChart">
           <h1 className="focusSessionsTitle">Focus Sessions Progress</h1>

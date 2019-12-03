@@ -10,6 +10,7 @@ import Header from "./components/Global/Header";
 import Footer from "./components/Global/Footer";
 import MobileFooter from "./components/Global/MobileFooter";
 
+
 // pages imports
 
 import CoachProgram from "./components/CoachProgram/CoachProgram";
@@ -23,6 +24,7 @@ import CustomerAppointments from "./components/CustomerAppointments/CustomerAppo
 import CustomerNotifications from "./components/CustomerNotifications/CustomerNotifications";
 import Program from "./components/CoachProgram/Program";
 import Login from "./components/Login/Login";
+import CoachDashboard from "./components/CoachDashboard/CoachDashboard";
 
 const { Content } = Layout;
 
@@ -68,9 +70,13 @@ class App extends React.Component {
               <Route exact path="/login" component={Login} />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
-                path="/coachProgram/:customerProgramId"
+                path="/coachProgram/:customerId"
                 component={CoachProgram}
               />
+              <PrivateRoute
+                isLoggedIn={isLoggedIn}
+                path="/CoachDashboard"
+                component={CoachDashboard} />
               <PrivateRoute
                 isLoggedIn={isLoggedIn}
                 path="/program/:programId"

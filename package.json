@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@antv/f2": "^3.4.3",
     "@nivo/line": "^0.59.3",
+    "@nivo/stream": "^0.59.3",
     "antd": "^3.25.0",
     "antd-mobile": "^2.3.1",
     "babel-eslint": "^10.0.3",
@@ -47,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@nivo/bar": "^0.59.2",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.5.0",
