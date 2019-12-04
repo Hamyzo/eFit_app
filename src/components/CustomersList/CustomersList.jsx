@@ -26,6 +26,7 @@ const { TabPane } = Tabs;
 const showHeader = true;
 const scroll = { y: 240 };
 const pagination = { position: "bottom" };
+const { TextArea } = Input;
 
 class CustomersList extends React.Component {
   constructor(props) {
@@ -34,7 +35,9 @@ class CustomersList extends React.Component {
       customersWithProgramData: null,
       customersWithoutProgramData: null,
       selectedCustomer: null,
+      message: null,
       visible: false,
+      visibleMessage: false,
       searchText: "",
       bordered: false,
       pagination,
@@ -127,23 +130,90 @@ class CustomersList extends React.Component {
       selectedCustomer
     });
   };
+
+  /** Modal To Display Message **/
+  showMessageModal = selectedCustomer => {
+    console.log("customer", selectedCustomer);
+    this.setState({
+      visibleMessage: true,
+      selectedCustomer
+    });
+  };
   handleOk = e => {
     console.log(e);
     this.setState({
-      visible: false
+      visible: false,
+      visibleMessage: false
     });
   };
 
   handleCancel = e => {
     console.log(e);
     this.setState({
-      visible: false
+      visible: false,
+      visibleMessage: false
     });
   };
 
   componentDidMount = async () => {
     this.getCustomers();
     this.getAllPrograms();
+  };
+
+  handleChangeMessageInput = message => {
+    this.setState({ message });
+  };
+
+  sendNewMessage = async customer => {
+    const { message } = this.state;
+    const customerId = customer._id;
+
+    console.log("Message", message);
+
+    try {
+      const conversations = await apiServices.get(
+        "conversations",
+        `populate=customer,coach&customer=${customerId}`
+      );
+
+      if (conversations.length != 0) {
+        const newMessage = {
+          sender: "COACH",
+          content: message
+        };
+
+        conversations[0].messages.push(newMessage);
+        const { _id, ...rest } = conversations[0];
+
+        await apiServices.patchOne("conversations", _id, rest);
+
+        this.setState({
+          visible: false,
+          visibleMessage: false
+        });
+      } else {
+        const data = {
+          coach: sessionStorage.getItem("userId"),
+          customer: customerId,
+          messages: [
+            {
+              sender: "COACH",
+              content: message
+            }
+          ]
+        };
+        await apiServices.postOne("conversations", data);
+
+        this.setState({
+          visible: false,
+          visibleMessage: false
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    this.handleChangeMessageInput("");
   };
 
   getCustomers = async () => {
@@ -200,7 +270,8 @@ class CustomersList extends React.Component {
       customersWithoutProgramData,
       programs,
       selectedCustomer,
-      visible
+      visible,
+      visibleMessage
     } = this.state;
     const { state } = this;
     const profileSize = 65;
@@ -236,7 +307,7 @@ class CustomersList extends React.Component {
         width: 100,
         render: (text, row, index) => (
           <span>
-            <a>
+            <a onClick={() => this.showMessageModal(row)}>
               <Icon type="mail" /> Send a message
             </a>
           </span>
@@ -508,6 +579,35 @@ class CustomersList extends React.Component {
                           </Card>
                         </Col>
                       ))}
+                    </div>
+                  </Row>
+                </Modal>
+              ) : null}
+
+              {visibleMessage ? (
+                <Modal
+                  title={`Send a message to ${
+                    selectedCustomer.first_name
+                  }  ${selectedCustomer.last_name.toUpperCase()}`}
+                  visible={visibleMessage}
+                  okText="send"
+                  onOk={() => this.sendNewMessage(selectedCustomer)}
+                  onCancel={this.handleCancel}
+                  width={720}
+                >
+                  <Row>
+                    <div>
+                      <Row style={{ marginTop: "10px", padding: "5px 20px" }}>
+                        <label>Your Message : </label>
+                        <TextArea
+                          onChange={e =>
+                            this.handleChangeMessageInput(e.target.value)
+                          }
+                          value={this.state.message}
+                          placeholder="Type in your message"
+                          autoSize={{ minRows: 5, maxRows: 10 }}
+                        />
+                      </Row>
                     </div>
                   </Row>
                 </Modal>
